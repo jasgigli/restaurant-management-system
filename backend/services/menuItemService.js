@@ -1,29 +1,39 @@
-const { MenuItem } = require("../models");
-const AppError = require("../utils/AppError");
+import menuItemRepository from "../data/menuItemRepository.js";
+import { AppError } from "../utils/appError.js";
+import { MenuItem, MenuItemIngredient, StoreItem } from "../models/index.js";
 
 const menuItemService = {
   async getMenuItems({ page = 1, limit = 10 }) {
-    const offset = (page - 1) * limit;
-    const { rows, count } = await MenuItem.findAndCountAll({
-      offset,
-      limit,
-      order: [["createdAt", "DESC"]],
-    });
-    return { menuItems: rows, total: count };
+    return menuItemRepository.findAndCountAll({ page, limit });
   },
   async createMenuItem(data) {
-    return MenuItem.create(data);
+    return menuItemRepository.create(data);
   },
   async updateMenuItem(id, data) {
-    const [updated] = await MenuItem.update(data, { where: { id } });
-    if (!updated) throw new AppError("Menu item not found", 404);
-    return MenuItem.findByPk(id);
+    return menuItemRepository.update(id, data);
   },
   async deleteMenuItem(id) {
-    const deleted = await MenuItem.destroy({ where: { id } });
-    if (!deleted) throw new AppError("Menu item not found", 404);
+    return menuItemRepository.delete(id);
+  },
+  async addIngredients(menuItemId, ingredients) {
+    await MenuItemIngredient.destroy({ where: { menuItemId } });
+    for (const ing of ingredients) {
+      await MenuItemIngredient.create({
+        menuItemId,
+        storeItemId: ing.storeItemId,
+        quantity_used: ing.quantity_used,
+      });
+    }
     return true;
+  },
+  async getAllMenuItems() {
+    return MenuItem.findAll({
+      include: {
+        model: StoreItem,
+        through: { attributes: ["quantity_used"] },
+      },
+    });
   },
 };
 
-module.exports = menuItemService;
+export default menuItemService;

@@ -1,18 +1,17 @@
-const { RestaurantAsset, StaffAssignedItem } = require("../models");
-const assetService = require("../services/assetService");
-const AppError = require("../utils/AppError");
+import { StaffAssignedItem } from "../models/index.js";
+import assetService from "../services/assetService.js";
 
 // Restaurant Assets
-exports.createAsset = async (req, res, next) => {
+export async function createAsset(req, res, next) {
   try {
     const asset = await assetService.createAsset(req.body);
     res.status(201).json(asset);
   } catch (error) {
     next(error);
   }
-};
+}
 
-exports.getAssets = async (req, res, next) => {
+export async function getAssets(req, res, next) {
   try {
     const { page = 1, limit = 10 } = req.query;
     const result = await assetService.getAssets({
@@ -23,65 +22,59 @@ exports.getAssets = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+}
 
-exports.updateAsset = async (req, res, next) => {
+export async function updateAsset(req, res, next) {
   try {
     const asset = await assetService.updateAsset(req.params.id, req.body);
     res.json(asset);
   } catch (error) {
     next(error);
   }
-};
+}
 
-exports.deleteAsset = async (req, res, next) => {
+export async function deleteAsset(req, res, next) {
   try {
     await assetService.deleteAsset(req.params.id);
     res.status(204).send();
   } catch (error) {
     next(error);
   }
-};
+}
 
 // Staff Assigned Items
-exports.createAssignedItem = async (req, res) => {
+export async function createAssignedItem(req, res, next) {
   try {
-    const item = await StaffAssignedItem.create(req.body);
+    const item = await assetService.createAssignedItem(req.body);
     res.status(201).json(item);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
-};
+}
 
-exports.getAssignedItems = async (req, res) => {
+export async function getAssignedItems(req, res, next) {
   try {
-    const items = await StaffAssignedItem.findAll();
+    const items = await assetService.getAssignedItems();
     res.json(items);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
-};
+}
 
-exports.updateAssignedItem = async (req, res) => {
+export async function updateAssignedItem(req, res, next) {
   try {
-    const item = await StaffAssignedItem.findByPk(req.params.id);
-    if (!item)
-      return res.status(404).json({ message: "Assigned item not found" });
-    await item.update(req.body);
+    const item = await assetService.updateAssignedItem(req.params.id, req.body);
     res.json(item);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
-};
+}
 
-exports.deleteAssignedItem = async (req, res) => {
+export async function deleteAssignedItem(req, res, next) {
   try {
-    const item = await StaffAssignedItem.findByPk(req.params.id);
-    if (!item)
-      return res.status(404).json({ message: "Assigned item not found" });
-    await item.destroy();
+    await assetService.deleteAssignedItem(req.params.id);
     res.json({ message: "Assigned item deleted" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
-};
+}

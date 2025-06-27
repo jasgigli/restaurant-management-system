@@ -1,37 +1,27 @@
-const cron = require("node-cron");
-const nodemailer = require("nodemailer");
-const logger = require("../config/logger");
+import cron from "node-cron";
+import nodemailer from "nodemailer";
+import logger from "../config/logger.js";
 
 // Placeholder: configure your transporter with real credentials
 const transporter = nodemailer.createTransport({
-  host: process.env.EMAIL_HOST,
-  port: process.env.EMAIL_PORT,
+  host: process.env.SMTP_HOST,
+  port: process.env.SMTP_PORT,
   auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
   },
 });
 
 // Monthly payroll reminder (1st of every month at 8am)
 cron.schedule("0 8 1 * *", async () => {
   logger.info("Running monthly payroll reminder job");
-  // TODO: Generate payroll reminders or draft salary expense records
+  // Implement payroll reminder logic here
 });
 
 // Daily low-stock check (every day at 7am)
 cron.schedule("0 7 * * *", async () => {
   logger.info("Running daily low-stock check job");
-  // TODO: Check for low-stock items and send email to admin
-  // Example:
-  // const lowStockItems = await StoreItem.findAll({ where: { quantity: { [Op.lt]: 10 } } });
-  // if (lowStockItems.length) {
-  //   await transporter.sendMail({
-  //     from: process.env.EMAIL_USER,
-  //     to: 'admin@example.com',
-  //     subject: 'Low Stock Alert',
-  //     text: 'Some items are low in stock.'
-  //   });
-  // }
+  // Implement low-stock check logic here
 });
 
-module.exports = cron;
+export default cron;

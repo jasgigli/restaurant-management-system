@@ -1,18 +1,17 @@
-const { Employee, Attendance, SalaryAdvance } = require("../models");
-const hrService = require("../services/hrService");
-const AppError = require("../utils/AppError");
+import { Attendance, SalaryAdvance } from "../models/index.js";
+import hrService from "../services/hrService.js";
 
 // Employees
-exports.createEmployee = async (req, res, next) => {
+export async function createEmployee(req, res, next) {
   try {
     const employee = await hrService.createEmployee(req.body);
     res.status(201).json(employee);
   } catch (error) {
     next(error);
   }
-};
+}
 
-exports.getEmployees = async (req, res, next) => {
+export async function getEmployees(req, res, next) {
   try {
     const { page = 1, limit = 10 } = req.query;
     const result = await hrService.getEmployees({
@@ -23,111 +22,101 @@ exports.getEmployees = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+}
 
-exports.updateEmployee = async (req, res, next) => {
+export async function updateEmployee(req, res, next) {
   try {
     const employee = await hrService.updateEmployee(req.params.id, req.body);
     res.json(employee);
   } catch (error) {
     next(error);
   }
-};
+}
 
-exports.deleteEmployee = async (req, res, next) => {
+export async function deleteEmployee(req, res, next) {
   try {
     await hrService.deleteEmployee(req.params.id);
     res.status(204).send();
   } catch (error) {
     next(error);
   }
-};
+}
 
 // Attendance
-exports.createAttendance = async (req, res) => {
+export async function createAttendance(req, res, next) {
   try {
-    const attendance = await Attendance.create(req.body);
+    const attendance = await hrService.createAttendance(req.body);
     res.status(201).json(attendance);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
-};
+}
 
-exports.getAttendance = async (req, res) => {
+export async function getAttendance(req, res, next) {
   try {
-    const attendance = await Attendance.findAll();
+    const attendance = await hrService.getAttendance();
     res.json(attendance);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
-};
+}
 
-exports.updateAttendance = async (req, res) => {
+export async function updateAttendance(req, res, next) {
   try {
-    const attendance = await Attendance.findByPk(req.params.id);
-    if (!attendance)
-      return res.status(404).json({ message: "Attendance not found" });
-    await attendance.update(req.body);
+    const attendance = await hrService.updateAttendance(req.params.id, req.body);
     res.json(attendance);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
-};
+}
 
-exports.deleteAttendance = async (req, res) => {
+export async function deleteAttendance(req, res, next) {
   try {
-    const attendance = await Attendance.findByPk(req.params.id);
-    if (!attendance)
-      return res.status(404).json({ message: "Attendance not found" });
-    await attendance.destroy();
+    await hrService.deleteAttendance(req.params.id);
     res.json({ message: "Attendance deleted" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
-};
+}
 
 // Salary Advances
-exports.createAdvance = async (req, res) => {
+export async function createAdvance(req, res, next) {
   try {
-    const advance = await SalaryAdvance.create(req.body);
+    const advance = await hrService.createAdvance(req.body);
     res.status(201).json(advance);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
-};
+}
 
-exports.getAdvances = async (req, res) => {
+export async function getAdvances(req, res, next) {
   try {
-    const advances = await SalaryAdvance.findAll();
+    const advances = await hrService.getAdvances();
     res.json(advances);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
-};
+}
 
-exports.updateAdvance = async (req, res) => {
+export async function updateAdvance(req, res, next) {
   try {
-    const advance = await SalaryAdvance.findByPk(req.params.id);
-    if (!advance) return res.status(404).json({ message: "Advance not found" });
-    await advance.update(req.body);
+    const advance = await hrService.updateAdvance(req.params.id, req.body);
     res.json(advance);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
-};
+}
 
-exports.deleteAdvance = async (req, res) => {
+export async function deleteAdvance(req, res, next) {
   try {
-    const advance = await SalaryAdvance.findByPk(req.params.id);
-    if (!advance) return res.status(404).json({ message: "Advance not found" });
-    await advance.destroy();
+    await hrService.deleteAdvance(req.params.id);
     res.json({ message: "Advance deleted" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
-};
+}
 
-exports.uploadPhoto = async (req, res, next) => {
+export async function uploadPhoto(req, res, next) {
   try {
     if (!req.file) {
       return res.status(400).json({ message: "No file uploaded" });
@@ -140,4 +129,4 @@ exports.uploadPhoto = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+}

@@ -1,69 +1,52 @@
-const User = require("./user.model");
-const StoreItem = require("./storeItem.model");
-const MenuItem = require("./menuItem.model");
-const MenuItemIngredient = require("./menuItemIngredient.model");
-const Sale = require("./sale.model");
-const SaleDetail = require("./saleDetail.model");
-const Employee = require("./employee.model");
-const Attendance = require("./attendance.model");
-const SalaryAdvance = require("./salaryAdvance.model");
-const RestaurantAsset = require("./restaurantAsset.model");
-const StaffAssignedItem = require("./staffAssignedItem.model");
-const Expense = require("./expense.model");
-const SaleCostLog = require("./saleCostLog.model")(
-  sequelize,
-  Sequelize.DataTypes
-);
+import User from './user.js';
+import Sale from './sale.js';
+import SaleDetail from './saleDetail.js';
+import StoreItem from './storeItem.js';
+import MenuItem from './menuItem.js';
+import Attendance from './attendance.js';
+import SalaryAdvance from './salaryAdvance.js';
+import Employee from './employee.js';
+import StaffAssignedItem from './staffAssignedItem.js';
+import RestaurantAsset from './restaurantAsset.js';
+import MenuItemIngredient from './menuItemIngredient.js';
+import SaleCostLog from './saleCostLog.js';
 
 // Associations
-// Sale & SaleDetail
-Sale.hasMany(SaleDetail, { foreignKey: "saleId" });
-SaleDetail.belongsTo(Sale, { foreignKey: "saleId" });
+Employee.hasMany(Attendance, { foreignKey: 'employeeId' });
+Attendance.belongsTo(Employee, { foreignKey: 'employeeId' });
 
-// SaleDetail & MenuItem
-MenuItem.hasMany(SaleDetail, { foreignKey: "menuItemId" });
-SaleDetail.belongsTo(MenuItem, { foreignKey: "menuItemId" });
+Employee.hasMany(SalaryAdvance, { foreignKey: 'employeeId' });
+SalaryAdvance.belongsTo(Employee, { foreignKey: 'employeeId' });
 
-// Sale & User
-User.hasMany(Sale, { foreignKey: "created_by_user_id" });
-Sale.belongsTo(User, { foreignKey: "created_by_user_id" });
+Employee.hasMany(StaffAssignedItem, { foreignKey: 'employeeId' });
+StaffAssignedItem.belongsTo(Employee, { foreignKey: 'employeeId' });
 
-// MenuItem & MenuItemIngredient
-MenuItem.belongsToMany(StoreItem, {
-  through: MenuItemIngredient,
-  foreignKey: "menuItemId",
-  otherKey: "storeItemId",
-});
-StoreItem.belongsToMany(MenuItem, {
-  through: MenuItemIngredient,
-  foreignKey: "storeItemId",
-  otherKey: "menuItemId",
-});
+Sale.hasMany(SaleDetail, { foreignKey: 'saleId' });
+SaleDetail.belongsTo(Sale, { foreignKey: 'saleId' });
 
-// Employee & Attendance
-Employee.hasMany(Attendance, { foreignKey: "employeeId" });
-Attendance.belongsTo(Employee, { foreignKey: "employeeId" });
+MenuItem.hasMany(SaleDetail, { foreignKey: 'menuItemId' });
+SaleDetail.belongsTo(MenuItem, { foreignKey: 'menuItemId' });
 
-// Employee & SalaryAdvance
-Employee.hasMany(SalaryAdvance, { foreignKey: "employeeId" });
-SalaryAdvance.belongsTo(Employee, { foreignKey: "employeeId" });
+MenuItem.belongsToMany(StoreItem, { through: MenuItemIngredient, foreignKey: 'menuItemId' });
+StoreItem.belongsToMany(MenuItem, { through: MenuItemIngredient, foreignKey: 'storeItemId' });
 
-// Employee & StaffAssignedItem
-Employee.hasMany(StaffAssignedItem, { foreignKey: "employeeId" });
-StaffAssignedItem.belongsTo(Employee, { foreignKey: "employeeId" });
+SaleDetail.hasMany(SaleCostLog, { foreignKey: 'saleDetailId' });
+SaleCostLog.belongsTo(SaleDetail, { foreignKey: 'saleDetailId' });
 
-module.exports = {
+StoreItem.hasMany(SaleCostLog, { foreignKey: 'storeItemId' });
+SaleCostLog.belongsTo(StoreItem, { foreignKey: 'storeItemId' });
+
+export {
   User,
-  StoreItem,
-  MenuItem,
-  MenuItemIngredient,
   Sale,
   SaleDetail,
-  Employee,
+  StoreItem,
+  MenuItem,
   Attendance,
   SalaryAdvance,
-  RestaurantAsset,
+  Employee,
   StaffAssignedItem,
-  Expense,
+  RestaurantAsset,
+  MenuItemIngredient,
   SaleCostLog,
 };

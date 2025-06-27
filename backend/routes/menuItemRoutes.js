@@ -1,12 +1,13 @@
-const express = require("express");
-const router = express.Router();
-const menuItemController = require("../controllers/menuItemController");
-const { protect, authorize } = require("../middleware/authMiddleware");
-const validate = require("../middleware/validate");
-const {
+import express from "express";
+import * as menuItemController from "../controllers/menuItemController.js";
+import { authorize, protect } from "../middleware/authMiddleware.js";
+import validate from "../middleware/validate.js";
+import {
   createMenuItemSchema,
   updateMenuItemSchema,
-} = require("../validators/menuItemValidator");
+} from "../schemas/menuItem.schema.js";
+
+const router = express.Router();
 
 router.post(
   "/items",
@@ -46,4 +47,4 @@ router.delete(
   menuItemController.deleteMenuItem
 );
 
-module.exports = router;
+export default router;

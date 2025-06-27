@@ -1,12 +1,13 @@
-const express = require("express");
-const router = express.Router();
-const assetController = require("../controllers/assetController");
-const { protect, authorize } = require("../middleware/authMiddleware");
-const validate = require("../middleware/validate");
-const {
+import express from "express";
+import * as assetController from "../controllers/assetController.js";
+import { authorize, protect } from "../middleware/authMiddleware.js";
+import validate from "../middleware/validate.js";
+import {
   createAssetSchema,
   updateAssetSchema,
-} = require("../validators/assetValidator");
+} from "../schemas/asset.schema.js";
+
+const router = express.Router();
 
 // Restaurant Assets
 router.post(
@@ -49,17 +50,5 @@ router.get(
   authorize("SuperAdmin"),
   assetController.getAssignedItems
 );
-router.put(
-  "/assigned-items/:id",
-  protect,
-  authorize("SuperAdmin"),
-  assetController.updateAssignedItem
-);
-router.delete(
-  "/assigned-items/:id",
-  protect,
-  authorize("SuperAdmin"),
-  assetController.deleteAssignedItem
-);
 
-module.exports = router;
+export default router;

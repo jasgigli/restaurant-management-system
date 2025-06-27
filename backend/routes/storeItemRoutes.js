@@ -1,33 +1,28 @@
-const express = require("express");
+import express from "express";
+import * as storeItemController from "../controllers/storeItemController.js";
+import { authorize, protect } from "../middleware/authMiddleware.js";
+// import { createStoreItemSchema, updateStoreItemSchema } from '../schemas/storeItem.schema.js'; // Placeholder for future schemas
+
 const router = express.Router();
-const storeItemController = require("../controllers/storeItemController");
-const { protect, authorize } = require("../middleware/authMiddleware");
-const validate = require("../middleware/validate");
-const {
-  createStoreItemSchema,
-  updateStoreItemSchema,
-} = require("../validators/storeItemValidator");
 
 router.post(
   "/items",
   protect,
   authorize("SuperAdmin", "KitchenStaff"),
-  validate(createStoreItemSchema),
-  storeItemController.createItem
+  storeItemController.createStoreItem
 );
-router.get("/items", protect, storeItemController.getAllItems);
+router.get("/items", protect, storeItemController.getStoreItems);
 router.put(
   "/items/:id",
   protect,
   authorize("SuperAdmin", "KitchenStaff"),
-  validate(updateStoreItemSchema),
-  storeItemController.updateItem
+  storeItemController.updateStoreItem
 );
 router.delete(
   "/items/:id",
   protect,
   authorize("SuperAdmin"),
-  storeItemController.deleteItem
+  storeItemController.deleteStoreItem
 );
 
-module.exports = router;
+export default router;

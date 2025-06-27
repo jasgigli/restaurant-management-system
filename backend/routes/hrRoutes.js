@@ -1,14 +1,10 @@
-const express = require("express");
+import express from "express";
+import multer from "multer";
+import path from "path";
+import * as hrController from "../controllers/hrController.js";
+import { authorize, protect } from "../middleware/authMiddleware.js";
+
 const router = express.Router();
-const hrController = require("../controllers/hrController");
-const { protect, authorize } = require("../middleware/authMiddleware");
-const multer = require("multer");
-const path = require("path");
-const validate = require("../middleware/validate");
-const {
-  createEmployeeSchema,
-  updateEmployeeSchema,
-} = require("../validators/hrValidator");
 
 // Multer config
 const storage = multer.diskStorage({
@@ -27,7 +23,6 @@ router.post(
   "/employees",
   protect,
   authorize("SuperAdmin", "HR"),
-  validate(createEmployeeSchema),
   hrController.createEmployee
 );
 router.get(
@@ -40,7 +35,6 @@ router.put(
   "/employees/:id",
   protect,
   authorize("SuperAdmin", "HR"),
-  validate(updateEmployeeSchema),
   hrController.updateEmployee
 );
 router.delete(
@@ -63,52 +57,5 @@ router.get(
   authorize("SuperAdmin", "HR"),
   hrController.getAttendance
 );
-router.put(
-  "/attendance/:id",
-  protect,
-  authorize("SuperAdmin", "HR"),
-  hrController.updateAttendance
-);
-router.delete(
-  "/attendance/:id",
-  protect,
-  authorize("SuperAdmin", "HR"),
-  hrController.deleteAttendance
-);
 
-// Salary Advances
-router.post(
-  "/advances",
-  protect,
-  authorize("SuperAdmin", "HR"),
-  hrController.createAdvance
-);
-router.get(
-  "/advances",
-  protect,
-  authorize("SuperAdmin", "HR"),
-  hrController.getAdvances
-);
-router.put(
-  "/advances/:id",
-  protect,
-  authorize("SuperAdmin", "HR"),
-  hrController.updateAdvance
-);
-router.delete(
-  "/advances/:id",
-  protect,
-  authorize("SuperAdmin", "HR"),
-  hrController.deleteAdvance
-);
-
-// PUT /api/employees/:id/photo
-router.put(
-  "/employees/:id/photo",
-  protect,
-  authorize("SuperAdmin", "HR"),
-  upload.single("photo"),
-  hrController.uploadPhoto
-);
-
-module.exports = router;
+export default router;

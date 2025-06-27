@@ -1,7 +1,6 @@
-const storeItemService = require("../services/storeItemService");
-const AppError = require("../utils/AppError");
+import storeItemService from "../services/storeItemService.js";
 
-exports.getStoreItems = async (req, res, next) => {
+export async function getStoreItems(req, res, next) {
   try {
     const { page = 1, limit = 10 } = req.query;
     const result = await storeItemService.getStoreItems({
@@ -12,18 +11,18 @@ exports.getStoreItems = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+}
 
-exports.createStoreItem = async (req, res, next) => {
+export async function createStoreItem(req, res, next) {
   try {
     const storeItem = await storeItemService.createStoreItem(req.body);
     res.status(201).json(storeItem);
   } catch (error) {
     next(error);
   }
-};
+}
 
-exports.updateStoreItem = async (req, res, next) => {
+export async function updateStoreItem(req, res, next) {
   try {
     const storeItem = await storeItemService.updateStoreItem(
       req.params.id,
@@ -33,13 +32,13 @@ exports.updateStoreItem = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+}
 
-exports.deleteStoreItem = async (req, res, next) => {
+export async function deleteStoreItem(req, res, next) {
   try {
     await storeItemService.deleteStoreItem(req.params.id);
     res.status(204).send();
   } catch (error) {
     next(error);
   }
-};
+}

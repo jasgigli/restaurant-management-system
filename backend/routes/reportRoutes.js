@@ -1,7 +1,9 @@
-const express = require("express");
+import express from "express";
+import * as reportController from "../controllers/reportController.js";
+import { authorize, protect } from "../middleware/authMiddleware.js";
+// import { reportSchema } from '../schemas/report.schema.js'; // Placeholder for future schemas
+
 const router = express.Router();
-const reportController = require("../controllers/reportController");
-const { protect, authorize } = require("../middleware/authMiddleware");
 
 // GET /api/reports/net-profit?start=YYYY-MM-DD&end=YYYY-MM-DD
 router.get(
@@ -11,4 +13,4 @@ router.get(
   reportController.getNetProfit
 );
 
-module.exports = router;
+export default router;

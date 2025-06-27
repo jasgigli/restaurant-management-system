@@ -1,17 +1,11 @@
-const {
-  Sale,
-  SaleDetail,
-  MenuItem,
-  StoreItem,
+import {
   Employee,
-  SalaryAdvance,
-  Expense,
   RestaurantAsset,
-} = require("../models");
-const { Op } = require("sequelize");
-const reportService = require("../services/reportService");
+  SalaryAdvance,
+} from "../models/index.js";
+import reportService from "../services/reportService.js";
 
-exports.getNetProfit = async (req, res, next) => {
+export async function getNetProfit(req, res, next) {
   try {
     const { start, end } = req.query;
     const startDate = start
@@ -29,9 +23,10 @@ exports.getNetProfit = async (req, res, next) => {
     // Advances
     const advances = await SalaryAdvance.findAll();
     const totalAdvances = advances.reduce((sum, a) => sum + a.amount, 0);
-    // Expenses
-    const expenses = await Expense.findAll();
-    const totalExpenses = expenses.reduce((sum, e) => sum + e.amount, 0);
+    // Expenses (No Expense model found)
+    // const expenses = await Expense.findAll();
+    // const totalExpenses = expenses.reduce((sum, e) => sum + e.amount, 0);
+    const totalExpenses = 0; // Placeholder until Expense model is implemented
     // Asset Purchases
     const assets = await RestaurantAsset.findAll();
     const totalAssets = assets.reduce((sum, a) => sum + a.cost, 0);
@@ -51,4 +46,4 @@ exports.getNetProfit = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+}

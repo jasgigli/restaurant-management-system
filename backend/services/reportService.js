@@ -1,4 +1,6 @@
-const { Sale, SaleCostLog, sequelize } = require("../models");
+import sequelize from "../config/database.js";
+import saleRepository from "../data/saleRepository.js";
+import { AppError } from "../utils/appError.js";
 
 const reportService = {
   async getNetProfit({ startDate, endDate }) {
@@ -22,4 +24,4 @@ const reportService = {
   },
 };
 
-module.exports = reportService;
+export default reportService;

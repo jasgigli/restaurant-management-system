@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { Button } from "../../components/ui/button";
+import { Card } from "../../components/ui/card";
+import { useToast } from "../../components/ui/useToast";
 import {
   useAddMenuItem,
   useAddMenuItemIngredients,
@@ -7,10 +10,11 @@ import {
 import { useGetStoreItems } from "../../hooks/useStoreItems";
 
 const Menu = () => {
-  const { data: menuItems, isLoading } = useGetMenuItems();
+  const { data: menuItems, isLoading, isError } = useGetMenuItems();
   const { data: storeItems } = useGetStoreItems();
   const addMenuItem = useAddMenuItem();
   const addIngredients = useAddMenuItemIngredients();
+  const toast = useToast();
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ name: "", category: "", price: 0 });
   const [showIngredients, setShowIngredients] = useState(false);
@@ -23,7 +27,9 @@ const Menu = () => {
       onSuccess: () => {
         setShowForm(false);
         setForm({ name: "", category: "", price: 0 });
+        toast("Menu item added", "success");
       },
+      onError: () => toast("Failed to add menu item", "error"),
     });
   };
 
@@ -36,82 +42,83 @@ const Menu = () => {
           setShowIngredients(false);
           setIngredients([]);
           setSelectedMenuItem(null);
+          toast("Ingredients updated", "success");
         },
+        onError: () => toast("Failed to update ingredients", "error"),
       }
     );
   };
 
+  if (isError) toast("Failed to load menu items", "error");
   if (isLoading) return <div>Loading...</div>;
 
   return (
-    <div>
-      <h1>Menu</h1>
-      <button onClick={() => setShowForm(true)} style={{ marginBottom: 16 }}>
-        Add Menu Item
-      </button>
+    <div className="space-y-8">
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-bold">Menu</h1>
+        <Button onClick={() => setShowForm(true)}>Add Menu Item</Button>
+      </div>
       {showForm && (
-        <form
-          onSubmit={handleMenuItemSubmit}
-          style={{
-            marginBottom: 24,
-            background: "#f5f5f5",
-            padding: 16,
-            borderRadius: 8,
-          }}
-        >
-          <input
-            name="name"
-            placeholder="Name"
-            value={form.name}
-            onChange={(e) => setForm({ ...form, name: e.target.value })}
-            required
-            style={{ marginRight: 8 }}
-          />
-          <input
-            name="category"
-            placeholder="Category"
-            value={form.category}
-            onChange={(e) => setForm({ ...form, category: e.target.value })}
-            required
-            style={{ marginRight: 8 }}
-          />
-          <input
-            name="price"
-            type="number"
-            placeholder="Price"
-            value={form.price}
-            onChange={(e) =>
-              setForm({ ...form, price: Number(e.target.value) })
-            }
-            required
-            style={{ marginRight: 8 }}
-          />
-          <button type="submit">Save</button>
-          <button
-            type="button"
-            onClick={() => setShowForm(false)}
-            style={{ marginLeft: 8 }}
-          >
-            Cancel
-          </button>
-        </form>
+        <Card className="mb-6 p-6 max-w-xl">
+          <form onSubmit={handleMenuItemSubmit} className="space-y-4">
+            <div className="flex gap-4 flex-wrap">
+              <input
+                name="name"
+                placeholder="Name"
+                value={form.name}
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                required
+                className="border rounded px-2 py-1 flex-1"
+              />
+              <input
+                name="category"
+                placeholder="Category"
+                value={form.category}
+                onChange={(e) => setForm({ ...form, category: e.target.value })}
+                required
+                className="border rounded px-2 py-1 flex-1"
+              />
+              <input
+                name="price"
+                type="number"
+                placeholder="Price"
+                value={form.price}
+                onChange={(e) =>
+                  setForm({ ...form, price: Number(e.target.value) })
+                }
+                required
+                className="border rounded px-2 py-1 flex-1"
+              />
+            </div>
+            <div className="flex gap-2">
+              <Button type="submit">Save</Button>
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={() => setShowForm(false)}
+              >
+                Cancel
+              </Button>
+            </div>
+          </form>
+        </Card>
       )}
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 16 }}>
+      <div className="flex flex-wrap gap-6">
         {menuItems?.map((item: any) => (
-          <div
+          <Card
             key={item.id}
-            style={{
-              border: "1px solid #eee",
-              borderRadius: 8,
-              padding: 16,
-              minWidth: 220,
-              background: "#fff",
-            }}
+            className="min-w-[220px] max-w-xs p-4 flex flex-col justify-between"
           >
-            <h3>{item.name}</h3>
-            <div>Category: {item.category}</div>
-            <div>Price: {item.price}</div>
-            <button
+            <div>
+              <h3 className="text-lg font-semibold mb-1">{item.name}</h3>
+              <div className="text-sm text-muted-foreground mb-1">
+                Category: {item.category}
+              </div>
+              <div className="text-sm font-medium">Price: {item.price}</div>
+            </div>
+            <Button
+              className="mt-4"
+              variant="ghost"
               onClick={() => {
                 setSelectedMenuItem(item);
                 setShowIngredients(true);
@@ -122,67 +129,64 @@ const Menu = () => {
                   })) || []
                 );
               }}
-              style={{ marginTop: 8 }}
             >
               Manage Ingredients
-            </button>
-          </div>
+            </Button>
+          </Card>
         ))}
       </div>
       {showIngredients && selectedMenuItem && (
-        <form
-          onSubmit={handleAddIngredients}
-          style={{
-            marginTop: 24,
-            background: "#f5f5f5",
-            padding: 16,
-            borderRadius: 8,
-          }}
-        >
-          <h3>Ingredients for {selectedMenuItem.name}</h3>
-          {storeItems?.map((si: any) => (
-            <div key={si.id} style={{ marginBottom: 8 }}>
-              <label>{si.name}</label>
-              <input
-                type="number"
-                min={0}
-                value={
-                  ingredients.find((ing) => ing.storeItemId === si.id)
-                    ?.quantity_used || 0
-                }
-                onChange={(e) => {
-                  const qty = Number(e.target.value);
-                  setIngredients((prev) => {
-                    const exists = prev.find(
-                      (ing) => ing.storeItemId === si.id
-                    );
-                    if (exists) {
-                      return prev.map((ing) =>
-                        ing.storeItemId === si.id
-                          ? { ...ing, quantity_used: qty }
-                          : ing
+        <Card className="mt-6 p-6 max-w-xl">
+          <form onSubmit={handleAddIngredients} className="space-y-4">
+            <h3 className="text-lg font-semibold mb-4">
+              Ingredients for {selectedMenuItem.name}
+            </h3>
+            {storeItems?.map((si: any) => (
+              <div key={si.id} className="flex items-center gap-2 mb-2">
+                <label className="w-32">{si.name}</label>
+                <input
+                  type="number"
+                  min={0}
+                  value={
+                    ingredients.find((ing) => ing.storeItemId === si.id)
+                      ?.quantity_used || 0
+                  }
+                  onChange={(e) => {
+                    const qty = Number(e.target.value);
+                    setIngredients((prev) => {
+                      const exists = prev.find(
+                        (ing) => ing.storeItemId === si.id
                       );
-                    } else {
-                      return [
-                        ...prev,
-                        { storeItemId: si.id, quantity_used: qty },
-                      ];
-                    }
-                  });
-                }}
-                style={{ marginLeft: 8 }}
-              />
+                      if (exists) {
+                        return prev.map((ing) =>
+                          ing.storeItemId === si.id
+                            ? { ...ing, quantity_used: qty }
+                            : ing
+                        );
+                      } else {
+                        return [
+                          ...prev,
+                          { storeItemId: si.id, quantity_used: qty },
+                        ];
+                      }
+                    });
+                  }}
+                  className="border rounded px-2 py-1 w-24"
+                />
+              </div>
+            ))}
+            <div className="flex gap-2">
+              <Button type="submit">Save Ingredients</Button>
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={() => setShowIngredients(false)}
+              >
+                Cancel
+              </Button>
             </div>
-          ))}
-          <button type="submit">Save Ingredients</button>
-          <button
-            type="button"
-            onClick={() => setShowIngredients(false)}
-            style={{ marginLeft: 8 }}
-          >
-            Cancel
-          </button>
-        </form>
+          </form>
+        </Card>
       )}
     </div>
   );

@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
-import Layout from "./components/Layout";
+import MainLayout from "./components/Layout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Assets from "./pages/assets/Assets";
 import Dashboard from "./pages/Dashboard";
@@ -15,7 +15,7 @@ function App() {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route element={<ProtectedRoute />}>
-        <Route element={<Layout />}>
+        <Route element={<MainLayout />}>
           <Route path="/" element={<Dashboard />} />
           <Route path="/warehouse" element={<Warehouse />} />
           <Route path="/menu" element={<Menu />} />

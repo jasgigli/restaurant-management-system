@@ -1,5 +1,6 @@
-const { RestaurantAsset } = require("../models");
-const AppError = require("../utils/AppError");
+import assetRepository from "../data/assetRepository.js";
+import { AppError } from "../utils/appError.js";
+import { StaffAssignedItem } from "../models/index.js";
 
 const assetService = {
   async getAssets({ page = 1, limit = 10 }) {
@@ -24,6 +25,25 @@ const assetService = {
     if (!deleted) throw new AppError("Asset not found", 404);
     return true;
   },
+  // Assigned Items
+  async createAssignedItem(data) {
+    return StaffAssignedItem.create(data);
+  },
+  async getAssignedItems() {
+    return StaffAssignedItem.findAll();
+  },
+  async updateAssignedItem(id, data) {
+    const item = await StaffAssignedItem.findByPk(id);
+    if (!item) throw new AppError("Assigned item not found", 404);
+    await item.update(data);
+    return item;
+  },
+  async deleteAssignedItem(id) {
+    const item = await StaffAssignedItem.findByPk(id);
+    if (!item) throw new AppError("Assigned item not found", 404);
+    await item.destroy();
+    return true;
+  },
 };
 
-module.exports = assetService;
+export default assetService;

@@ -1,24 +1,18 @@
-const express = require("express");
-const cors = require("cors");
-const dotenv = require("dotenv");
-const sequelize = require("./config/database");
-require("./models");
-const helmet = require("helmet");
-const rateLimit = require("express-rate-limit");
-const morgan = require("morgan");
-const logger = require("./config/logger"); // To be created
-const AppError = require("./utils/AppError"); // To be created
-
-// Load environment variables
+import dotenv from "dotenv";
 dotenv.config();
+import cors from "cors";
+import express from "express";
+import rateLimit from "express-rate-limit";
+import helmet from "helmet";
+import morgan from "morgan";
+import sequelize from "./config/database.js";
+import logger from "./config/logger.js";
+import "./models/index.js";
+import { AppError } from "./utils/appError.js";
 
-// Initialize Express app
 const app = express();
-
-// Middleware
 app.use(helmet());
 
-// Rate limiting
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // limit each IP to 100 requests per windowMs
@@ -47,13 +41,21 @@ app.use(
 app.use(morgan("combined", { stream: logger.stream }));
 
 // Routes
-app.use("/api/auth", require("./routes/authRoutes"));
-app.use("/api/store", require("./routes/storeItemRoutes"));
-app.use("/api/menu", require("./routes/menuItemRoutes"));
-app.use("/api/sales", require("./routes/saleRoutes"));
-app.use("/api/hr", require("./routes/hrRoutes"));
-app.use("/api/assets", require("./routes/assetRoutes"));
-app.use("/api/reports", require("./routes/reportRoutes"));
+import assetRoutes from "./routes/assetRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
+import hrRoutes from "./routes/hrRoutes.js";
+import menuItemRoutes from "./routes/menuItemRoutes.js";
+import reportRoutes from "./routes/reportRoutes.js";
+import saleRoutes from "./routes/saleRoutes.js";
+import storeItemRoutes from "./routes/storeItemRoutes.js";
+
+app.use("/api/auth", authRoutes);
+app.use("/api/store", storeItemRoutes);
+app.use("/api/menu", menuItemRoutes);
+app.use("/api/sales", saleRoutes);
+app.use("/api/hr", hrRoutes);
+app.use("/api/assets", assetRoutes);
+app.use("/api/reports", reportRoutes);
 
 // Global error handler
 app.use((err, req, res, next) => {
@@ -84,12 +86,37 @@ app.use((err, req, res, next) => {
   });
 });
 
+// Check for required global environment variables
+const requiredGlobals = [
+  "DB_HOST",
+  "DB_PORT",
+  "DB_USER",
+  "DB_PASS",
+  "DB_NAME",
+  "JWT_SECRET",
+  "JWT_EXPIRES_IN",
+  "CORS_ORIGIN",
+  "SMTP_HOST",
+  "SMTP_PORT",
+  "SMTP_USER",
+  "SMTP_PASS",
+  "PORT",
+];
+const missingGlobals = requiredGlobals.filter((v) => !process.env[v]);
+if (missingGlobals.length > 0) {
+  logger.error(
+    `❌ Missing required environment variables: ${missingGlobals.join(", ")}`
+  );
+  process.exit(1);
+}
+
 // Start server after DB sync
 const PORT = process.env.PORT || 5000;
 
 (async () => {
   try {
     await sequelize.sync();
+    logger.info("✅ Database connected successfully");
     app.listen(PORT, () => {
       console.log(`✅ Server running on port ${PORT}`);
     });

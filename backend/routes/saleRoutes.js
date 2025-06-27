@@ -1,9 +1,10 @@
-const express = require("express");
+import express from "express";
+import * as saleController from "../controllers/saleController.js";
+import { authorize, protect } from "../middleware/authMiddleware.js";
+import validate from "../middleware/validate.js";
+import { createSaleSchema } from "../schemas/sale.schema.js";
+
 const router = express.Router();
-const saleController = require("../controllers/saleController");
-const { protect, authorize } = require("../middleware/authMiddleware");
-const validate = require("../middleware/validate");
-const { createSaleSchema } = require("../validators/saleValidator");
 
 router.post(
   "/",
@@ -19,4 +20,4 @@ router.get(
   saleController.getSalesReport // supports ?page=1&limit=10
 );
 
-module.exports = router;
+export default router;

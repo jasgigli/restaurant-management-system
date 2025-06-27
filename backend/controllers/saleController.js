@@ -1,16 +1,17 @@
-const saleService = require("../services/saleService");
-const AppError = require("../utils/AppError");
+import saleService from "../services/saleService.js";
+import { AppError } from "../utils/appError.js";
 
-exports.createSale = async (req, res, next) => {
+export async function createSale(req, res, next) {
   try {
-    const sale = await saleService.createSale(req.body);
-    res.status(201).json(sale);
+    const { sale, saleDetails } = req.body;
+    const result = await saleService.createSaleWithDetails({ sale, saleDetails });
+    res.status(201).json(result);
   } catch (error) {
     next(error);
   }
-};
+}
 
-exports.getSalesReport = async (req, res, next) => {
+export async function getSalesReport(req, res, next) {
   try {
     const { page = 1, limit = 10 } = req.query;
     const result = await saleService.getSales({
@@ -21,4 +22,4 @@ exports.getSalesReport = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+}

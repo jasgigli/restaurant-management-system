@@ -1,14 +1,10 @@
-const {
-  Sale,
-  SaleDetail,
-  StoreItem,
-  MenuItem,
-  MenuItemIngredient,
-  SaleCostLog,
-  sequelize,
-} = require("../models");
-const AppError = require("../utils/AppError");
-const logger = require("../config/logger");
+import sequelize from "../config/database.js";
+import Sale from "../models/sale.js";
+import SaleDetail from "../models/saleDetail.js";
+import StoreItem from "../models/storeItem.js";
+import MenuItem from "../models/menuItem.js";
+import MenuItemIngredient from "../models/menuItemIngredient.js";
+import SaleCostLog from "../models/saleCostLog.js";
 
 const saleService = {
   async createSale(saleData) {
@@ -115,4 +111,5 @@ const saleService = {
   },
 };
 
-module.exports = saleService;
+export default saleService;
+
