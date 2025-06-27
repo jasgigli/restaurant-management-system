@@ -6,10 +6,16 @@ import { AppError } from "../utils/appError.js";
  * Returns plain JS objects, not Sequelize instances.
  */
 class UserRepository {
-  async findByEmail(email) {
+  async findByEmail(email, options = { raw: false }) {
     try {
       const user = await User.findOne({ where: { email } });
-      return user ? user.get({ plain: true }) : null;
+      if (!user) return null;
+      if (options.raw) {
+        const plainUser = user.get({ plain: true });
+        delete plainUser.password;
+        return plainUser;
+      }
+      return user;
     } catch (err) {
       throw AppError.db(err, "Failed to fetch user by email");
     }
@@ -18,13 +24,22 @@ class UserRepository {
   async createUser({ name, email, password, role }) {
     try {
       const user = await User.create({ name, email, password, role });
-      return user.get({ plain: true });
+      const plainUser = user.get({ plain: true });
+      delete plainUser.password;
+      return plainUser;
     } catch (err) {
       if (err.name === "SequelizeUniqueConstraintError") {
         throw AppError.conflict("User already exists");
       }
       throw AppError.db(err, "Failed to create user");
     }
+  }
+
+  async getUserSafe(user) {
+    if (!user) return null;
+    const plainUser = user.get({ plain: true });
+    delete plainUser.password;
+    return plainUser;
   }
 
   // Add more CRUD methods as needed

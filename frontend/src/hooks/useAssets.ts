@@ -1,45 +1,50 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import apiClient from "../api/apiClient";
+import { apiClient } from "../services/api";
 
 // Restaurant Assets
 export const useGetAssets = () => {
-  return useQuery(["assets"], async () => {
-    const { data } = await apiClient.get("/assets/assets");
-    return data;
+  return useQuery({
+    queryKey: ["assets"],
+    queryFn: async () => {
+      const { data } = await apiClient.get("/assets/assets");
+      return data;
+    },
   });
 };
+
 export const useAddAsset = () => {
   const queryClient = useQueryClient();
-  return useMutation(
-    async (asset: any) => {
+  return useMutation({
+    mutationFn: async (asset: Record<string, unknown>) => {
       const { data } = await apiClient.post("/assets/assets", asset);
       return data;
     },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(["assets"]);
-      },
-    }
-  );
-};
-// Staff Assigned Items
-export const useGetAssignedItems = () => {
-  return useQuery(["assignedItems"], async () => {
-    const { data } = await apiClient.get("/assets/assigned-items");
-    return data;
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["assets"] });
+    },
   });
 };
-export const useAddAssignedItem = () => {
-  const queryClient = useQueryClient();
-  return useMutation(
-    async (item: any) => {
-      const { data } = await apiClient.post("/assets/assigned-items", item);
+
+// Staff Assigned Items
+export const useGetAssignedItems = () => {
+  return useQuery({
+    queryKey: ["assignedItems"],
+    queryFn: async () => {
+      const { data } = await apiClient.get("/assets/assigned");
       return data;
     },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(["assignedItems"]);
-      },
-    }
-  );
+  });
+};
+
+export const useAddAssignedItem = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (item: Record<string, unknown>) => {
+      const { data } = await apiClient.post("/assets/assigned", item);
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["assignedItems"] });
+    },
+  });
 };

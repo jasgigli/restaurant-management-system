@@ -1,10 +1,10 @@
-import { DataTypes, Model } from 'sequelize';
-import sequelize from '../config/database.js';
+import bcrypt from "bcryptjs";
+import { DataTypes, Model } from "sequelize";
+import sequelize from "../config/database.js";
 
 class User extends Model {
   async matchPassword(password) {
-    // Implement password comparison (bcrypt or similar)
-    return this.password === password;
+    return await bcrypt.compare(password, this.password);
   }
 }
 
@@ -36,9 +36,23 @@ User.init(
   },
   {
     sequelize,
-    modelName: 'User',
-    tableName: 'users',
+    modelName: "User",
+    tableName: "users",
     timestamps: true,
+    hooks: {
+      beforeCreate: async (user) => {
+        if (user.password) {
+          const salt = await bcrypt.genSalt(10);
+          user.password = await bcrypt.hash(user.password, salt);
+        }
+      },
+      beforeUpdate: async (user) => {
+        if (user.changed("password")) {
+          const salt = await bcrypt.genSalt(10);
+          user.password = await bcrypt.hash(user.password, salt);
+        }
+      },
+    },
   }
 );
 

@@ -42,6 +42,12 @@ const navLinks = [
     roles: ["SuperAdmin", "HR"],
   },
   {
+    to: "/hr/staff",
+    label: "Staff",
+    icon: <Users size={18} />,
+    roles: ["SuperAdmin", "HR"],
+  },
+  {
     to: "/assets",
     label: "Assets",
     icon: <Box size={18} />,

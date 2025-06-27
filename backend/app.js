@@ -1,6 +1,6 @@
-import dotenv from "dotenv";
-dotenv.config();
+import cookieParser from "cookie-parser";
 import cors from "cors";
+import dotenv from "dotenv";
 import express from "express";
 import rateLimit from "express-rate-limit";
 import helmet from "helmet";
@@ -9,9 +9,19 @@ import sequelize from "./config/database.js";
 import logger from "./config/logger.js";
 import "./models/index.js";
 import { AppError } from "./utils/appError.js";
+dotenv.config();
 
 const app = express();
 app.use(helmet());
+app.use(express.json());
+app.use(cookieParser());
+
+app.use(
+  cors({
+    origin: process.env.CORS_ORIGIN || "http://localhost:5173",
+    credentials: true,
+  })
+);
 
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -19,23 +29,6 @@ const apiLimiter = rateLimit({
   message: "Too many requests from this IP, please try again later.",
 });
 app.use("/api/", apiLimiter);
-
-// CORS configuration
-const allowedOrigins = process.env.CORS_ORIGIN
-  ? process.env.CORS_ORIGIN.split(",")
-  : ["http://localhost:3000"];
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true,
-  })
-);
 
 // Logging
 app.use(morgan("combined", { stream: logger.stream }));

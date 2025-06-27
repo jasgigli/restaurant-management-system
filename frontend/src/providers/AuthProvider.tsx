@@ -1,10 +1,5 @@
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import type { ReactNode } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 interface User {
   id: number;
@@ -43,7 +38,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem("token", token);
   };
 
-  const logout = () => {
+  const logout = async () => {
+    try {
+      const { api } = await import("../services/api");
+      await api.post("/auth/logout");
+    } catch {
+      // ignore error
+    }
     setUser(null);
     setToken(null);
     localStorage.removeItem("user");

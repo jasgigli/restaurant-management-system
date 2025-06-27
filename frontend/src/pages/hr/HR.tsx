@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "../../components/ui/button";
 import { Card } from "../../components/ui/card";
+import { Input } from "../../components/ui/input";
 import {
   Tabs,
   TabsContent,
@@ -107,35 +108,38 @@ const HR = () => {
           <Card className="mb-6 p-6 max-w-xl">
             <form onSubmit={handleEmpSubmit} className="space-y-4">
               <div className="flex gap-4 flex-wrap">
-                <input
+                <Input
                   name="name"
+                  label="Name"
                   placeholder="Name"
                   value={empForm.name}
                   onChange={(e) =>
                     setEmpForm({ ...empForm, name: e.target.value })
                   }
                   required
-                  className="border rounded px-2 py-1 flex-1"
+                  className="flex-1"
                 />
-                <input
+                <Input
                   name="email"
+                  label="Email"
                   placeholder="Email"
                   value={empForm.email}
                   onChange={(e) =>
                     setEmpForm({ ...empForm, email: e.target.value })
                   }
                   required
-                  className="border rounded px-2 py-1 flex-1"
+                  className="flex-1"
                 />
-                <input
+                <Input
                   name="role"
+                  label="Role"
                   placeholder="Role"
                   value={empForm.role}
                   onChange={(e) =>
                     setEmpForm({ ...empForm, role: e.target.value })
                   }
                   required
-                  className="border rounded px-2 py-1 flex-1"
+                  className="flex-1"
                 />
               </div>
               <div className="flex gap-2">
@@ -182,37 +186,41 @@ const HR = () => {
           <Card className="mb-6 p-6 max-w-xl">
             <form onSubmit={handleAttSubmit} className="space-y-4">
               <div className="flex gap-4 flex-wrap">
-                <input
+                <Input
                   name="employeeId"
+                  label="Employee ID"
                   placeholder="Employee ID"
                   value={attForm.employeeId}
                   onChange={(e) =>
                     setAttForm({ ...attForm, employeeId: e.target.value })
                   }
                   required
-                  className="border rounded px-2 py-1 flex-1"
+                  className="flex-1"
                 />
-                <input
+                <Input
                   name="date"
+                  label="Date"
                   type="date"
                   value={attForm.date}
                   onChange={(e) =>
                     setAttForm({ ...attForm, date: e.target.value })
                   }
                   required
-                  className="border rounded px-2 py-1 flex-1"
+                  className="flex-1"
                 />
-                <select
+                <Input
                   name="status"
+                  label="Status"
                   value={attForm.status}
                   onChange={(e) =>
                     setAttForm({ ...attForm, status: e.target.value })
                   }
-                  className="border rounded px-2 py-1 flex-1"
+                  required
+                  className="flex-1"
                 >
                   <option value="Present">Present</option>
                   <option value="Absent">Absent</option>
-                </select>
+                </Input>
               </div>
               <div className="flex gap-2">
                 <Button type="submit">Save</Button>
@@ -258,18 +266,20 @@ const HR = () => {
           <Card className="mb-6 p-6 max-w-xl">
             <form onSubmit={handleAdvSubmit} className="space-y-4">
               <div className="flex gap-4 flex-wrap">
-                <input
+                <Input
                   name="employeeId"
+                  label="Employee ID"
                   placeholder="Employee ID"
                   value={advForm.employeeId}
                   onChange={(e) =>
                     setAdvForm({ ...advForm, employeeId: e.target.value })
                   }
                   required
-                  className="border rounded px-2 py-1 flex-1"
+                  className="flex-1"
                 />
-                <input
+                <Input
                   name="amount"
+                  label="Amount"
                   type="number"
                   placeholder="Amount"
                   value={advForm.amount}
@@ -277,17 +287,18 @@ const HR = () => {
                     setAdvForm({ ...advForm, amount: Number(e.target.value) })
                   }
                   required
-                  className="border rounded px-2 py-1 flex-1"
+                  className="flex-1"
                 />
-                <input
+                <Input
                   name="date"
+                  label="Date"
                   type="date"
                   value={advForm.date}
                   onChange={(e) =>
                     setAdvForm({ ...advForm, date: e.target.value })
                   }
                   required
-                  className="border rounded px-2 py-1 flex-1"
+                  className="flex-1"
                 />
               </div>
               <div className="flex gap-2">

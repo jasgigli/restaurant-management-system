@@ -2,10 +2,11 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import MainLayout from "./components/Layout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Assets from "./pages/assets/Assets";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/dashboard/Dashboard";
 import HR from "./pages/hr/HR";
-import Login from "./pages/Login";
+import Login from "./pages/login/Login";
 import Menu from "./pages/menu/Menu";
+import Register from "./pages/register/Register";
 import POS from "./pages/sales/POS";
 import Warehouse from "./pages/warehouse/Warehouse";
 
@@ -13,6 +14,7 @@ function App() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
       <Route element={<ProtectedRoute />}>
         <Route element={<MainLayout />}>
           <Route path="/" element={<Dashboard />} />

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "../../components/ui/button";
 import { Card } from "../../components/ui/card";
+import { Input } from "../../components/ui/input";
 import {
   Tabs,
   TabsContent,
@@ -80,18 +81,20 @@ const Assets = () => {
           <Card className="mb-6 p-6 max-w-xl">
             <form onSubmit={handleAssetSubmit} className="space-y-4">
               <div className="flex gap-4 flex-wrap">
-                <input
+                <Input
                   name="name"
+                  label="Name"
                   placeholder="Name"
                   value={assetForm.name}
                   onChange={(e) =>
                     setAssetForm({ ...assetForm, name: e.target.value })
                   }
                   required
-                  className="border rounded px-2 py-1 flex-1"
+                  className="flex-1"
                 />
-                <input
+                <Input
                   name="value"
+                  label="Value"
                   type="number"
                   placeholder="Value"
                   value={assetForm.value}
@@ -102,7 +105,7 @@ const Assets = () => {
                     })
                   }
                   required
-                  className="border rounded px-2 py-1 flex-1"
+                  className="flex-1"
                 />
               </div>
               <div className="flex gap-2">
@@ -149,8 +152,9 @@ const Assets = () => {
           <Card className="mb-6 p-6 max-w-xl">
             <form onSubmit={handleAssignedSubmit} className="space-y-4">
               <div className="flex gap-4 flex-wrap">
-                <input
+                <Input
                   name="staffName"
+                  label="Staff Name"
                   placeholder="Staff Name"
                   value={assignedForm.staffName}
                   onChange={(e) =>
@@ -160,27 +164,29 @@ const Assets = () => {
                     })
                   }
                   required
-                  className="border rounded px-2 py-1 flex-1"
+                  className="flex-1"
                 />
-                <input
+                <Input
                   name="item"
+                  label="Item"
                   placeholder="Item"
                   value={assignedForm.item}
                   onChange={(e) =>
                     setAssignedForm({ ...assignedForm, item: e.target.value })
                   }
                   required
-                  className="border rounded px-2 py-1 flex-1"
+                  className="flex-1"
                 />
-                <input
+                <Input
                   name="date"
+                  label="Date"
                   type="date"
                   value={assignedForm.date}
                   onChange={(e) =>
                     setAssignedForm({ ...assignedForm, date: e.target.value })
                   }
                   required
-                  className="border rounded px-2 py-1 flex-1"
+                  className="flex-1"
                 />
               </div>
               <div className="flex gap-2">

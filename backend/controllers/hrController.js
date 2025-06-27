@@ -1,7 +1,21 @@
 import { Attendance, SalaryAdvance } from "../models/index.js";
 import hrService from "../services/hrService.js";
+import User from "../models/user.js";
 
 // Employees
+
+// Get all staff users
+export async function getStaff(req, res, next) {
+  try {
+    const staff = await User.findAll({
+      where: { role: 'staff' },
+      attributes: { exclude: ['password'] }
+    });
+    res.json(staff);
+  } catch (error) {
+    next(error);
+  }
+}
 export async function createEmployee(req, res, next) {
   try {
     const employee = await hrService.createEmployee(req.body);

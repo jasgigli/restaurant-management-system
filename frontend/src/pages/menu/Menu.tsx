@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "../../components/ui/button";
 import { Card } from "../../components/ui/card";
+import { Input } from "../../components/ui/input";
 import { useToast } from "../../components/ui/useToast";
 import {
   useAddMenuItem,
@@ -62,24 +63,27 @@ const Menu = () => {
         <Card className="mb-6 p-6 max-w-xl">
           <form onSubmit={handleMenuItemSubmit} className="space-y-4">
             <div className="flex gap-4 flex-wrap">
-              <input
+              <Input
                 name="name"
+                label="Name"
                 placeholder="Name"
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
                 required
-                className="border rounded px-2 py-1 flex-1"
+                className="flex-1"
               />
-              <input
+              <Input
                 name="category"
+                label="Category"
                 placeholder="Category"
                 value={form.category}
                 onChange={(e) => setForm({ ...form, category: e.target.value })}
                 required
-                className="border rounded px-2 py-1 flex-1"
+                className="flex-1"
               />
-              <input
+              <Input
                 name="price"
+                label="Price"
                 type="number"
                 placeholder="Price"
                 value={form.price}
@@ -87,7 +91,7 @@ const Menu = () => {
                   setForm({ ...form, price: Number(e.target.value) })
                 }
                 required
-                className="border rounded px-2 py-1 flex-1"
+                className="flex-1"
               />
             </div>
             <div className="flex gap-2">
@@ -144,7 +148,7 @@ const Menu = () => {
             {storeItems?.map((si: any) => (
               <div key={si.id} className="flex items-center gap-2 mb-2">
                 <label className="w-32">{si.name}</label>
-                <input
+                <Input
                   type="number"
                   min={0}
                   value={
@@ -171,7 +175,7 @@ const Menu = () => {
                       }
                     });
                   }}
-                  className="border rounded px-2 py-1 w-24"
+                  className="w-24"
                 />
               </div>
             ))}

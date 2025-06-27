@@ -1,6 +1,5 @@
 import jwt from "jsonwebtoken";
 import userRepository from "../data/userRepository.js";
-import { AppError } from "../utils/appError.js";
 
 const generateToken = (user) => {
   return jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, {
@@ -8,55 +7,80 @@ const generateToken = (user) => {
   });
 };
 
+const setTokenCookie = (res, token) => {
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    maxAge: 1000 * 60 * 60 * 24, // 1 day
+  });
+};
+
 export async function register(req, res) {
   try {
     const { name, email, password, role } = req.body;
-    const userExists = await userRepository.findByEmail(email);
+    const allowedRoles = ["admin", "manager", "staff", "SuperAdmin", "HR"];
+    if (!name || !email || !password || !role) {
+      return res
+        .status(400)
+        .json({
+          message: "All fields (name, email, password, role) are required.",
+        });
+    }
+    if (!allowedRoles.includes(role)) {
+      return res
+        .status(400)
+        .json({
+          message: `Invalid role. Allowed roles: ${allowedRoles.join(", ")}`,
+        });
+    }
+    const userExists = await userRepository.findByEmail(email, { raw: true });
     if (userExists) {
       return res.status(409).json({ message: "User already exists" });
     }
-    const user = await userRepository.createUser({ name, email, password, role });
+    const user = await userRepository.createUser({
+      name,
+      email,
+      password,
+      role,
+    });
+    const token = generateToken(user);
+    setTokenCookie(res, token);
     res.status(201).json({
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
+      user,
+      token,
     });
   } catch (error) {
-    if (error instanceof AppError) {
-      res.status(error.status).json({ message: error.message });
-    } else {
-      res.status(500).json({ message: "Internal server error" });
-    }
+    console.error("Registration error:", error);
+    res.status(500).json({ message: error.message || "Internal server error" });
   }
 }
 
 export async function login(req, res) {
   try {
     const { email, password } = req.body;
-    const user = await userRepository.findByEmail(email);
-    if (!user) {
+    const userInstance = await userRepository.findByEmail(email); // returns Sequelize instance
+    if (!userInstance) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
-    // Re-fetch as Sequelize instance for password check
-    const userInstance = await import("../models/user.js").then(m => m.default.findOne({ where: { email } }));
     const isMatch = await userInstance.matchPassword(password);
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
+    const user = await userRepository.getUserSafe(userInstance);
     const token = generateToken(user);
-    res.json({
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      token,
-    });
+    setTokenCookie(res, token);
+    res.json({ user, token });
   } catch (error) {
-    if (error instanceof AppError) {
-      res.status(error.status).json({ message: error.message });
-    } else {
-      res.status(500).json({ message: "Internal server error" });
-    }
+    res.status(500).json({ message: error.message || "Internal server error" });
   }
+}
+
+export function logout(req, res) {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+  });
+  res.json({ message: "Logged out successfully" });
 }

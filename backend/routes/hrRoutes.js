@@ -58,4 +58,12 @@ router.get(
   hrController.getAttendance
 );
 
+// Staff list (for HR/Admin)
+router.get(
+  "/staff",
+  protect,
+  authorize("SuperAdmin", "HR"),
+  hrController.getStaff
+);
+
 export default router;

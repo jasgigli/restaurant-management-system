@@ -1,24 +1,25 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import apiClient from "../api/apiClient";
+import { apiClient } from "../services/api";
 
 export const useGetStoreItems = () => {
-  return useQuery(["storeItems"], async () => {
-    const { data } = await apiClient.get("/store/items");
-    return data;
+  return useQuery({
+    queryKey: ["storeItems"],
+    queryFn: async () => {
+      const { data } = await apiClient.get("/store/items");
+      return data;
+    },
   });
 };
 
 export const useAddStoreItem = () => {
   const queryClient = useQueryClient();
-  return useMutation(
-    async (item: any) => {
+  return useMutation({
+    mutationFn: async (item: Record<string, unknown>) => {
       const { data } = await apiClient.post("/store/items", item);
       return data;
     },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(["storeItems"]);
-      },
-    }
-  );
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["storeItems"] });
+    },
+  });
 };
