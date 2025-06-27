@@ -1,41 +1,47 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import apiClient from "../api/apiClient";
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { fetcher, post, put, destroy } from '../services/api';
+import type { MenuItem } from "@/types/menu"
 
-export const useGetMenuItems = () => {
-  return useQuery(["menuItems"], async () => {
-    const { data } = await apiClient.get("/menu/items");
-    return data;
+// GET all menu items
+export function useGetMenuItems() {
+  return useQuery<MenuItem[]>({
+    queryKey: ['menuItems'],
+    queryFn: () => fetcher<MenuItem[]>('/menu/items'),
   });
-};
+}
 
-export const useAddMenuItem = () => {
+// ADD a menu item
+export function useAddMenuItem() {
   const queryClient = useQueryClient();
-  return useMutation(
-    async (item: any) => {
-      const { data } = await apiClient.post("/menu/items", item);
-      return data;
-    },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(["menuItems"]);
-      },
-    }
-  );
-};
+  return useMutation({
+    mutationFn: (item: Omit<MenuItem, 'id' | 'StoreItems'>) => post<MenuItem, typeof item>('/menu/items', item),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['menuItems'] }),
+  });
+}
 
-export const useAddMenuItemIngredients = () => {
+// EDIT a menu item
+export function useEditMenuItem() {
   const queryClient = useQueryClient();
-  return useMutation(
-    async ({ id, ingredients }: { id: number; ingredients: any[] }) => {
-      const { data } = await apiClient.post(`/menu/items/${id}/ingredients`, {
-        ingredients,
-      });
-      return data;
-    },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(["menuItems"]);
-      },
-    }
-  );
-};
+  return useMutation({
+    mutationFn: (item: MenuItem) => put<MenuItem, MenuItem>(`/menu/items/${item.id}`, item),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['menuItems'] }),
+  });
+}
+
+// DELETE a menu item
+export function useDeleteMenuItem() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: number) => destroy(`/menu/items/${id}`),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['menuItems'] }),
+  });
+}
+
+// ADD ingredients to a menu item
+export function useAddMenuItemIngredients() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, ingredients }: { id: number; ingredients: any[] }) => post(`/menu/items/${id}/ingredients`, { ingredients }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['menuItems'] }),
+  });
+}

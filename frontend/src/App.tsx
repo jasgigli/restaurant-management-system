@@ -1,5 +1,4 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import "./App.css";
 import MainLayout from "./components/Layout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Assets from "./pages/assets/Assets";
