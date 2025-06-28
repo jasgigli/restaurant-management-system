@@ -30,7 +30,7 @@ User.init(
       allowNull: false,
     },
     role: {
-      type: DataTypes.STRING,
+      type: DataTypes.ENUM("admin", "hr", "staff"),
       allowNull: false,
     },
   },

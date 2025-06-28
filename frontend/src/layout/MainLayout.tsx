@@ -1,15 +1,19 @@
-import React from 'react';
-import Sidebar from '../components/ui/Sidebar';
-import Topbar from '../components/ui/Topbar';
+import { Outlet } from "react-router-dom";
+import Header from "../components/layoutComponents/Header";
+import Sidebar from "../components/layoutComponents/Sidebar";
 
-const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <div className="flex h-screen bg-muted">
-    <Sidebar />
-    <div className="flex-1 flex flex-col">
-      <Topbar />
-      <main className="flex-1 overflow-auto p-6">{children}</main>
+const MainLayout = () => {
+  return (
+    <div style={{ display: "flex", minHeight: "100vh" }}>
+      <Sidebar />
+      <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+        <Header />
+        <main style={{ flex: 1, padding: 32, background: "#fff" }}>
+          <Outlet />
+        </main>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default MainLayout;

@@ -41,8 +41,6 @@ class UserRepository {
     delete plainUser.password;
     return plainUser;
   }
-
-  // Add more CRUD methods as needed
 }
 
 export default new UserRepository();
