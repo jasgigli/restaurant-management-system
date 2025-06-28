@@ -1,11 +1,10 @@
 import {
   AlertTriangle,
-  BarChart3,
-  Clock,
   DollarSign,
+  Download,
+  Plus,
   ShoppingCart,
   Star,
-  TrendingUp,
   Users,
 } from "lucide-react";
 import React from "react";
@@ -13,6 +12,7 @@ import DashboardShell from "../../../components/dashboard/DashboardShell";
 import { KPICard } from "../../../components/dashboard/KPICard";
 import { SalesChart } from "../../../components/dashboard/SalesChart";
 import { Badge } from "../../../components/ui/Badge";
+import { Button } from "../../../components/ui/button";
 import { Card } from "../../../components/ui/card";
 import { Progress } from "../../../components/ui/Progress";
 
@@ -119,139 +119,130 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
+  const dashboardActions = (
+    <div className="flex items-center gap-3">
+      <Button variant="outline" className="px-3 py-2 text-sm">
+        <Download className="h-4 w-4 mr-2" />
+        Export
+      </Button>
+      <Button className="px-3 py-2 text-sm">
+        <Plus className="h-4 w-4 mr-2" />
+        New Order
+      </Button>
+    </div>
+  );
+
   return (
-    <DashboardShell>
-      <div className="space-y-6">
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">
-              Admin Dashboard
-            </h1>
-            <p className="text-gray-600">
-              Welcome back! Here's what's happening today.
-            </p>
+    <DashboardShell
+      title="Admin Dashboard"
+      subtitle="Welcome back! Here's what's happening today."
+      actions={dashboardActions}
+    >
+      {/* KPI Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {kpiData.map((kpi, index) => (
+          <KPICard key={index} {...kpi} />
+        ))}
+      </div>
+
+      {/* Charts and Analytics */}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+        {/* Sales Chart */}
+        <Card className="p-6">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900">
+                Weekly Sales
+              </h3>
+              <p className="text-sm text-gray-600">Revenue and profit trends</p>
+            </div>
+            <Badge variant="outline">Last 7 days</Badge>
           </div>
-          <div className="flex items-center space-x-2">
-            <Clock className="h-5 w-5 text-gray-500" />
-            <span className="text-sm text-gray-500">
-              {new Date().toLocaleDateString("en-US", {
-                weekday: "long",
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
-            </span>
+          <SalesChart data={salesData} type="bar" />
+        </Card>
+
+        {/* Revenue Chart */}
+        <Card className="p-6">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900">
+                Revenue Trend
+              </h3>
+              <p className="text-sm text-gray-600">Monthly revenue analysis</p>
+            </div>
+            <Badge variant="outline">Monthly</Badge>
           </div>
-        </div>
+          <SalesChart data={salesData} type="line" />
+        </Card>
+      </div>
 
-        {/* KPI Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {kpiData.map((kpi, index) => (
-            <KPICard key={index} {...kpi} />
-          ))}
-        </div>
-
-        {/* Charts and Analytics */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Sales Chart */}
-          <Card className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold">Weekly Sales</h3>
-              <Badge variant="outline">Last 7 days</Badge>
+      {/* Recent Orders and Alerts */}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+        {/* Recent Orders */}
+        <Card className="p-6">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900">
+                Recent Orders
+              </h3>
+              <p className="text-sm text-gray-600">Latest customer orders</p>
             </div>
-            <SalesChart data={salesData} type="bar" />
-          </Card>
-
-          {/* Revenue Chart */}
-          <Card className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold">Revenue Trend</h3>
-              <Badge variant="outline">Monthly</Badge>
-            </div>
-            <SalesChart data={salesData} type="line" />
-          </Card>
-        </div>
-
-        {/* Recent Orders and Alerts */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Recent Orders */}
-          <Card className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold">Recent Orders</h3>
-              <Badge variant="outline">{recentOrders.length} orders</Badge>
-            </div>
-            <div className="space-y-3">
-              {recentOrders.map((order) => (
-                <div
-                  key={order.id}
-                  className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
-                >
-                  <div>
-                    <p className="font-medium">{order.customer}</p>
-                    <p className="text-sm text-gray-500">
-                      {order.id} • {order.time}
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-medium">${order.amount}</p>
-                    <Badge variant={getStatusColor(order.status)}>
-                      {order.status}
-                    </Badge>
-                  </div>
+            <Badge variant="outline">{recentOrders.length} orders</Badge>
+          </div>
+          <div className="space-y-4">
+            {recentOrders.map((order) => (
+              <div
+                key={order.id}
+                className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+              >
+                <div className="flex-1">
+                  <p className="font-medium text-gray-900">{order.customer}</p>
+                  <p className="text-sm text-gray-500">
+                    {order.id} • {order.time}
+                  </p>
                 </div>
-              ))}
-            </div>
-          </Card>
-
-          {/* Low Stock Alerts */}
-          <Card className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold">Low Stock Alerts</h3>
-              <AlertTriangle className="h-5 w-5 text-orange-500" />
-            </div>
-            <div className="space-y-4">
-              {lowStockItems.map((item, index) => (
-                <div key={index} className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="font-medium">{item.name}</span>
-                    <span className="text-sm text-gray-500">
-                      {item.current}/{item.min} {item.unit}
-                    </span>
-                  </div>
-                  <Progress
-                    value={(item.current / item.min) * 100}
-                    className="h-2"
-                  />
+                <div className="text-right">
+                  <p className="font-medium text-gray-900">${order.amount}</p>
+                  <Badge
+                    variant={getStatusColor(order.status)}
+                    className="mt-1"
+                  >
+                    {order.status}
+                  </Badge>
                 </div>
-              ))}
+              </div>
+            ))}
+          </div>
+        </Card>
+
+        {/* Low Stock Alerts */}
+        <Card className="p-6">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900">
+                Low Stock Alerts
+              </h3>
+              <p className="text-sm text-gray-600">Items needing restocking</p>
             </div>
-          </Card>
-        </div>
-
-        {/* Quick Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card className="p-6 text-center">
-            <BarChart3 className="h-8 w-8 mx-auto mb-2 text-blue-500" />
-            <h4 className="text-lg font-semibold">Average Order Value</h4>
-            <p className="text-2xl font-bold text-blue-600">$67.45</p>
-            <p className="text-sm text-gray-500">+5.2% from last week</p>
-          </Card>
-
-          <Card className="p-6 text-center">
-            <Users className="h-8 w-8 mx-auto mb-2 text-green-500" />
-            <h4 className="text-lg font-semibold">Staff Efficiency</h4>
-            <p className="text-2xl font-bold text-green-600">94%</p>
-            <p className="text-sm text-gray-500">+2.1% from last week</p>
-          </Card>
-
-          <Card className="p-6 text-center">
-            <TrendingUp className="h-8 w-8 mx-auto mb-2 text-purple-500" />
-            <h4 className="text-lg font-semibold">Customer Satisfaction</h4>
-            <p className="text-2xl font-bold text-purple-600">4.8/5</p>
-            <p className="text-sm text-gray-500">+0.2 from last week</p>
-          </Card>
-        </div>
+            <AlertTriangle className="h-5 w-5 text-orange-500" />
+          </div>
+          <div className="space-y-4">
+            {lowStockItems.map((item, index) => (
+              <div key={index} className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="font-medium text-gray-900">{item.name}</span>
+                  <span className="text-sm text-gray-500">
+                    {item.current}/{item.min} {item.unit}
+                  </span>
+                </div>
+                <Progress
+                  value={(item.current / item.min) * 100}
+                  className="h-2"
+                />
+              </div>
+            ))}
+          </div>
+        </Card>
       </div>
     </DashboardShell>
   );

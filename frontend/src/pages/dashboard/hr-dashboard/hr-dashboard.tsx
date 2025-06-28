@@ -1,10 +1,8 @@
 import {
-  AlertTriangle,
-  BarChart3,
-  Calendar,
   CheckCircle,
   Clock,
-  DollarSign,
+  Download,
+  Plus,
   TrendingUp,
   UserCheck,
   Users,
@@ -16,6 +14,7 @@ import DashboardShell from "../../../components/dashboard/DashboardShell";
 import { KPICard } from "../../../components/dashboard/KPICard";
 import { SalesChart } from "../../../components/dashboard/SalesChart";
 import { Badge } from "../../../components/ui/Badge";
+import { Button } from "../../../components/ui/button";
 import { Card } from "../../../components/ui/card";
 import { Progress } from "../../../components/ui/Progress";
 
@@ -161,164 +160,149 @@ const HRDashboard: React.FC = () => {
     }
   };
 
+  const dashboardActions = (
+    <div className="flex items-center gap-3">
+      <Button variant="outline" className="px-3 py-2 text-sm">
+        <Download className="h-4 w-4 mr-2" />
+        Export Report
+      </Button>
+      <Button className="px-3 py-2 text-sm">
+        <Plus className="h-4 w-4 mr-2" />
+        Add Employee
+      </Button>
+    </div>
+  );
+
   return (
-    <DashboardShell>
-      <div className="space-y-6">
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">HR Dashboard</h1>
-            <p className="text-gray-600">
-              Employee management and attendance overview.
-            </p>
+    <DashboardShell
+      title="HR Dashboard"
+      subtitle="Employee management and attendance overview."
+      actions={dashboardActions}
+    >
+      {/* KPI Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {kpiData.map((kpi, index) => (
+          <KPICard key={index} {...kpi} />
+        ))}
+      </div>
+
+      {/* Charts and Analytics */}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+        {/* Attendance Chart */}
+        <Card className="p-6">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900">
+                Weekly Attendance
+              </h3>
+              <p className="text-sm text-gray-600">Daily attendance trends</p>
+            </div>
+            <Badge variant="outline">This Week</Badge>
           </div>
-          <div className="flex items-center space-x-2">
-            <Calendar className="h-5 w-5 text-gray-500" />
-            <span className="text-sm text-gray-500">
-              {new Date().toLocaleDateString("en-US", {
-                weekday: "long",
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
-            </span>
+          <SalesChart data={attendanceData} type="bar" />
+        </Card>
+
+        {/* Department Performance */}
+        <Card className="p-6">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900">
+                Department Performance
+              </h3>
+              <p className="text-sm text-gray-600">Attendance by department</p>
+            </div>
+            <Badge variant="outline">Today</Badge>
           </div>
-        </div>
-
-        {/* KPI Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {kpiData.map((kpi, index) => (
-            <KPICard key={index} {...kpi} />
-          ))}
-        </div>
-
-        {/* Charts and Analytics */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Attendance Chart */}
-          <Card className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold">Weekly Attendance</h3>
-              <Badge variant="outline">Last 7 days</Badge>
-            </div>
-            <SalesChart data={attendanceData} type="bar" />
-          </Card>
-
-          {/* Department Efficiency */}
-          <Card className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold">Department Efficiency</h3>
-              <Badge variant="outline">Today</Badge>
-            </div>
-            <div className="space-y-4">
-              {departmentStats.map((dept, index) => (
-                <div key={index} className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="font-medium">{dept.name}</span>
-                    <span className="text-sm text-gray-500">
-                      {dept.present}/{dept.total} ({dept.efficiency}%)
-                    </span>
-                  </div>
-                  <Progress value={dept.efficiency} className="h-2" />
+          <div className="space-y-4">
+            {departmentStats.map((dept, index) => (
+              <div key={index} className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="font-medium text-gray-900">{dept.name}</span>
+                  <span className="text-sm text-gray-500">
+                    {dept.present}/{dept.total} ({dept.efficiency}%)
+                  </span>
                 </div>
-              ))}
-            </div>
-          </Card>
-        </div>
+                <Progress value={dept.efficiency} className="h-2" />
+              </div>
+            ))}
+          </div>
+        </Card>
+      </div>
 
-        {/* Recent Activity and Leave Requests */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Recent Attendance */}
-          <Card className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold">Today's Attendance</h3>
-              <Badge variant="outline">
-                {recentAttendance.length} employees
-              </Badge>
+      {/* Recent Activity and Leave Requests */}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+        {/* Recent Attendance */}
+        <Card className="p-6">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900">
+                Recent Attendance
+              </h3>
+              <p className="text-sm text-gray-600">Today's check-ins</p>
             </div>
-            <div className="space-y-3">
-              {recentAttendance.map((attendance, index) => (
-                <div
-                  key={index}
-                  className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
-                >
-                  <div className="flex items-center space-x-3">
-                    {getStatusIcon(attendance.status)}
-                    <div>
-                      <p className="font-medium">{attendance.name}</p>
-                      <p className="text-sm text-gray-500">
-                        {attendance.department} • {attendance.time}
-                      </p>
-                    </div>
-                  </div>
-                  <Badge
-                    variant={
-                      attendance.status === "present"
-                        ? "success"
-                        : attendance.status === "late"
-                        ? "info"
-                        : "destructive"
-                    }
-                  >
-                    {attendance.status}
-                  </Badge>
-                </div>
-              ))}
-            </div>
-          </Card>
-
-          {/* Leave Requests */}
-          <Card className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold">Leave Requests</h3>
-              <AlertTriangle className="h-5 w-5 text-orange-500" />
-            </div>
-            <div className="space-y-3">
-              {leaveRequests.map((request, index) => (
-                <div
-                  key={index}
-                  className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
-                >
+            <Badge variant="outline">{recentAttendance.length} entries</Badge>
+          </div>
+          <div className="space-y-4">
+            {recentAttendance.map((entry, index) => (
+              <div
+                key={index}
+                className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  {getStatusIcon(entry.status)}
                   <div>
-                    <p className="font-medium">{request.name}</p>
+                    <p className="font-medium text-gray-900">{entry.name}</p>
                     <p className="text-sm text-gray-500">
-                      {request.type} • {request.days} days
+                      {entry.department} • {entry.time}
                     </p>
                   </div>
-                  <div className="text-right">
-                    <p className="text-sm text-gray-500">{request.date}</p>
-                    <Badge variant={getLeaveStatusColor(request.status)}>
-                      {request.status}
-                    </Badge>
-                  </div>
                 </div>
-              ))}
+                <Badge
+                  variant={
+                    entry.status === "present"
+                      ? "success"
+                      : entry.status === "late"
+                      ? "warning"
+                      : "destructive"
+                  }
+                >
+                  {entry.status}
+                </Badge>
+              </div>
+            ))}
+          </div>
+        </Card>
+
+        {/* Leave Requests */}
+        <Card className="p-6">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900">
+                Leave Requests
+              </h3>
+              <p className="text-sm text-gray-600">Pending approvals</p>
             </div>
-          </Card>
-        </div>
-
-        {/* Quick Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card className="p-6 text-center">
-            <Users className="h-8 w-8 mx-auto mb-2 text-blue-500" />
-            <h4 className="text-lg font-semibold">New Hires This Month</h4>
-            <p className="text-2xl font-bold text-blue-600">3</p>
-            <p className="text-sm text-gray-500">+1 from last month</p>
-          </Card>
-
-          <Card className="p-6 text-center">
-            <DollarSign className="h-8 w-8 mx-auto mb-2 text-green-500" />
-            <h4 className="text-lg font-semibold">Total Payroll</h4>
-            <p className="text-2xl font-bold text-green-600">$45,230</p>
-            <p className="text-sm text-gray-500">This month</p>
-          </Card>
-
-          <Card className="p-6 text-center">
-            <BarChart3 className="h-8 w-8 mx-auto mb-2 text-purple-500" />
-            <h4 className="text-lg font-semibold">Employee Satisfaction</h4>
-            <p className="text-2xl font-bold text-purple-600">4.6/5</p>
-            <p className="text-sm text-gray-500">+0.3 from last survey</p>
-          </Card>
-        </div>
+            <Badge variant="outline">{leaveRequests.length} requests</Badge>
+          </div>
+          <div className="space-y-4">
+            {leaveRequests.map((request, index) => (
+              <div
+                key={index}
+                className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+              >
+                <div className="flex-1">
+                  <p className="font-medium text-gray-900">{request.name}</p>
+                  <p className="text-sm text-gray-500">
+                    {request.type} • {request.days} days • {request.date}
+                  </p>
+                </div>
+                <Badge variant={getLeaveStatusColor(request.status)}>
+                  {request.status}
+                </Badge>
+              </div>
+            ))}
+          </div>
+        </Card>
       </div>
     </DashboardShell>
   );

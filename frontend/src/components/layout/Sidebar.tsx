@@ -27,6 +27,7 @@ import {
   UserCheck,
   Users,
   Utensils,
+  X,
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../../providers/AuthProvider";
@@ -376,7 +377,11 @@ const staffNavLinks = [
   },
 ];
 
-const Sidebar = () => {
+interface SidebarProps {
+  onClose?: () => void;
+}
+
+const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
   const { user, logout } = useAuth();
   const location = useLocation();
 
@@ -398,21 +403,30 @@ const Sidebar = () => {
   const navLinks = getNavLinks();
 
   return (
-    <aside className="h-screen w-80 bg-gradient-to-b from-purple-900 via-purple-800 to-purple-900 text-white flex flex-col shadow-2xl">
+    <aside className="h-full w-80 bg-gradient-to-b from-purple-900 via-purple-800 to-purple-900 text-white flex flex-col shadow-2xl">
       {/* Header */}
       <div className="p-6 border-b border-purple-700">
-        <div className="flex items-center gap-3 mb-2">
-          <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
-            <ChefHat className="w-6 h-6 text-purple-600" />
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
+              <ChefHat className="w-6 h-6 text-purple-600" />
+            </div>
+            <div>
+              <h2 className="text-2xl font-bold text-white">RMS</h2>
+              <p className="text-xs text-purple-200">
+                Restaurant Management System
+              </p>
+            </div>
           </div>
-          <div>
-            <h2 className="text-2xl font-bold text-white">RMS</h2>
-            <p className="text-xs text-purple-200">
-              Restaurant Management System
-            </p>
-          </div>
+          {/* Mobile close button */}
+          <button
+            onClick={onClose}
+            className="lg:hidden p-2 rounded-lg hover:bg-purple-700 transition-colors"
+          >
+            <X className="w-5 h-5" />
+          </button>
         </div>
-        <div className="mt-4 p-3 bg-purple-800 rounded-lg">
+        <div className="p-3 bg-purple-800 rounded-lg">
           <p className="text-sm text-purple-200">Welcome back,</p>
           <p className="font-semibold text-white">{user?.name || "User"}</p>
           <p className="text-xs text-purple-300 capitalize">
@@ -433,6 +447,7 @@ const Sidebar = () => {
                 <li key={link.to}>
                   <Link
                     to={link.to}
+                    onClick={onClose}
                     className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-purple-700 hover:shadow-lg ${
                       location.pathname === link.to
                         ? "bg-purple-600 text-white shadow-lg border-l-4 border-yellow-400"
