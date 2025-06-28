@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-const protect = async (req, res, next) => {
+export const authMiddleware = async (req, res, next) => {
   let token;
   if (
     req.headers.authorization &&
@@ -15,14 +15,15 @@ const protect = async (req, res, next) => {
   }
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = { id: decoded.id, role: decoded.role };
+    req.user = { id: decoded.id, email: decoded.email, role: decoded.role };
     next();
   } catch (error) {
+    console.error("Token verification error:", error);
     return res.status(401).json({ message: "Not authorized, token failed" });
   }
 };
 
-const authorize = (...roles) => {
+export const authorize = (...roles) => {
   return (req, res, next) => {
     if (!req.user || !roles.includes(req.user.role)) {
       return res.status(403).json({ message: "Forbidden: insufficient role" });
@@ -30,5 +31,3 @@ const authorize = (...roles) => {
     next();
   };
 };
-
-export { authorize, protect };

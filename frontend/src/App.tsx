@@ -1,46 +1,71 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
-import MainLayout from "./layout/MainLayout";
-import Assets from "./pages/assets/Assets";
+import ForgotPassword from "./pages/auth/forgot-password/ForgotPassword";
 import Login from "./pages/auth/login/Login";
 import Register from "./pages/auth/register/Register";
+import ResetPassword from "./pages/auth/reset-password/ResetPassword";
 import AdminDashboard from "./pages/dashboard/admin-dashboard/admin-dashboard";
 import HRDashboard from "./pages/dashboard/hr-dashboard/hr-dashboard";
 import StaffDashboard from "./pages/dashboard/staff-dashboard/staff-dashboard";
-import HR from "./pages/hr/HR";
-import Menu from "./pages/menu/Menu";
-import POS from "./pages/sales/POS";
-import Warehouse from "./pages/warehouse/Warehouse";
+import NotFound from "./pages/notfound/NotFound";
+import { useAuth } from "./providers/AuthProvider";
 
 function App() {
+  const { isAuthenticated, user, isLoading } = useAuth();
+
+  // Show loading while checking authentication
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-600"></div>
+      </div>
+    );
+  }
+
   return (
     <Routes>
+      {/* Public routes */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      {/* Admin Dashboard - only for admin */}
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
+
+      {/* Protected routes */}
       <Route element={<ProtectedRoute roles={["admin"]} />}>
         <Route path="/admin" element={<AdminDashboard />} />
       </Route>
-      {/* HR Dashboard - only for hr */}
+
       <Route element={<ProtectedRoute roles={["hr"]} />}>
-        <Route path="/hr" element={<HRDashboard />} />
+        <Route path="/hr-dashboard" element={<HRDashboard />} />
       </Route>
-      {/* Staff Dashboard - only for staff */}
+
       <Route element={<ProtectedRoute roles={["staff"]} />}>
         <Route path="/staff-dashboard" element={<StaffDashboard />} />
       </Route>
-      {/* Other protected routes (if needed) */}
-      <Route element={<ProtectedRoute />}>
-        <Route element={<MainLayout />}>
-          <Route path="/warehouse" element={<Warehouse />} />
-          <Route path="/menu" element={<Menu />} />
-          <Route path="/pos" element={<POS />} />
-          <Route path="/hr/*" element={<HR />} />
-          <Route path="/assets" element={<Assets />} />
-        </Route>
-      </Route>
-      {/* Redirect all unknown routes to login */}
-      <Route path="*" element={<Navigate to="/login" />} />
+
+      {/* Default route - redirect based on authentication and role */}
+      <Route
+        path="/"
+        element={
+          isAuthenticated && user ? (
+            <Navigate
+              to={
+                user.role === "admin"
+                  ? "/admin"
+                  : user.role === "hr"
+                  ? "/hr-dashboard"
+                  : "/staff-dashboard"
+              }
+              replace
+            />
+          ) : (
+            <Navigate to="/login" replace />
+          )
+        }
+      />
+
+      {/* Catch all route */}
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }

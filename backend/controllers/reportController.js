@@ -1,8 +1,4 @@
-import {
-  Employee,
-  RestaurantAsset,
-  SalaryAdvance,
-} from "../models/index.js";
+import { Employee, RestaurantAsset, SalaryAdvance } from "../models/index.js";
 import reportService from "../services/reportService.js";
 
 export async function getNetProfit(req, res, next) {
@@ -43,6 +39,53 @@ export async function getNetProfit(req, res, next) {
       totalAssets,
       netProfit,
     });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function getSalesReport(req, res, next) {
+  try {
+    const { start, end } = req.query;
+    const startDate = start
+      ? new Date(start)
+      : new Date(new Date().getFullYear(), 0, 1);
+    const endDate = end ? new Date(end) : new Date();
+
+    const salesReport = await reportService.getSalesReport({
+      startDate,
+      endDate,
+    });
+
+    res.json(salesReport);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function getInventoryReport(req, res, next) {
+  try {
+    const inventoryReport = await reportService.getInventoryReport();
+    res.json(inventoryReport);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function getAnalyticsReport(req, res, next) {
+  try {
+    const { start, end } = req.query;
+    const startDate = start
+      ? new Date(start)
+      : new Date(new Date().getFullYear(), 0, 1);
+    const endDate = end ? new Date(end) : new Date();
+
+    const analyticsReport = await reportService.getAnalyticsReport({
+      startDate,
+      endDate,
+    });
+
+    res.json(analyticsReport);
   } catch (error) {
     next(error);
   }

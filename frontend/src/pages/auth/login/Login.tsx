@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { AxiosError } from "axios";
 import {
   Eye,
   EyeOff,
@@ -26,7 +27,7 @@ import { Button } from "../../../components/ui/button";
 import { Input } from "../../../components/ui/input";
 import { useToast } from "../../../components/ui/useToast";
 import { useAuth } from "../../../providers/AuthProvider";
-import { post } from "../../../services/api";
+import { authAPI } from "../../../services/api";
 
 interface LoginForm {
   email: string;
@@ -61,41 +62,27 @@ const Login = () => {
     setError("");
     setLoading(true);
     try {
-      const res = await post<
-        {
-          user: {
-            id: number;
-            name: string;
-            email: string;
-            role: string;
-          };
-          token: string;
-        },
-        { email: string; password: string }
-      >("/auth/login", { email: data.email, password: data.password });
-      login(
-        {
-          id: res.user.id,
-          name: res.user.name,
-          email: res.user.email,
-          role: res.user.role,
-        },
-        res.token
-      );
+      const res = await authAPI.login({
+        email: data.email,
+        password: data.password,
+      });
+      login(res.user, res.token);
       toast("Login successful!", "success");
+
       // Role-based redirection
-      console.log("User role:", res.user.role); // Debug log
       const role = res.user.role?.toLowerCase();
       let redirectPath = "/login";
       if (role === "admin") redirectPath = "/admin";
-      else if (role === "hr") redirectPath = "/hr";
+      else if (role === "hr") redirectPath = "/hr-dashboard";
       else if (role === "staff") redirectPath = "/staff-dashboard";
       navigate(redirectPath);
-    } catch (err) {
-      // @ts-expect-error: err is unknown, but may have response property
-      setError(err.response?.data?.message || "Login failed");
-      // @ts-expect-error: err is unknown, but may have response property
-      toast(err.response?.data?.message || "Login failed", "error");
+    } catch (err: unknown) {
+      const errorMessage =
+        err instanceof AxiosError
+          ? err.response?.data?.message || "Login failed"
+          : "Login failed";
+      setError(errorMessage);
+      toast(errorMessage, "error");
     } finally {
       setLoading(false);
     }
@@ -279,13 +266,7 @@ const Login = () => {
                       type="email"
                       placeholder="Enter your email"
                       autoComplete="username"
-                      {...register("email", {
-                        required: "Email is required",
-                        pattern: {
-                          value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                          message: "Invalid email address",
-                        },
-                      })}
+                      {...register("email")}
                       className={`pl-12 pr-4 py-3 text-base transition-all duration-200 ${
                         errors.email
                           ? "border-red-300 focus:ring-red-400 focus:border-red-400"
@@ -319,13 +300,7 @@ const Login = () => {
                       type={showPassword ? "text" : "password"}
                       placeholder="Enter your password"
                       autoComplete="current-password"
-                      {...register("password", {
-                        required: "Password is required",
-                        minLength: {
-                          value: 6,
-                          message: "At least 6 characters",
-                        },
-                      })}
+                      {...register("password")}
                       className={`pl-12 pr-12 py-3 text-base transition-all duration-200 ${
                         errors.password
                           ? "border-red-300 focus:ring-red-400 focus:border-red-400"
@@ -369,7 +344,7 @@ const Login = () => {
                     </span>
                   </label>
                   <Link
-                    to="#"
+                    to="/forgot-password"
                     className="text-sm text-blue-600 dark:text-blue-400 font-medium hover:text-blue-700 dark:hover:text-blue-300 transition-colors underline decoration-1 underline-offset-2"
                     tabIndex={0}
                   >

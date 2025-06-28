@@ -1,26 +1,38 @@
 import express from "express";
 import * as storeItemController from "../controllers/storeItemController.js";
-import { authorize, protect } from "../middleware/authMiddleware.js";
+import { authMiddleware, authorize } from "../middleware/authMiddleware.js";
+import validate from "../middleware/validate.js";
+import {
+  createStoreItemSchema,
+  updateStoreItemSchema,
+} from "../schemas/storeItem.schema.js";
 // import { createStoreItemSchema, updateStoreItemSchema } from '../schemas/storeItem.schema.js'; // Placeholder for future schemas
 
 const router = express.Router();
 
 router.post(
-  "/items",
-  protect,
-  authorize("SuperAdmin", "KitchenStaff"),
+  "/store-items",
+  authMiddleware,
+  authorize("SuperAdmin"),
+  validate(createStoreItemSchema),
   storeItemController.createStoreItem
 );
-router.get("/items", protect, storeItemController.getStoreItems);
+router.get(
+  "/store-items",
+  authMiddleware,
+  authorize("SuperAdmin"),
+  storeItemController.getStoreItems
+);
 router.put(
-  "/items/:id",
-  protect,
-  authorize("SuperAdmin", "KitchenStaff"),
+  "/store-items/:id",
+  authMiddleware,
+  authorize("SuperAdmin"),
+  validate(updateStoreItemSchema),
   storeItemController.updateStoreItem
 );
 router.delete(
-  "/items/:id",
-  protect,
+  "/store-items/:id",
+  authMiddleware,
   authorize("SuperAdmin"),
   storeItemController.deleteStoreItem
 );

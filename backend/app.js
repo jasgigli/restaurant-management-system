@@ -43,11 +43,13 @@ import saleRoutes from "./routes/saleRoutes.js";
 import storeItemRoutes from "./routes/storeItemRoutes.js";
 
 app.use("/api/auth", authRoutes);
+app.use("/api/admin", hrRoutes);
+app.use("/api/hr", hrRoutes);
+app.use("/api/staff", hrRoutes);
+app.use("/api/assets", assetRoutes);
 app.use("/api/store", storeItemRoutes);
 app.use("/api/menu", menuItemRoutes);
 app.use("/api/sales", saleRoutes);
-app.use("/api/hr", hrRoutes);
-app.use("/api/assets", assetRoutes);
 app.use("/api/reports", reportRoutes);
 
 // Global error handler

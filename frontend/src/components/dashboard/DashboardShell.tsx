@@ -1,7 +1,7 @@
 import React from "react";
-import { AppBar } from "../global/AppBar";
-import { Footer } from "../global/Footer";
-import Sidebar from "../layoutComponents/Sidebar";
+import { Footer } from "../layout/Footer";
+import Sidebar from "../layout/Sidebar";
+import { AppBar } from "./AppBar";
 
 interface DashboardShellProps {
   children?: React.ReactNode;
@@ -9,11 +9,13 @@ interface DashboardShellProps {
 
 const DashboardShell: React.FC<DashboardShellProps> = ({ children }) => {
   return (
-    <div className="flex flex-col min-h-screen bg-background">
+    <div className="flex flex-col min-h-screen bg-gray-50">
       <AppBar />
       <div className="flex flex-1">
         <Sidebar />
-        <main className="flex-1 p-4 overflow-y-auto">{children}</main>
+        <main className="flex-1 p-6 overflow-y-auto bg-gray-50">
+          <div className="max-w-7xl mx-auto">{children}</div>
+        </main>
       </div>
       <Footer version="1.0.0" lastSync={new Date().toLocaleString()} />
     </div>

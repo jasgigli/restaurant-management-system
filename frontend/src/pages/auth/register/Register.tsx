@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { AxiosError } from "axios";
 import {
   AlertCircle,
   CheckCircle,
@@ -27,7 +28,7 @@ import { Button } from "../../../components/ui/button";
 import { Input } from "../../../components/ui/input";
 import { Progress } from "../../../components/ui/Progress";
 import { useToast } from "../../../components/ui/useToast";
-import { post } from "../../../services/api";
+import { authAPI } from "../../../services/api";
 
 const ROLES = [
   { label: "Admin", value: "admin", description: "Full system access" },
@@ -89,15 +90,17 @@ const Register: React.FC = () => {
     setSuccess("");
     setLoading(true);
     try {
-      await post("/auth/register", data);
+      await authAPI.register(data);
       setSuccess("Registration successful! You can now log in.");
       toast("Registration successful!", "success");
       setTimeout(() => navigate("/login"), 1500);
-    } catch (err) {
-      // @ts-expect-error: err is unknown, but may have response property
-      setError(err.response?.data?.message || "Registration failed");
-      // @ts-expect-error: err is unknown, but may have response property
-      toast(err.response?.data?.message || "Registration failed", "error");
+    } catch (err: unknown) {
+      const errorMessage =
+        err instanceof AxiosError
+          ? err.response?.data?.message || "Registration failed"
+          : "Registration failed";
+      setError(errorMessage);
+      toast(errorMessage, "error");
     } finally {
       setLoading(false);
     }

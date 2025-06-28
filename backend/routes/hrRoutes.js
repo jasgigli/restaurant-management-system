@@ -2,7 +2,7 @@ import express from "express";
 import multer from "multer";
 import path from "path";
 import * as hrController from "../controllers/hrController.js";
-import { authorize, protect } from "../middleware/authMiddleware.js";
+import { authMiddleware, authorize } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
@@ -21,47 +21,61 @@ const upload = multer({ storage });
 // Employees
 router.post(
   "/employees",
-  protect,
+  authMiddleware,
   authorize("SuperAdmin", "HR"),
   hrController.createEmployee
 );
 router.get(
   "/employees",
-  protect,
+  authMiddleware,
   authorize("SuperAdmin", "HR"),
   hrController.getEmployees
 );
 router.put(
   "/employees/:id",
-  protect,
+  authMiddleware,
   authorize("SuperAdmin", "HR"),
   hrController.updateEmployee
 );
 router.delete(
   "/employees/:id",
-  protect,
-  authorize("SuperAdmin", "HR"),
+  authMiddleware,
+  authorize("SuperAdmin"),
   hrController.deleteEmployee
 );
 
 // Attendance
 router.post(
   "/attendance",
-  protect,
+  authMiddleware,
   authorize("SuperAdmin", "HR"),
   hrController.createAttendance
 );
 router.get(
   "/attendance",
-  protect,
+  authMiddleware,
   authorize("SuperAdmin", "HR"),
   hrController.getAttendance
+);
+
+// Salary Advance
+router.post(
+  "/salary-advance",
+  authMiddleware,
+  authorize("SuperAdmin", "HR"),
+  hrController.createAdvance
+);
+router.get(
+  "/salary-advance",
+  authMiddleware,
+  authorize("SuperAdmin", "HR"),
+  hrController.getAdvances
 );
 
 // Staff list (for HR/Admin)
 router.get(
   "/staff",
-  protect,
+  authMiddleware,
   authorize("SuperAdmin", "HR"),
   hrController.getStaff
 );

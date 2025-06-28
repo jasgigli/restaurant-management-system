@@ -21,6 +21,24 @@ class UserRepository {
     }
   }
 
+  async findById(id) {
+    try {
+      const user = await User.findByPk(id);
+      return user;
+    } catch (err) {
+      throw AppError.db(err, "Failed to fetch user by ID");
+    }
+  }
+
+  async findByResetToken(resetToken) {
+    try {
+      const user = await User.findOne({ where: { resetToken } });
+      return user;
+    } catch (err) {
+      throw AppError.db(err, "Failed to fetch user by reset token");
+    }
+  }
+
   async createUser({ name, email, password, role }) {
     try {
       const user = await User.create({ name, email, password, role });
@@ -32,6 +50,32 @@ class UserRepository {
         throw AppError.conflict("User already exists");
       }
       throw AppError.db(err, "Failed to create user");
+    }
+  }
+
+  async updateResetToken(userId, resetToken, resetTokenExpiry) {
+    try {
+      await User.update(
+        { resetToken, resetTokenExpiry },
+        { where: { id: userId } }
+      );
+    } catch (err) {
+      throw AppError.db(err, "Failed to update reset token");
+    }
+  }
+
+  async updatePasswordAndClearResetToken(userId, hashedPassword) {
+    try {
+      await User.update(
+        {
+          password: hashedPassword,
+          resetToken: null,
+          resetTokenExpiry: null,
+        },
+        { where: { id: userId } }
+      );
+    } catch (err) {
+      throw AppError.db(err, "Failed to update password and clear reset token");
     }
   }
 

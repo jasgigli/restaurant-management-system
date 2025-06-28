@@ -1,6 +1,6 @@
 import express from "express";
 import * as menuItemController from "../controllers/menuItemController.js";
-import { authorize, protect } from "../middleware/authMiddleware.js";
+import { authMiddleware, authorize } from "../middleware/authMiddleware.js";
 import validate from "../middleware/validate.js";
 import {
   createMenuItemSchema,
@@ -10,40 +10,45 @@ import {
 const router = express.Router();
 
 router.post(
-  "/items",
-  protect,
-  authorize("SuperAdmin"),
+  "/menu-items",
+  authMiddleware,
+  authorize("SuperAdmin", "KitchenStaff"),
   validate(createMenuItemSchema),
   menuItemController.createMenuItem
 );
 router.post(
   "/items/:id/ingredients",
-  protect,
+  authMiddleware,
   authorize("SuperAdmin"),
   menuItemController.addIngredients
 );
-router.get("/items", protect, menuItemController.getAllMenuItems);
+router.get(
+  "/menu-items",
+  authMiddleware,
+  authorize("SuperAdmin", "KitchenStaff"),
+  menuItemController.getMenuItems
+);
 
 // GET /api/menu-items
 router.get(
   "/",
-  protect,
+  authMiddleware,
   authorize("SuperAdmin", "MenuManager"),
   menuItemController.getMenuItems
 ); // supports ?page=1&limit=10
 // PUT /api/menu-items/:id
 router.put(
-  "/:id",
-  protect,
-  authorize("SuperAdmin", "MenuManager"),
+  "/menu-items/:id",
+  authMiddleware,
+  authorize("SuperAdmin", "KitchenStaff"),
   validate(updateMenuItemSchema),
   menuItemController.updateMenuItem
 );
 // DELETE /api/menu-items/:id
 router.delete(
-  "/:id",
-  protect,
-  authorize("SuperAdmin", "MenuManager"),
+  "/menu-items/:id",
+  authMiddleware,
+  authorize("SuperAdmin"),
   menuItemController.deleteMenuItem
 );
 

@@ -3,22 +3,16 @@ import * as React from "react";
 import { cn } from "./utils";
 
 export const Tabs: React.FC<{
-  defaultValue: string;
+  defaultValue?: string;
   className?: string;
   children: React.ReactNode;
-}> = ({ defaultValue, className, children }) => {
+}> = ({ className, children }) => {
   const [selectedIndex, setSelectedIndex] = React.useState(0);
-  const tabLabels = React.Children.toArray(children).filter(
-    (child: any) => child.type.displayName === "TabsList"
-  );
-  const tabContents = React.Children.toArray(children).filter(
-    (child: any) => child.type.displayName !== "TabsList"
-  );
+
   return (
     <div className={cn("w-full", className)}>
       <Tab.Group selectedIndex={selectedIndex} onChange={setSelectedIndex}>
-        {tabLabels}
-        {tabContents}
+        {children}
       </Tab.Group>
     </div>
   );
@@ -31,9 +25,9 @@ export const TabsList: React.FC<{ children: React.ReactNode }> = ({
 TabsList.displayName = "TabsList";
 
 export const TabsTrigger: React.FC<{
-  value: string;
+  value?: string;
   children: React.ReactNode;
-}> = ({ value, children }) => (
+}> = ({ children }) => (
   <Tab
     className={({ selected }) =>
       cn(
@@ -50,9 +44,7 @@ export const TabsTrigger: React.FC<{
 TabsTrigger.displayName = "TabsTrigger";
 
 export const TabsContent: React.FC<{
-  value: string;
+  value?: string;
   children: React.ReactNode;
-}> = ({ value, children }) => (
-  <Tab.Panel className="mt-2">{children}</Tab.Panel>
-);
+}> = ({ children }) => <Tab.Panel className="mt-2">{children}</Tab.Panel>;
 TabsContent.displayName = "TabsContent";

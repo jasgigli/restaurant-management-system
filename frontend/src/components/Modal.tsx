@@ -1,5 +1,11 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from './ui/dialog';
-import { ReactNode } from 'react';
+import type { ReactNode } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "./ui/dialog";
 
 interface ModalProps {
   open: boolean;
@@ -9,7 +15,13 @@ interface ModalProps {
   footer?: ReactNode;
 }
 
-export function Modal({ open, onOpenChange, title, children, footer }: ModalProps) {
+export function Modal({
+  open,
+  onOpenChange,
+  title,
+  children,
+  footer,
+}: ModalProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
