@@ -6,12 +6,18 @@
 import { AnimatePresence, motion } from "framer-motion";
 import {
   Activity,
+  Bell,
+  ChefHat,
   Crown,
   HelpCircle,
   LogOut,
+  Plus,
+  Search,
   Settings,
   Star,
   TrendingUp,
+  UserCheck,
+  Users,
   X,
 } from "lucide-react";
 import { getNavigationByRole } from "../../config/navigation.tsx";
@@ -35,11 +41,46 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
 
   const navigation = user ? getNavigationByRole(user.role) : [];
 
-  // Debug info - remove this after fixing the issue
-  console.log("Sidebar Debug:", {
-    user: user?.role,
-    navigationLength: navigation.length,
-  });
+  // Enhanced role-based styling
+  const getRoleStyles = (role: string) => {
+    switch (role) {
+      case "admin":
+        return {
+          gradient: "from-purple-500/20 via-blue-500/10 to-indigo-500/20",
+          accent: "from-purple-500 to-blue-500",
+          icon: <Crown className="w-4 h-4 text-purple-500" />,
+          badge: "Admin",
+          badgeColor: "bg-purple-500/20 text-purple-600 border-purple-500/30",
+        };
+      case "hr":
+        return {
+          gradient: "from-emerald-500/20 via-teal-500/10 to-cyan-500/20",
+          accent: "from-emerald-500 to-teal-500",
+          icon: <Users className="w-4 h-4 text-emerald-500" />,
+          badge: "HR",
+          badgeColor:
+            "bg-emerald-500/20 text-emerald-600 border-emerald-500/30",
+        };
+      case "staff":
+        return {
+          gradient: "from-orange-500/20 via-amber-500/10 to-yellow-500/20",
+          accent: "from-orange-500 to-amber-500",
+          icon: <ChefHat className="w-4 h-4 text-orange-500" />,
+          badge: "Staff",
+          badgeColor: "bg-orange-500/20 text-orange-600 border-orange-500/30",
+        };
+      default:
+        return {
+          gradient: "from-gray-500/20 via-slate-500/10 to-zinc-500/20",
+          accent: "from-gray-500 to-slate-500",
+          icon: <UserCheck className="w-4 h-4 text-gray-500" />,
+          badge: "User",
+          badgeColor: "bg-gray-500/20 text-gray-600 border-gray-500/30",
+        };
+    }
+  };
+
+  const roleStyles = getRoleStyles(user?.role || "user");
 
   const sidebarVariants = {
     open: {
@@ -80,9 +121,14 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
         "overflow-hidden"
       )}
     >
-      {/* Enhanced animated background */}
+      {/* Enhanced animated background with role-based theming */}
       <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/10 via-primary/5 to-accent/10" />
+        <div
+          className={cn(
+            "absolute inset-0 bg-gradient-to-b",
+            roleStyles.gradient
+          )}
+        />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.1)_1px,transparent_0)] bg-[length:20px_20px] pointer-events-none" />
         <motion.div
           animate={{
@@ -93,7 +139,9 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
             repeat: Infinity,
             repeatType: "reverse",
           }}
-          className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent opacity-30"
+          className={cn(
+            "absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent opacity-30"
+          )}
         />
       </div>
 
@@ -122,7 +170,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
           )}
         </div>
 
-        {/* Enhanced user info */}
+        {/* Enhanced user info with role-based styling */}
         <AnimatePresence mode="wait">
           <motion.div
             initial={{ opacity: 0, height: 0, scale: 0.95 }}
@@ -132,7 +180,12 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
             className="p-4 bg-gradient-to-r from-background/40 to-background/20 rounded-2xl backdrop-blur-md border border-border/30 shadow-lg relative overflow-hidden group"
           >
             {/* Background glow effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-accent/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div
+              className={cn(
+                "absolute inset-0 bg-gradient-to-r opacity-0 group-hover:opacity-100 transition-opacity duration-300",
+                roleStyles.gradient
+              )}
+            />
 
             <div className="relative z-10">
               <div className="flex items-center gap-2 mb-2">
@@ -154,16 +207,50 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
               </p>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Badge variant="outline" className="text-xs">
-                    {user?.role || "Unknown"}
+                  <Badge
+                    variant="outline"
+                    className={cn("text-xs", roleStyles.badgeColor)}
+                  >
+                    {roleStyles.badge}
                   </Badge>
                   <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
                 </div>
-                <Crown className="w-4 h-4 text-yellow-500" />
+                {roleStyles.icon}
               </div>
             </div>
           </motion.div>
         </AnimatePresence>
+
+        {/* Quick Actions Bar */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="mt-4 flex items-center gap-2"
+        >
+          <Button
+            variant="ghost"
+            size="sm"
+            className="flex-1 h-8 text-xs bg-background/20 hover:bg-background/40"
+          >
+            <Search className="w-3 h-3 mr-1" />
+            Search
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-8 w-8 p-0 bg-background/20 hover:bg-background/40"
+          >
+            <Bell className="w-3 h-3" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-8 w-8 p-0 bg-background/20 hover:bg-background/40"
+          >
+            <Plus className="w-3 h-3" />
+          </Button>
+        </motion.div>
       </motion.div>
 
       {/* Navigation */}
@@ -189,7 +276,9 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
                 className="space-y-3"
               >
                 <div className="flex items-center gap-2 px-3">
-                  <div className="w-1 h-1 bg-accent rounded-full" />
+                  <div
+                    className={cn("w-1 h-1 rounded-full", roleStyles.gradient)}
+                  />
                   <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
                     {section.section}
                   </h3>
@@ -258,18 +347,28 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
               </motion.div>
             </div>
 
-            {/* Premium badge */}
+            {/* Role-based premium badge */}
             <motion.div
               whileHover={{ scale: 1.02 }}
-              className="flex items-center gap-2 p-2 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-lg border border-yellow-500/30 backdrop-blur-sm"
+              className={cn(
+                "flex items-center gap-2 p-2 rounded-lg border backdrop-blur-sm",
+                roleStyles.badgeColor
+              )}
             >
-              <Crown className="w-4 h-4 text-yellow-500" />
+              {roleStyles.icon}
               <div className="flex-1">
-                <div className="text-xs font-bold text-yellow-600 dark:text-yellow-400">
-                  Premium Plan
+                <div
+                  className={cn(
+                    "text-xs font-bold",
+                    roleStyles.badgeColor
+                      .replace("bg-", "text-")
+                      .replace("/20", "")
+                  )}
+                >
+                  {roleStyles.badge} Access
                 </div>
                 <div className="text-xs text-muted-foreground">
-                  All features unlocked
+                  Full system access
                 </div>
               </div>
               <Star className="w-3 h-3 text-yellow-500" />
@@ -330,11 +429,11 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
             className="mt-3 space-y-2"
           >
             <Separator className="bg-border/30" />
-            <div className="flex items-center gap-2">
+            <div className="grid grid-cols-2 gap-2">
               <Button
                 variant="ghost"
                 size="sm"
-                className="flex-1 h-8 text-xs bg-background/20 hover:bg-background/40"
+                className="h-8 text-xs bg-background/20 hover:bg-background/40"
               >
                 <Settings className="w-3 h-3 mr-1" />
                 Settings
@@ -342,7 +441,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
               <Button
                 variant="ghost"
                 size="sm"
-                className="flex-1 h-8 text-xs bg-background/20 hover:bg-background/40"
+                className="h-8 text-xs bg-background/20 hover:bg-background/40"
               >
                 <HelpCircle className="w-3 h-3 mr-1" />
                 Help

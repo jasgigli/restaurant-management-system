@@ -7,30 +7,54 @@ import {
   AlertCircle,
   Award,
   BarChart3,
+  // New icons for enhanced navigation
+  Bell,
+  BookOpen,
   Building,
   Calendar,
+  Camera,
   CheckCircle,
   ChefHat,
   ClipboardList,
   Clock,
+  CreditCard,
   DollarSign,
   Download,
+  Eye,
+  FileSpreadsheet,
   FileText,
   Gift,
+  Globe,
+  Heart,
   Home,
+  Info,
+  Layers,
   Menu,
+  MessageSquare,
+  Monitor,
   Package,
+  Phone,
   PieChart,
+  QrCode,
   Receipt,
+  Server,
   Settings,
   Shield,
   ShoppingCart,
+  Smartphone,
   Star,
+  Tag,
   Target,
+  Thermometer,
+  Timer,
+  Trash2,
   TrendingUp,
+  Truck,
   UserCheck,
+  UserPlus,
   Users,
   Utensils,
+  Zap,
 } from "lucide-react";
 import React from "react";
 
@@ -50,39 +74,45 @@ export interface NavigationSection {
 
 export type NavigationConfig = NavigationSection[];
 
-// Admin Navigation
+// Admin Navigation - Comprehensive Restaurant Management
 export const adminNavigation: NavigationConfig = [
   {
-    section: "Dashboard",
+    section: "📊 Dashboard & Analytics",
     links: [
       {
         to: "/admin",
-        label: "Overview",
+        label: "Overview Dashboard",
         icon: <BarChart3 size={20} />,
-        description: "Main dashboard view",
+        description: "Real-time business overview",
       },
       {
         to: "/admin/analytics",
-        label: "Analytics",
+        label: "Business Analytics",
         icon: <TrendingUp size={20} />,
-        description: "Business analytics",
+        description: "Advanced analytics & insights",
       },
       {
         to: "/admin/reports",
-        label: "Reports",
+        label: "Reports Center",
         icon: <FileText size={20} />,
-        description: "Generate reports",
+        description: "Generate & export reports",
+      },
+      {
+        to: "/admin/performance",
+        label: "Performance Metrics",
+        icon: <Target size={20} />,
+        description: "KPI tracking & monitoring",
       },
     ],
   },
   {
-    section: "Financial Management",
+    section: "💰 Financial Management",
     links: [
       {
         to: "/admin/sales",
         label: "Sales Management",
         icon: <DollarSign size={20} />,
-        description: "Track sales and revenue",
+        description: "Track sales & revenue",
       },
       {
         to: "/admin/inventory",
@@ -92,66 +122,166 @@ export const adminNavigation: NavigationConfig = [
       },
       {
         to: "/admin/purchases",
-        label: "Purchases",
+        label: "Purchase Orders",
         icon: <ShoppingCart size={20} />,
-        description: "Manage purchases",
+        description: "Manage purchases & suppliers",
       },
       {
         to: "/admin/expenses",
-        label: "Expenses",
+        label: "Expense Tracking",
         icon: <Receipt size={20} />,
-        description: "Track expenses",
+        description: "Monitor all expenses",
+      },
+      {
+        to: "/admin/pricing",
+        label: "Pricing Strategy",
+        icon: <Tag size={20} />,
+        description: "Menu pricing & strategies",
+      },
+      {
+        to: "/admin/taxes",
+        label: "Tax Management",
+        icon: <FileSpreadsheet size={20} />,
+        description: "Tax calculations & filing",
       },
     ],
   },
   {
-    section: "Human Resources",
+    section: "👥 Human Resources",
     links: [
       {
         to: "/admin/employees",
         label: "Employee Management",
         icon: <Users size={20} />,
-        description: "Manage staff",
+        description: "Manage all staff members",
       },
       {
         to: "/admin/attendance",
-        label: "Attendance",
+        label: "Attendance Tracking",
         icon: <Calendar size={20} />,
-        description: "Track attendance",
+        description: "Monitor staff attendance",
       },
       {
         to: "/admin/payroll",
-        label: "Payroll",
-        icon: <DollarSign size={20} />,
-        description: "Manage payroll",
+        label: "Payroll System",
+        icon: <CreditCard size={20} />,
+        description: "Process payroll & benefits",
+      },
+      {
+        to: "/admin/recruitment",
+        label: "Recruitment",
+        icon: <UserPlus size={20} />,
+        description: "Hiring & onboarding",
+      },
+      {
+        to: "/admin/training",
+        label: "Training Programs",
+        icon: <Award size={20} />,
+        description: "Staff development",
       },
     ],
   },
   {
-    section: "Restaurant Operations",
+    section: "🍽️ Restaurant Operations",
     links: [
       {
         to: "/admin/menu",
         label: "Menu Management",
         icon: <Menu size={20} />,
-        description: "Manage menu items",
+        description: "Create & manage menus",
       },
       {
         to: "/admin/orders",
         label: "Order Management",
         icon: <ClipboardList size={20} />,
-        description: "Track orders",
+        description: "Track all orders",
       },
       {
         to: "/admin/kitchen",
         label: "Kitchen Operations",
         icon: <ChefHat size={20} />,
-        description: "Kitchen management",
+        description: "Kitchen workflow management",
+      },
+      {
+        to: "/admin/tables",
+        label: "Table Management",
+        icon: <Building size={20} />,
+        description: "Reservations & seating",
+      },
+      {
+        to: "/admin/customers",
+        label: "Customer Database",
+        icon: <UserCheck size={20} />,
+        description: "Customer profiles & history",
+      },
+      {
+        to: "/admin/reservations",
+        label: "Reservation System",
+        icon: <Calendar size={20} />,
+        description: "Manage bookings",
       },
     ],
   },
   {
-    section: "System Management",
+    section: "📱 Digital & Technology",
+    links: [
+      {
+        to: "/admin/pos",
+        label: "POS System",
+        icon: <Monitor size={20} />,
+        description: "Point of sale management",
+      },
+      {
+        to: "/admin/online-orders",
+        label: "Online Orders",
+        icon: <Globe size={20} />,
+        description: "Delivery & takeaway",
+      },
+      {
+        to: "/admin/mobile-app",
+        label: "Mobile App",
+        icon: <Smartphone size={20} />,
+        description: "App management",
+      },
+      {
+        to: "/admin/integrations",
+        label: "Third-party Integrations",
+        icon: <Layers size={20} />,
+        description: "External service connections",
+      },
+    ],
+  },
+  {
+    section: "🏪 Business Management",
+    links: [
+      {
+        to: "/admin/marketing",
+        label: "Marketing & Promotions",
+        icon: <Zap size={20} />,
+        description: "Campaigns & promotions",
+      },
+      {
+        to: "/admin/loyalty",
+        label: "Loyalty Program",
+        icon: <Heart size={20} />,
+        description: "Customer rewards system",
+      },
+      {
+        to: "/admin/feedback",
+        label: "Customer Feedback",
+        icon: <MessageSquare size={20} />,
+        description: "Reviews & ratings",
+      },
+      {
+        to: "/admin/competitors",
+        label: "Competitor Analysis",
+        icon: <Eye size={20} />,
+        description: "Market research",
+      },
+    ],
+  },
+  {
+    section: "⚙️ System Administration",
     links: [
       {
         to: "/admin/settings",
@@ -161,202 +291,303 @@ export const adminNavigation: NavigationConfig = [
       },
       {
         to: "/admin/security",
-        label: "Security",
+        label: "Security & Access",
         icon: <Shield size={20} />,
-        description: "Security settings",
+        description: "User permissions & security",
       },
       {
         to: "/admin/backup",
         label: "Backup & Restore",
         icon: <Download size={20} />,
-        description: "Data backup",
+        description: "Data backup & recovery",
+      },
+      {
+        to: "/admin/logs",
+        label: "System Logs",
+        icon: <FileText size={20} />,
+        description: "Activity monitoring",
+      },
+      {
+        to: "/admin/api",
+        label: "API Management",
+        icon: <Server size={20} />,
+        description: "API keys & endpoints",
       },
     ],
   },
   {
-    section: "Support & Help",
+    section: "📞 Support & Communication",
     links: [
       {
         to: "/admin/notifications",
-        label: "Notifications",
-        icon: <AlertCircle size={20} />,
-        description: "View all notifications",
-        badge: "3",
+        label: "Notifications Center",
+        icon: <Bell size={20} />,
+        description: "System notifications",
+        badge: "5",
       },
       {
         to: "/admin/help",
         label: "Help & Support",
-        icon: <Star size={20} />,
-        description: "Get help and support",
+        icon: <Info size={20} />,
+        description: "Documentation & support",
+      },
+      {
+        to: "/admin/contact",
+        label: "Contact Management",
+        icon: <Phone size={20} />,
+        description: "Vendor & partner contacts",
       },
     ],
   },
 ];
 
-// HR Navigation
+// HR Navigation - Comprehensive HR Management
 export const hrNavigation: NavigationConfig = [
   {
-    section: "Dashboard",
+    section: "📊 HR Dashboard",
     links: [
       {
         to: "/hr",
         label: "HR Overview",
         icon: <UserCheck size={20} />,
-        description: "HR dashboard",
+        description: "HR dashboard & metrics",
       },
       {
         to: "/hr/analytics",
         label: "HR Analytics",
         icon: <PieChart size={20} />,
-        description: "Employee analytics",
+        description: "Employee analytics & insights",
+      },
+      {
+        to: "/hr/reports",
+        label: "HR Reports",
+        icon: <FileText size={20} />,
+        description: "Generate HR reports",
       },
     ],
   },
   {
-    section: "Employee Management",
+    section: "👥 Employee Management",
     links: [
       {
         to: "/hr/employees",
-        label: "Employees",
+        label: "Employee Directory",
         icon: <Users size={20} />,
-        description: "Manage employees",
+        description: "Manage all employees",
       },
       {
         to: "/hr/recruitment",
         label: "Recruitment",
-        icon: <UserCheck size={20} />,
-        description: "Hiring process",
+        icon: <UserPlus size={20} />,
+        description: "Hiring & onboarding process",
       },
       {
         to: "/hr/performance",
-        label: "Performance",
+        label: "Performance Reviews",
         icon: <Target size={20} />,
-        description: "Performance reviews",
+        description: "Employee evaluations",
       },
       {
         to: "/hr/training",
-        label: "Training",
+        label: "Training & Development",
         icon: <Award size={20} />,
         description: "Training programs",
       },
+      {
+        to: "/hr/career",
+        label: "Career Development",
+        icon: <TrendingUp size={20} />,
+        description: "Career paths & growth",
+      },
     ],
   },
   {
-    section: "Time & Attendance",
+    section: "⏰ Time & Attendance",
     links: [
       {
         to: "/hr/attendance",
-        label: "Attendance",
+        label: "Attendance Tracking",
         icon: <Calendar size={20} />,
-        description: "Track attendance",
+        description: "Monitor attendance",
       },
       {
         to: "/hr/schedules",
-        label: "Schedules",
+        label: "Schedule Management",
         icon: <Clock size={20} />,
-        description: "Manage schedules",
+        description: "Create & manage schedules",
       },
       {
         to: "/hr/overtime",
-        label: "Overtime",
+        label: "Overtime Management",
+        icon: <Timer size={20} />,
+        description: "Overtime tracking & approval",
+      },
+      {
+        to: "/hr/leave",
+        label: "Leave Management",
+        icon: <Calendar size={20} />,
+        description: "Vacation & sick leave",
+      },
+      {
+        to: "/hr/shifts",
+        label: "Shift Management",
         icon: <Clock size={20} />,
-        description: "Overtime tracking",
+        description: "Shift planning & rotation",
       },
     ],
   },
   {
-    section: "Payroll & Benefits",
+    section: "💰 Payroll & Benefits",
     links: [
       {
         to: "/hr/payroll",
-        label: "Payroll",
+        label: "Payroll Processing",
         icon: <DollarSign size={20} />,
         description: "Process payroll",
       },
       {
         to: "/hr/benefits",
-        label: "Benefits",
+        label: "Benefits Management",
         icon: <Gift size={20} />,
         description: "Employee benefits",
       },
       {
         to: "/hr/advances",
         label: "Salary Advances",
-        icon: <DollarSign size={20} />,
+        icon: <CreditCard size={20} />,
         description: "Manage advances",
+      },
+      {
+        to: "/hr/taxes",
+        label: "Tax Management",
+        icon: <FileSpreadsheet size={20} />,
+        description: "Tax deductions & filing",
+      },
+      {
+        to: "/hr/compensation",
+        label: "Compensation Plans",
+        icon: <DollarSign size={20} />,
+        description: "Salary structures",
       },
     ],
   },
   {
-    section: "Compliance",
+    section: "📋 Compliance & Legal",
     links: [
       {
         to: "/hr/compliance",
-        label: "Compliance",
+        label: "Legal Compliance",
         icon: <Shield size={20} />,
-        description: "Legal compliance",
+        description: "Labor law compliance",
       },
       {
         to: "/hr/documents",
-        label: "Documents",
+        label: "HR Documents",
         icon: <FileText size={20} />,
-        description: "HR documents",
+        description: "Employee documents",
+      },
+      {
+        to: "/hr/policies",
+        label: "Company Policies",
+        icon: <BookOpen size={20} />,
+        description: "Policy management",
+      },
+      {
+        to: "/hr/contracts",
+        label: "Employment Contracts",
+        icon: <FileText size={20} />,
+        description: "Contract management",
       },
     ],
   },
   {
-    section: "Support & Help",
+    section: "🏥 Health & Safety",
+    links: [
+      {
+        to: "/hr/health",
+        label: "Health Records",
+        icon: <Heart size={20} />,
+        description: "Employee health data",
+      },
+      {
+        to: "/hr/safety",
+        label: "Safety Management",
+        icon: <Shield size={20} />,
+        description: "Workplace safety",
+      },
+      {
+        to: "/hr/incidents",
+        label: "Incident Reports",
+        icon: <AlertCircle size={20} />,
+        description: "Accident reporting",
+      },
+    ],
+  },
+  {
+    section: "📞 Communication",
     links: [
       {
         to: "/hr/notifications",
-        label: "Notifications",
-        icon: <AlertCircle size={20} />,
-        description: "View all notifications",
-        badge: "2",
+        label: "HR Notifications",
+        icon: <Bell size={20} />,
+        description: "HR announcements",
+        badge: "3",
       },
       {
-        to: "/hr/help",
-        label: "Help & Support",
-        icon: <Star size={20} />,
-        description: "Get help and support",
+        to: "/hr/feedback",
+        label: "Employee Feedback",
+        icon: <MessageSquare size={20} />,
+        description: "Feedback collection",
+      },
+      {
+        to: "/hr/surveys",
+        label: "Employee Surveys",
+        icon: <ClipboardList size={20} />,
+        description: "Conduct surveys",
       },
     ],
   },
 ];
 
-// Staff Navigation
+// Staff Navigation - Frontline Operations
 export const staffNavigation: NavigationConfig = [
   {
-    section: "Dashboard",
+    section: "🏠 My Dashboard",
     links: [
       {
         to: "/staff",
         label: "My Dashboard",
         icon: <Home size={20} />,
-        description: "Personal dashboard",
+        description: "Personal overview",
       },
       {
         to: "/staff/profile",
         label: "My Profile",
         icon: <UserCheck size={20} />,
-        description: "Update profile",
+        description: "Update personal info",
+      },
+      {
+        to: "/staff/performance",
+        label: "My Performance",
+        icon: <Target size={20} />,
+        description: "View performance metrics",
       },
     ],
   },
   {
-    section: "Orders & Service",
+    section: "🍽️ Orders & Service",
     links: [
       {
         to: "/staff/orders",
-        label: "Orders",
+        label: "Order Management",
         icon: <ClipboardList size={20} />,
-        description: "View orders",
+        description: "View & manage orders",
       },
       {
         to: "/staff/tables",
         label: "Table Management",
         icon: <Building size={20} />,
-        description: "Manage tables",
+        description: "Manage table assignments",
       },
       {
         to: "/staff/service",
@@ -364,22 +595,34 @@ export const staffNavigation: NavigationConfig = [
         icon: <Star size={20} />,
         description: "Customer interactions",
       },
+      {
+        to: "/staff/reservations",
+        label: "Reservations",
+        icon: <Calendar size={20} />,
+        description: "Handle bookings",
+      },
+      {
+        to: "/staff/feedback",
+        label: "Customer Feedback",
+        icon: <MessageSquare size={20} />,
+        description: "Collect feedback",
+      },
     ],
   },
   {
-    section: "Kitchen Operations",
+    section: "👨‍🍳 Kitchen Operations",
     links: [
       {
         to: "/staff/kitchen",
         label: "Kitchen Orders",
         icon: <ChefHat size={20} />,
-        description: "Kitchen tasks",
+        description: "View kitchen orders",
       },
       {
         to: "/staff/preparation",
         label: "Food Preparation",
         icon: <Utensils size={20} />,
-        description: "Prepare food",
+        description: "Prepare food items",
       },
       {
         to: "/staff/quality",
@@ -387,10 +630,22 @@ export const staffNavigation: NavigationConfig = [
         icon: <CheckCircle size={20} />,
         description: "Quality checks",
       },
+      {
+        to: "/staff/recipes",
+        label: "Recipe Book",
+        icon: <BookOpen size={20} />,
+        description: "Access recipes",
+      },
+      {
+        to: "/staff/temperature",
+        label: "Temperature Logs",
+        icon: <Thermometer size={20} />,
+        description: "Food safety monitoring",
+      },
     ],
   },
   {
-    section: "Inventory & Stock",
+    section: "📦 Inventory & Stock",
     links: [
       {
         to: "/staff/inventory",
@@ -404,16 +659,28 @@ export const staffNavigation: NavigationConfig = [
         icon: <AlertCircle size={20} />,
         description: "Request supplies",
       },
+      {
+        to: "/staff/receiving",
+        label: "Receive Deliveries",
+        icon: <Truck size={20} />,
+        description: "Process deliveries",
+      },
+      {
+        to: "/staff/waste",
+        label: "Waste Management",
+        icon: <Trash2 size={20} />,
+        description: "Track food waste",
+      },
     ],
   },
   {
-    section: "My Schedule",
+    section: "⏰ My Schedule",
     links: [
       {
         to: "/staff/schedule",
         label: "My Schedule",
         icon: <Calendar size={20} />,
-        description: "View schedule",
+        description: "View work schedule",
       },
       {
         to: "/staff/attendance",
@@ -427,23 +694,58 @@ export const staffNavigation: NavigationConfig = [
         icon: <Calendar size={20} />,
         description: "Request time off",
       },
+      {
+        to: "/staff/overtime",
+        label: "Overtime Requests",
+        icon: <Timer size={20} />,
+        description: "Request overtime",
+      },
     ],
   },
   {
-    section: "Support & Help",
+    section: "📱 Digital Tools",
+    links: [
+      {
+        to: "/staff/pos",
+        label: "POS Terminal",
+        icon: <Monitor size={20} />,
+        description: "Point of sale",
+      },
+      {
+        to: "/staff/qr",
+        label: "QR Code Scanner",
+        icon: <QrCode size={20} />,
+        description: "Scan QR codes",
+      },
+      {
+        to: "/staff/camera",
+        label: "Photo Capture",
+        icon: <Camera size={20} />,
+        description: "Take photos",
+      },
+    ],
+  },
+  {
+    section: "📞 Communication",
     links: [
       {
         to: "/staff/notifications",
         label: "Notifications",
-        icon: <AlertCircle size={20} />,
-        description: "View all notifications",
-        badge: "1",
+        icon: <Bell size={20} />,
+        description: "View notifications",
+        badge: "2",
+      },
+      {
+        to: "/staff/messages",
+        label: "Team Messages",
+        icon: <MessageSquare size={20} />,
+        description: "Team communication",
       },
       {
         to: "/staff/help",
         label: "Help & Support",
-        icon: <Star size={20} />,
-        description: "Get help and support",
+        icon: <Info size={20} />,
+        description: "Get help",
       },
     ],
   },
