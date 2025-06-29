@@ -11,9 +11,8 @@ import {
   ChefHat,
   Clock,
   DollarSign,
-  Package,
+  Shield,
   ShoppingCart,
-  TrendingUp,
   User,
   Users,
 } from "lucide-react";
@@ -84,6 +83,11 @@ export const Footer: React.FC<FooterProps> = ({ isOnline = true }) => {
             value: employees?.length || 0,
             tooltip: "Total Staff",
           },
+          {
+            icon: <Shield className="w-4 h-4" />,
+            value: "99.9%",
+            tooltip: "System Uptime",
+          },
         ]);
         break;
       case "hr":
@@ -110,6 +114,11 @@ export const Footer: React.FC<FooterProps> = ({ isOnline = true }) => {
             value: Math.floor(Math.random() * 3) + 1,
             tooltip: "Training Sessions",
           },
+          {
+            icon: <User className="w-4 h-4" />,
+            value: "2",
+            tooltip: "New Applications",
+          },
         ]);
         break;
       case "staff":
@@ -135,6 +144,11 @@ export const Footer: React.FC<FooterProps> = ({ isOnline = true }) => {
             icon: <User className="w-4 h-4" />,
             value: employees?.length || 0,
             tooltip: "Team Members",
+          },
+          {
+            icon: <CheckCircle className="w-4 h-4" />,
+            value: "8h",
+            tooltip: "Hours Worked Today",
           },
         ]);
         break;
@@ -180,39 +194,11 @@ export const Footer: React.FC<FooterProps> = ({ isOnline = true }) => {
             ))}
         </div>
 
-        {/* Right: Quick links */}
+        {/* Right: Empty space - navigation is handled by sidebar */}
         <div className="flex items-center gap-2">
-          {/* Quick links (icons only) */}
-          {user.role === "admin" && (
-            <>
-              <a href="/admin/reports" title="Reports">
-                <TrendingUp className="w-3 h-3 hover:text-primary" />
-              </a>
-              <a href="/admin/inventory" title="Inventory">
-                <Package className="w-3 h-3 hover:text-primary" />
-              </a>
-            </>
-          )}
-          {user.role === "hr" && (
-            <>
-              <a href="/hr/employees" title="Employees">
-                <Users className="w-3 h-3 hover:text-primary" />
-              </a>
-              <a href="/hr/attendance" title="Attendance">
-                <Calendar className="w-3 h-3 hover:text-primary" />
-              </a>
-            </>
-          )}
-          {user.role === "staff" && (
-            <>
-              <a href="/staff/orders" title="Orders">
-                <ShoppingCart className="w-3 h-3 hover:text-primary" />
-              </a>
-              <a href="/staff/schedule" title="Schedule">
-                <Clock className="w-3 h-3 hover:text-primary" />
-              </a>
-            </>
-          )}
+          <span className="text-xs text-muted-foreground">
+            Use sidebar for navigation
+          </span>
         </div>
       </div>
     </motion.footer>

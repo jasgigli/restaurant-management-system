@@ -173,6 +173,24 @@ export const adminNavigation: NavigationConfig = [
       },
     ],
   },
+  {
+    section: "Support & Help",
+    links: [
+      {
+        to: "/admin/notifications",
+        label: "Notifications",
+        icon: <AlertCircle size={20} />,
+        description: "View all notifications",
+        badge: "3",
+      },
+      {
+        to: "/admin/help",
+        label: "Help & Support",
+        icon: <Star size={20} />,
+        description: "Get help and support",
+      },
+    ],
+  },
 ];
 
 // HR Navigation
@@ -286,6 +304,24 @@ export const hrNavigation: NavigationConfig = [
       },
     ],
   },
+  {
+    section: "Support & Help",
+    links: [
+      {
+        to: "/hr/notifications",
+        label: "Notifications",
+        icon: <AlertCircle size={20} />,
+        description: "View all notifications",
+        badge: "2",
+      },
+      {
+        to: "/hr/help",
+        label: "Help & Support",
+        icon: <Star size={20} />,
+        description: "Get help and support",
+      },
+    ],
+  },
 ];
 
 // Staff Navigation
@@ -390,6 +426,24 @@ export const staffNavigation: NavigationConfig = [
         label: "Leave Requests",
         icon: <Calendar size={20} />,
         description: "Request time off",
+      },
+    ],
+  },
+  {
+    section: "Support & Help",
+    links: [
+      {
+        to: "/staff/notifications",
+        label: "Notifications",
+        icon: <AlertCircle size={20} />,
+        description: "View all notifications",
+        badge: "1",
+      },
+      {
+        to: "/staff/help",
+        label: "Help & Support",
+        icon: <Star size={20} />,
+        description: "Get help and support",
       },
     ],
   },

@@ -19,7 +19,6 @@ import {
   Search,
   Settings,
   Shield,
-  ShoppingCart,
   Sun,
   User,
   Users,
@@ -63,11 +62,6 @@ interface RoleSpecificData {
     icon: React.ReactNode;
   }>;
   searchPlaceholder: string;
-  quickActions: Array<{
-    label: string;
-    icon: React.ReactNode;
-    href: string;
-  }>;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -81,7 +75,6 @@ export const Header: React.FC<HeaderProps> = ({
     notifications: 0,
     notificationItems: [],
     searchPlaceholder: "Search...",
-    quickActions: [],
   });
   const { user, logout } = useAuth();
   const { resolvedTheme, toggleTheme } = useTheme();
@@ -149,33 +142,21 @@ export const Header: React.FC<HeaderProps> = ({
             }
           }
 
+          // System notifications (not in sidebar)
+          adminNotificationCount += 1;
+          adminNotifications.push({
+            id: "system-backup",
+            message: "Daily backup completed successfully",
+            type: "success" as const,
+            time: "2 hours ago",
+            icon: <Shield className="w-4 h-4" />,
+          });
+
           return {
             notifications: adminNotificationCount,
             notificationItems: adminNotifications,
             searchPlaceholder:
               "Search orders, inventory, employees, reports...",
-            quickActions: [
-              {
-                label: "Sales Report",
-                icon: <DollarSign className="w-4 h-4" />,
-                href: "/admin/sales",
-              },
-              {
-                label: "Inventory",
-                icon: <Package className="w-4 h-4" />,
-                href: "/admin/inventory",
-              },
-              {
-                label: "Employees",
-                icon: <Users className="w-4 h-4" />,
-                href: "/admin/employees",
-              },
-              {
-                label: "Reports",
-                icon: <Shield className="w-4 h-4" />,
-                href: "/admin/reports",
-              },
-            ],
           };
         }
 
@@ -217,33 +198,21 @@ export const Header: React.FC<HeaderProps> = ({
             }
           }
 
+          // HR-specific notifications (not in sidebar)
+          hrNotificationCount += 1;
+          hrNotifications.push({
+            id: "training-reminder",
+            message: "Monthly training session scheduled",
+            type: "info" as const,
+            time: "1 day ago",
+            icon: <User className="w-4 h-4" />,
+          });
+
           return {
             notifications: hrNotificationCount,
             notificationItems: hrNotifications,
             searchPlaceholder:
               "Search employees, attendance, payroll, schedules...",
-            quickActions: [
-              {
-                label: "Employees",
-                icon: <Users className="w-4 h-4" />,
-                href: "/hr/employees",
-              },
-              {
-                label: "Attendance",
-                icon: <Clock className="w-4 h-4" />,
-                href: "/hr/attendance",
-              },
-              {
-                label: "Payroll",
-                icon: <DollarSign className="w-4 h-4" />,
-                href: "/hr/payroll",
-              },
-              {
-                label: "Schedules",
-                icon: <Settings className="w-4 h-4" />,
-                href: "/hr/schedules",
-              },
-            ],
           };
         }
 
@@ -277,33 +246,21 @@ export const Header: React.FC<HeaderProps> = ({
             });
           }
 
+          // Staff-specific notifications (not in sidebar)
+          staffNotificationCount += 1;
+          staffNotifications.push({
+            id: "schedule-update",
+            message: "Your schedule has been updated",
+            type: "info" as const,
+            time: "1 hour ago",
+            icon: <Clock className="w-4 h-4" />,
+          });
+
           return {
             notifications: staffNotificationCount,
             notificationItems: staffNotifications,
             searchPlaceholder:
               "Search orders, menu items, inventory, tables...",
-            quickActions: [
-              {
-                label: "Orders",
-                icon: <ShoppingCart className="w-4 h-4" />,
-                href: "/staff/orders",
-              },
-              {
-                label: "Kitchen",
-                icon: <ChefHat className="w-4 h-4" />,
-                href: "/staff/kitchen",
-              },
-              {
-                label: "Inventory",
-                icon: <Package className="w-4 h-4" />,
-                href: "/staff/inventory",
-              },
-              {
-                label: "Tables",
-                icon: <Users className="w-4 h-4" />,
-                href: "/staff/tables",
-              },
-            ],
           };
         }
 
@@ -312,7 +269,6 @@ export const Header: React.FC<HeaderProps> = ({
             notifications: 0,
             notificationItems: [],
             searchPlaceholder: "Search...",
-            quickActions: [],
           };
       }
     };
@@ -516,21 +472,9 @@ export const Header: React.FC<HeaderProps> = ({
                 <DropdownMenuSeparator />
 
                 <div className="p-2">
-                  <p className="text-xs text-muted-foreground mb-2">
-                    Quick Actions
+                  <p className="text-xs text-muted-foreground text-center">
+                    Use the sidebar for quick navigation
                   </p>
-                  <div className="grid grid-cols-2 gap-2">
-                    {roleData.quickActions.map((action) => (
-                      <a
-                        key={action.label}
-                        href={action.href}
-                        className="flex items-center gap-2 p-2 rounded-lg hover:bg-accent/50 transition-colors text-sm"
-                      >
-                        {action.icon}
-                        <span>{action.label}</span>
-                      </a>
-                    ))}
-                  </div>
                 </div>
               </DropdownMenuContent>
             </DropdownMenu>
