@@ -54,29 +54,57 @@ import HRAdvances from "./pages/hr/HRAdvances";
 import HRAnalytics from "./pages/hr/HRAnalytics";
 import HRAttendance from "./pages/hr/HRAttendance";
 import HRBenefits from "./pages/hr/HRBenefits";
+import HRCareer from "./pages/hr/HRCareer";
+import HRCompensation from "./pages/hr/HRCompensation";
 import HRCompliance from "./pages/hr/HRCompliance";
+import HRContracts from "./pages/hr/HRContracts";
 import HRDocuments from "./pages/hr/HRDocuments";
 import HREmployees from "./pages/hr/HREmployees";
+import HRFeedback from "./pages/hr/HRFeedback";
+import HRHealth from "./pages/hr/HRHealth";
+import HRIncidents from "./pages/hr/HRIncidents";
+import HRLeave from "./pages/hr/HRLeave";
+import HRNotifications from "./pages/hr/HRNotifications";
 import HROvertime from "./pages/hr/HROvertime";
 import HRPayroll from "./pages/hr/HRPayroll";
 import HRPerformance from "./pages/hr/HRPerformance";
+import HRPolicies from "./pages/hr/HRPolicies";
 import HRRecruitment from "./pages/hr/HRRecruitment";
+import HRReports from "./pages/hr/HRReports";
+import HRSafety from "./pages/hr/HRSafety";
 import HRSchedules from "./pages/hr/HRSchedules";
+import HRShifts from "./pages/hr/HRShifts";
+import HRSurveys from "./pages/hr/HRSurveys";
+import HRTaxes from "./pages/hr/HRTaxes";
 import HRTraining from "./pages/hr/HRTraining";
 
 // Staff Pages
 import StaffAttendance from "./pages/staff/StaffAttendance";
+import StaffCamera from "./pages/staff/StaffCamera";
+import StaffFeedback from "./pages/staff/StaffFeedback";
+import StaffHelp from "./pages/staff/StaffHelp";
 import StaffInventory from "./pages/staff/StaffInventory";
 import StaffKitchen from "./pages/staff/StaffKitchen";
 import StaffLeave from "./pages/staff/StaffLeave";
+import StaffMessages from "./pages/staff/StaffMessages";
+import StaffNotifications from "./pages/staff/StaffNotifications";
 import StaffOrders from "./pages/staff/StaffOrders";
+import StaffOvertime from "./pages/staff/StaffOvertime";
+import StaffPerformance from "./pages/staff/StaffPerformance";
+import StaffPOS from "./pages/staff/StaffPOS";
 import StaffPreparation from "./pages/staff/StaffPreparation";
 import StaffProfile from "./pages/staff/StaffProfile";
+import StaffQR from "./pages/staff/StaffQR";
 import StaffQuality from "./pages/staff/StaffQuality";
+import StaffReceiving from "./pages/staff/StaffReceiving";
+import StaffRecipes from "./pages/staff/StaffRecipes";
 import StaffRequests from "./pages/staff/StaffRequests";
+import StaffReservations from "./pages/staff/StaffReservations";
 import StaffSchedule from "./pages/staff/StaffSchedule";
 import StaffService from "./pages/staff/StaffService";
 import StaffTables from "./pages/staff/StaffTables";
+import StaffTemperature from "./pages/staff/StaffTemperature";
+import StaffWaste from "./pages/staff/StaffWaste";
 
 function App() {
   const { isAuthenticated, user, isLoading } = useAuth();
@@ -146,18 +174,32 @@ function App() {
         <Route path="/hr" element={<MainLayout />}>
           <Route index element={<HRDashboard />} />
           <Route path="analytics" element={<HRAnalytics />} />
+          <Route path="reports" element={<HRReports />} />
           <Route path="employees" element={<HREmployees />} />
           <Route path="recruitment" element={<HRRecruitment />} />
           <Route path="performance" element={<HRPerformance />} />
           <Route path="training" element={<HRTraining />} />
+          <Route path="career" element={<HRCareer />} />
           <Route path="attendance" element={<HRAttendance />} />
           <Route path="schedules" element={<HRSchedules />} />
           <Route path="overtime" element={<HROvertime />} />
+          <Route path="leave" element={<HRLeave />} />
+          <Route path="shifts" element={<HRShifts />} />
           <Route path="payroll" element={<HRPayroll />} />
           <Route path="benefits" element={<HRBenefits />} />
           <Route path="advances" element={<HRAdvances />} />
+          <Route path="taxes" element={<HRTaxes />} />
+          <Route path="compensation" element={<HRCompensation />} />
           <Route path="compliance" element={<HRCompliance />} />
           <Route path="documents" element={<HRDocuments />} />
+          <Route path="policies" element={<HRPolicies />} />
+          <Route path="contracts" element={<HRContracts />} />
+          <Route path="health" element={<HRHealth />} />
+          <Route path="safety" element={<HRSafety />} />
+          <Route path="incidents" element={<HRIncidents />} />
+          <Route path="notifications" element={<HRNotifications />} />
+          <Route path="feedback" element={<HRFeedback />} />
+          <Route path="surveys" element={<HRSurveys />} />
         </Route>
       </Route>
 
@@ -166,17 +208,31 @@ function App() {
         <Route path="/staff" element={<MainLayout />}>
           <Route index element={<StaffDashboard />} />
           <Route path="profile" element={<StaffProfile />} />
+          <Route path="performance" element={<StaffPerformance />} />
           <Route path="orders" element={<StaffOrders />} />
           <Route path="tables" element={<StaffTables />} />
           <Route path="service" element={<StaffService />} />
+          <Route path="reservations" element={<StaffReservations />} />
+          <Route path="feedback" element={<StaffFeedback />} />
           <Route path="kitchen" element={<StaffKitchen />} />
           <Route path="preparation" element={<StaffPreparation />} />
           <Route path="quality" element={<StaffQuality />} />
+          <Route path="recipes" element={<StaffRecipes />} />
+          <Route path="temperature" element={<StaffTemperature />} />
           <Route path="inventory" element={<StaffInventory />} />
           <Route path="requests" element={<StaffRequests />} />
+          <Route path="receiving" element={<StaffReceiving />} />
+          <Route path="waste" element={<StaffWaste />} />
           <Route path="schedule" element={<StaffSchedule />} />
           <Route path="attendance" element={<StaffAttendance />} />
           <Route path="leave" element={<StaffLeave />} />
+          <Route path="overtime" element={<StaffOvertime />} />
+          <Route path="pos" element={<StaffPOS />} />
+          <Route path="qr" element={<StaffQR />} />
+          <Route path="camera" element={<StaffCamera />} />
+          <Route path="notifications" element={<StaffNotifications />} />
+          <Route path="messages" element={<StaffMessages />} />
+          <Route path="help" element={<StaffHelp />} />
         </Route>
       </Route>
 
