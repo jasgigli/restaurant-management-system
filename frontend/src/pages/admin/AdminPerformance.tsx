@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { BarChart2, FileText, PieChart } from "lucide-react";
+import { Star, Target, TrendingUp } from "lucide-react";
 import { Badge } from "../../components/ui/Badge";
 import {
   Card,
@@ -18,57 +18,49 @@ import {
 } from "../../components/ui/table";
 
 const kpis = [
-  { title: "Total Reports", value: 24, icon: FileText, color: "text-blue-600" },
   {
-    title: "Sales Analytics",
-    value: "$12,340",
-    icon: BarChart2,
+    title: "Order Fulfillment",
+    value: "98%",
+    icon: TrendingUp,
     color: "text-green-600",
   },
   {
-    title: "Customer Insights",
-    value: "98%",
-    icon: PieChart,
-    color: "text-purple-600",
+    title: "Customer Satisfaction",
+    value: "4.8/5",
+    icon: Star,
+    color: "text-yellow-500",
+  },
+  {
+    title: "Avg. Service Time",
+    value: "12 min",
+    icon: Target,
+    color: "text-blue-600",
   },
 ];
 
-const recentReports = [
-  {
-    id: 1,
-    name: "Monthly Sales",
-    type: "Sales",
-    status: "Completed",
-    date: "2024-06-01",
-  },
-  {
-    id: 2,
-    name: "Inventory Status",
-    type: "Inventory",
-    status: "Pending",
-    date: "2024-06-02",
-  },
-  {
-    id: 3,
-    name: "Employee Attendance",
-    type: "HR",
-    status: "Completed",
-    date: "2024-06-03",
-  },
+const performanceData = [
+  { metric: "Table Turnover Rate", value: "1.5/hr", status: "Good" },
+  { metric: "Order Accuracy", value: "99%", status: "Excellent" },
+  { metric: "Complaint Rate", value: "0.8%", status: "Low" },
+  { metric: "Repeat Customers", value: "65%", status: "High" },
 ];
 
 const statusVariant = (status: string) => {
   switch (status) {
-    case "Completed":
+    case "Excellent":
       return "success";
-    case "Pending":
+    case "Good":
+      return "info";
+    case "High":
+      return "success";
+    case "Low":
       return "warning";
     default:
       return "default";
   }
 };
 
-const AdminReports = () => {
+const AdminPerformance = () => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -78,10 +70,10 @@ const AdminReports = () => {
     >
       <div>
         <h1 className="text-3xl font-bold text-foreground tracking-tight">
-          Reports & Analytics
+          Performance Metrics
         </h1>
         <p className="text-muted-foreground mt-2">
-          Generate and view comprehensive business reports
+          KPI tracking & monitoring for restaurant performance
         </p>
       </div>
       <Grid cols={3} gap="md">
@@ -100,30 +92,28 @@ const AdminReports = () => {
       </Grid>
       <Card className="bg-gradient-to-br from-card/60 via-card/40 to-card/60 border-border/40 shadow-lg">
         <CardHeader>
-          <CardTitle className="text-foreground">Recent Reports</CardTitle>
+          <CardTitle className="text-foreground">
+            Performance Indicators
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Type</TableHead>
+                <TableHead>Metric</TableHead>
+                <TableHead>Value</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead>Date</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {recentReports.map((report) => (
-                <TableRow key={report.id}>
-                  <TableCell>{report.name}</TableCell>
-                  <TableCell>{report.type}</TableCell>
+              {performanceData.map((row, i) => (
+                <TableRow key={i}>
+                  <TableCell>{row.metric}</TableCell>
+                  <TableCell>{row.value}</TableCell>
                   <TableCell>
-                    <Badge variant={statusVariant(report.status)}>
-                      {report.status}
+                    <Badge variant={statusVariant(row.status)}>
+                      {row.status}
                     </Badge>
-                  </TableCell>
-                  <TableCell className="text-muted-foreground">
-                    {report.date}
                   </TableCell>
                 </TableRow>
               ))}
@@ -135,4 +125,4 @@ const AdminReports = () => {
   );
 };
 
-export default AdminReports;
+export default AdminPerformance;

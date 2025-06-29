@@ -84,7 +84,8 @@ const Login = () => {
       if (role === "admin") redirectPath = "/admin";
       else if (role === "hr") redirectPath = "/hr";
       else if (role === "staff") redirectPath = "/staff";
-      navigate(redirectPath);
+      else redirectPath = "/login";
+      navigate(redirectPath, { replace: true });
     } catch (err: unknown) {
       const errorMessage =
         err instanceof AxiosError

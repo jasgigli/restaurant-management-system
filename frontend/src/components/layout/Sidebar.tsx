@@ -52,62 +52,50 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
       case "admin":
         return {
           gradient:
-            "from-purple-100 via-blue-50 to-indigo-100 dark:from-purple-500/20 dark:via-blue-500/10 dark:to-indigo-500/20",
-          accent: "from-purple-500 to-blue-500",
+            "from-purple-200 via-blue-100 to-indigo-100 dark:from-purple-500/20 dark:via-blue-500/10 dark:to-indigo-500/20",
+          accent: "from-purple-400 to-blue-400",
           icon: (
-            <Crown className="w-4 h-4 text-purple-700 dark:text-purple-500" />
+            <Crown className="w-4 h-4 text-purple-500 dark:text-purple-500" />
           ),
           badge: "Admin",
           badgeColor:
-            "bg-purple-200 text-purple-800 border-purple-300 dark:bg-purple-500/20 dark:text-purple-400 dark:border-purple-500/30",
-          categoryColor: "text-purple-800 dark:text-purple-400",
-          categoryBg: "bg-purple-100 dark:bg-purple-500/10",
-          categoryBorder: "border-purple-300 dark:border-purple-500/20",
+            "bg-purple-100 text-purple-700 border-purple-200 dark:bg-purple-500/20 dark:text-purple-400 dark:border-purple-500/30",
         };
       case "hr":
         return {
           gradient:
-            "from-emerald-100 via-teal-50 to-cyan-100 dark:from-emerald-500/20 dark:via-teal-500/10 dark:to-cyan-500/20",
-          accent: "from-emerald-500 to-teal-500",
+            "from-teal-100 via-emerald-100 to-cyan-100 dark:from-emerald-500/20 dark:via-teal-500/10 dark:to-cyan-500/20",
+          accent: "from-teal-400 to-emerald-400",
           icon: (
-            <Users className="w-4 h-4 text-emerald-700 dark:text-emerald-500" />
+            <Users className="w-4 h-4 text-teal-500 dark:text-emerald-500" />
           ),
           badge: "HR",
           badgeColor:
-            "bg-emerald-200 text-emerald-800 border-emerald-300 dark:bg-emerald-500/20 dark:text-emerald-400 dark:border-emerald-500/30",
-          categoryColor: "text-emerald-800 dark:text-emerald-400",
-          categoryBg: "bg-emerald-100 dark:bg-emerald-500/10",
-          categoryBorder: "border-emerald-300 dark:border-emerald-500/20",
+            "bg-teal-100 text-teal-700 border-teal-200 dark:bg-emerald-500/20 dark:text-emerald-400 dark:border-emerald-500/30",
         };
       case "staff":
         return {
           gradient:
-            "from-orange-100 via-amber-50 to-yellow-100 dark:from-orange-500/20 dark:via-amber-500/10 dark:to-yellow-500/20",
-          accent: "from-orange-500 to-amber-500",
+            "from-orange-100 via-yellow-100 to-pink-100 dark:from-orange-500/20 dark:via-amber-500/10 dark:to-yellow-500/20",
+          accent: "from-orange-400 to-yellow-400",
           icon: (
-            <ChefHat className="w-4 h-4 text-orange-700 dark:text-orange-500" />
+            <ChefHat className="w-4 h-4 text-orange-500 dark:text-orange-500" />
           ),
           badge: "Staff",
           badgeColor:
-            "bg-orange-200 text-orange-800 border-orange-300 dark:bg-orange-500/20 dark:text-orange-400 dark:border-orange-500/30",
-          categoryColor: "text-orange-800 dark:text-orange-400",
-          categoryBg: "bg-orange-100 dark:bg-orange-500/10",
-          categoryBorder: "border-orange-300 dark:border-orange-500/20",
+            "bg-orange-100 text-orange-700 border-orange-200 dark:bg-orange-500/20 dark:text-orange-400 dark:border-orange-500/30",
         };
       default:
         return {
           gradient:
-            "from-gray-100 via-slate-50 to-zinc-100 dark:from-gray-500/20 dark:via-slate-500/10 dark:to-zinc-500/20",
-          accent: "from-gray-500 to-slate-500",
+            "from-blue-100 via-slate-50 to-zinc-100 dark:from-gray-500/20 dark:via-slate-500/10 dark:to-zinc-500/20",
+          accent: "from-blue-300 to-slate-300",
           icon: (
-            <UserCheck className="w-4 h-4 text-gray-700 dark:text-gray-500" />
+            <UserCheck className="w-4 h-4 text-blue-500 dark:text-gray-500" />
           ),
           badge: "User",
           badgeColor:
-            "bg-gray-200 text-gray-800 border-gray-300 dark:bg-gray-500/20 dark:text-gray-400 dark:border-gray-500/30",
-          categoryColor: "text-gray-800 dark:text-gray-400",
-          categoryBg: "bg-gray-100 dark:bg-gray-500/10",
-          categoryBorder: "border-gray-300 dark:border-gray-500/20",
+            "bg-blue-100 text-blue-700 border-blue-200 dark:bg-gray-500/20 dark:text-gray-400 dark:border-gray-500/30",
         };
     }
   };
@@ -160,7 +148,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
             roleStyles.gradient
           )}
         />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(0,0,0,0.05)_1px,transparent_0)] dark:bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.1)_1px,transparent_0)] bg-[length:20px_20px] pointer-events-none" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(80,120,255,0.04)_1px,transparent_0)] dark:bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.1)_1px,transparent_0)] bg-[length:20px_20px] pointer-events-none" />
         <motion.div
           animate={{
             backgroundPosition: ["0% 0%", "100% 100%"],
@@ -171,7 +159,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
             repeatType: "reverse",
           }}
           className={cn(
-            "absolute inset-0 bg-gradient-to-b from-transparent via-blue-500/5 dark:via-primary/5 to-transparent opacity-30"
+            "absolute inset-0 bg-gradient-to-b from-transparent via-pink-200/30 to-transparent opacity-40 dark:via-primary/5"
           )}
         />
       </div>

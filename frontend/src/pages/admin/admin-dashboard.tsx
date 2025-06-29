@@ -1,21 +1,32 @@
 import { motion } from "framer-motion";
 import {
   AlertTriangle,
+  BarChart2,
+  Bell,
   CheckCircle,
   Clock,
   DollarSign,
   Download,
+  FileText,
   Loader2,
   Plus,
+  Settings,
   ShoppingCart,
   Star,
+  UserCircle,
   Users,
   XCircle,
 } from "lucide-react";
 import React from "react";
+import AnnouncementCard from "../../components/dashboard/AnnouncementCard";
 import DashboardShell from "../../components/dashboard/DashboardShell";
+import ExpenseBreakdownCard from "../../components/dashboard/ExpenseBreakdownCard";
 import { KPICard } from "../../components/dashboard/KPICard";
+import MiniCalendar from "../../components/dashboard/MiniCalendar";
+import QuickLinks from "../../components/dashboard/QuickLinks";
 import { SalesChart } from "../../components/dashboard/SalesChart";
+import StaffPerformanceCard from "../../components/dashboard/StaffPerformanceCard";
+import TopSellingItemsCard from "../../components/dashboard/TopSellingItemsCard";
 import { Badge } from "../../components/ui/Badge";
 import { Button } from "../../components/ui/button";
 import {
@@ -25,12 +36,11 @@ import {
   CardHeader,
   CardTitle,
 } from "../../components/ui/card";
-import { Grid } from "../../components/ui/grid";
 import { Progress } from "../../components/ui/Progress";
 import { Stack } from "../../components/ui/stack";
 
 const AdminDashboard: React.FC = () => {
-  // Enhanced dummy data for admin dashboard
+  // Dummy data for widgets
   const kpiData = [
     {
       title: "Total Revenue",
@@ -140,43 +150,68 @@ const AdminDashboard: React.FC = () => {
     { name: "Onions", current: 6, min: 12, unit: "kg", priority: "medium" },
   ];
 
-  const getStatusColor = (
-    status: string
-  ): "success" | "destructive" | "info" | "warning" | "default" => {
-    switch (status) {
-      case "completed":
-        return "success";
-      case "pending":
-        return "warning";
-      case "cooking":
-        return "info";
-      default:
-        return "default";
-    }
-  };
+  // New widget data
+  const topSellingItems = [
+    { name: "Chicken Burger", count: 120, revenue: 900 },
+    { name: "Veg Pizza", count: 95, revenue: 760 },
+    { name: "Pasta Alfredo", count: 80, revenue: 640 },
+    { name: "Grilled Sandwich", count: 70, revenue: 490 },
+  ];
+  const expenseData = [
+    { category: "Ingredients", value: 3500, color: "#34d399" },
+    { category: "Salaries", value: 2200, color: "#60a5fa" },
+    { category: "Utilities", value: 900, color: "#fbbf24" },
+    { category: "Maintenance", value: 400, color: "#f472b6" },
+  ];
+  const staffPerformance = [
+    { name: "Alice Smith", role: "Chef", score: 98 },
+    { name: "Bob Lee", role: "Waiter", score: 95 },
+    { name: "Cathy Brown", role: "Manager", score: 93 },
+  ];
+  const calendarEvents = [
+    { date: new Date().toISOString(), label: "Inventory Check" },
+    {
+      date: new Date(Date.now() + 86400000).toISOString(),
+      label: "Staff Meeting",
+    },
+    {
+      date: new Date(Date.now() + 2 * 86400000).toISOString(),
+      label: "Menu Review",
+    },
+  ];
 
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case "completed":
-        return <CheckCircle className="w-4 h-4 text-green-500" />;
-      case "pending":
-        return <Clock className="w-4 h-4 text-yellow-500" />;
-      case "cooking":
-        return <Loader2 className="w-4 h-4 text-blue-500 animate-spin" />;
-      default:
-        return <XCircle className="w-4 h-4 text-red-500" />;
-    }
-  };
+  // Quick links for admin
+  const quickLinks = [
+    { icon: BarChart2, label: "Reports", href: "/admin/reports" },
+    { icon: FileText, label: "Inventory", href: "/admin/inventory" },
+    { icon: Users, label: "Staff", href: "/admin/employees" },
+    { icon: Settings, label: "Settings", href: "/admin/settings" },
+  ];
 
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case "high":
-        return "text-red-600 bg-red-500/10 border-red-500/20";
-      case "medium":
-        return "text-orange-600 bg-orange-500/10 border-orange-500/20";
-      default:
-        return "text-yellow-600 bg-yellow-500/10 border-yellow-500/20";
-    }
+  // Notifications bell (dummy count)
+  const NotificationsBell = () => (
+    <div className="relative">
+      <Bell className="w-6 h-6 text-primary" />
+      <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full px-1">
+        3
+      </span>
+    </div>
+  );
+
+  // Avatar (dummy)
+  const Avatar = () => (
+    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/40 to-accent/40 flex items-center justify-center border border-primary/30">
+      <UserCircle className="w-8 h-8 text-primary" />
+    </div>
+  );
+
+  // Announcement
+  const announcement = {
+    title: "System Update",
+    message:
+      "A new version of the dashboard is now live! Enjoy new features and improved performance.",
+    ctaLabel: "Learn More",
+    ctaHref: "/admin/updates",
   };
 
   const dashboardActions = (
@@ -202,11 +237,22 @@ const AdminDashboard: React.FC = () => {
   return (
     <DashboardShell
       title="Admin Dashboard"
-      description="Welcome to your restaurant management dashboard"
+      subtitle="Welcome to your restaurant management dashboard"
       actions={dashboardActions}
+      avatar={<Avatar />}
+      notifications={<NotificationsBell />}
+      quickLinks={<QuickLinks links={quickLinks} />}
+      widgetsRow={
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+          <AnnouncementCard {...announcement} />
+          <MiniCalendar events={calendarEvents} />
+          <TopSellingItemsCard items={topSellingItems} />
+          <ExpenseBreakdownCard data={expenseData} />
+        </div>
+      }
     >
       {/* KPI Cards */}
-      <Grid cols={1} md={2} lg={4} className="mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {kpiData.map((kpi, index) => (
           <motion.div
             key={index}
@@ -217,10 +263,10 @@ const AdminDashboard: React.FC = () => {
             <KPICard {...kpi} />
           </motion.div>
         ))}
-      </Grid>
+      </div>
 
       {/* Enhanced Charts and Analytics */}
-      <Grid cols={2} gap="lg">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Sales Chart */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
@@ -252,40 +298,18 @@ const AdminDashboard: React.FC = () => {
           </Card>
         </motion.div>
 
-        {/* Revenue Chart */}
+        {/* Staff Performance */}
         <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.5 }}
         >
-          <Card className="bg-gradient-to-br from-card/80 to-card/60 backdrop-blur-sm border-border/50 shadow-xl hover:shadow-2xl transition-all duration-300">
-            <CardHeader className="bg-gradient-to-r from-accent/5 to-primary/5 border-b border-border/30">
-              <div className="flex items-center justify-between">
-                <div>
-                  <CardTitle className="text-xl font-bold bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">
-                    Revenue Trend
-                  </CardTitle>
-                  <CardDescription className="text-muted-foreground">
-                    Monthly revenue analysis
-                  </CardDescription>
-                </div>
-                <Badge
-                  variant="outline"
-                  className="bg-background/50 border-accent/30"
-                >
-                  Monthly
-                </Badge>
-              </div>
-            </CardHeader>
-            <CardContent className="p-6">
-              <SalesChart data={salesData} type="line" />
-            </CardContent>
-          </Card>
+          <StaffPerformanceCard staff={staffPerformance} />
         </motion.div>
-      </Grid>
+      </div>
 
       {/* Enhanced Recent Orders and Alerts */}
-      <Grid cols={2} gap="lg">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Recent Orders */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -413,9 +437,47 @@ const AdminDashboard: React.FC = () => {
             </CardContent>
           </Card>
         </motion.div>
-      </Grid>
+      </div>
     </DashboardShell>
   );
 };
+
+// Helper functions (copied from previous code)
+function getStatusColor(
+  status: string
+): "success" | "destructive" | "info" | "warning" | "default" {
+  switch (status) {
+    case "completed":
+      return "success";
+    case "pending":
+      return "warning";
+    case "cooking":
+      return "info";
+    default:
+      return "default";
+  }
+}
+function getStatusIcon(status: string) {
+  switch (status) {
+    case "completed":
+      return <CheckCircle className="w-4 h-4 text-green-500" />;
+    case "pending":
+      return <Clock className="w-4 h-4 text-yellow-500" />;
+    case "cooking":
+      return <Loader2 className="w-4 h-4 text-blue-500 animate-spin" />;
+    default:
+      return <XCircle className="w-4 h-4 text-red-500" />;
+  }
+}
+function getPriorityColor(priority: string) {
+  switch (priority) {
+    case "high":
+      return "text-red-600 bg-red-500/10 border-red-500/20";
+    case "medium":
+      return "text-orange-600 bg-orange-500/10 border-orange-500/20";
+    default:
+      return "text-yellow-600 bg-yellow-500/10 border-yellow-500/20";
+  }
+}
 
 export default AdminDashboard;

@@ -1,23 +1,33 @@
 import { motion } from "framer-motion";
 import {
   Award,
+  Bell,
   Briefcase,
   Building,
   Calendar,
   CheckCircle,
   Clock,
   Download,
+  FileText,
+  HeartHandshake,
   Plus,
+  Settings,
   TrendingUp,
   UserCheck,
+  UserCircle,
   Users,
   UserX,
   XCircle,
 } from "lucide-react";
 import React from "react";
+import AnnouncementCard from "../../components/dashboard/AnnouncementCard";
+import BirthdaysCard from "../../components/dashboard/BirthdaysCard";
 import DashboardShell from "../../components/dashboard/DashboardShell";
 import { KPICard } from "../../components/dashboard/KPICard";
+import MiniCalendar from "../../components/dashboard/MiniCalendar";
+import QuickLinks from "../../components/dashboard/QuickLinks";
 import { SalesChart } from "../../components/dashboard/SalesChart";
+import TeamMoodCard from "../../components/dashboard/TeamMoodCard";
 import { Badge } from "../../components/ui/Badge";
 import { Button } from "../../components/ui/button";
 import {
@@ -27,12 +37,11 @@ import {
   CardHeader,
   CardTitle,
 } from "../../components/ui/card";
-import { Grid } from "../../components/ui/grid";
 import { Progress } from "../../components/ui/Progress";
 import { Stack } from "../../components/ui/stack";
 
 const HRDashboard: React.FC = () => {
-  // Enhanced dummy data for HR dashboard
+  // Dummy data for widgets
   const kpiData = [
     {
       title: "Total Employees",
@@ -194,6 +203,73 @@ const HRDashboard: React.FC = () => {
     },
   ];
 
+  // New widget data
+  const birthdays = [
+    {
+      name: "Emily Wilson",
+      date: new Date(Date.now() + 2 * 86400000).toISOString(),
+      type: "birthday",
+    },
+    {
+      name: "Tom Brown",
+      date: new Date(Date.now() + 5 * 86400000).toISOString(),
+      type: "anniversary",
+    },
+  ];
+
+  const teamMoods = [
+    { name: "John Smith", mood: "happy", comment: "Great team spirit!" },
+    { name: "Sarah Johnson", mood: "neutral", comment: "Busy week." },
+    { name: "Mike Davis", mood: "happy", comment: "Enjoying the new menu." },
+    { name: "Emily Wilson", mood: "sad", comment: "A bit tired." },
+  ];
+
+  const calendarEvents = [
+    { date: new Date().toISOString(), label: "Interview: Waiter" },
+    {
+      date: new Date(Date.now() + 86400000).toISOString(),
+      label: "Payroll Review",
+    },
+    {
+      date: new Date(Date.now() + 2 * 86400000).toISOString(),
+      label: "Policy Update",
+    },
+  ];
+
+  // Quick links for HR
+  const quickLinks = [
+    { icon: FileText, label: "Recruitment", href: "/hr/recruitment" },
+    { icon: Calendar, label: "Attendance", href: "/hr/attendance" },
+    { icon: HeartHandshake, label: "Benefits", href: "/hr/benefits" },
+    { icon: Settings, label: "Settings", href: "/hr/settings" },
+  ];
+
+  // Notifications bell (dummy count)
+  const NotificationsBell = () => (
+    <div className="relative">
+      <Bell className="w-6 h-6 text-primary" />
+      <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full px-1">
+        2
+      </span>
+    </div>
+  );
+
+  // Avatar (dummy)
+  const Avatar = () => (
+    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/40 to-accent/40 flex items-center justify-center border border-primary/30">
+      <UserCircle className="w-8 h-8 text-primary" />
+    </div>
+  );
+
+  // Announcement
+  const announcement = {
+    title: "HR Policy Update",
+    message:
+      "New leave policy effective from next month. Please review the HR portal for details.",
+    ctaLabel: "View Policy",
+    ctaHref: "/hr/policies",
+  };
+
   const getStatusIcon = (status: string) => {
     switch (status) {
       case "present":
@@ -247,9 +323,20 @@ const HRDashboard: React.FC = () => {
       title="HR Dashboard"
       subtitle="Employee management and attendance overview."
       actions={dashboardActions}
+      avatar={<Avatar />}
+      notifications={<NotificationsBell />}
+      quickLinks={<QuickLinks links={quickLinks} />}
+      widgetsRow={
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+          <AnnouncementCard {...announcement} />
+          <MiniCalendar events={calendarEvents} />
+          <BirthdaysCard people={birthdays} />
+          <TeamMoodCard moods={teamMoods} />
+        </div>
+      }
     >
-      {/* Enhanced KPI Cards */}
-      <Grid cols={4} gap="lg">
+      {/* KPI Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {kpiData.map((kpi, index) => (
           <motion.div
             key={index}
@@ -260,10 +347,10 @@ const HRDashboard: React.FC = () => {
             <KPICard {...kpi} />
           </motion.div>
         ))}
-      </Grid>
+      </div>
 
-      {/* Enhanced Charts and Analytics */}
-      <Grid cols={2} gap="lg">
+      {/* Charts and Analytics */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Attendance Chart */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
@@ -363,10 +450,10 @@ const HRDashboard: React.FC = () => {
             </CardContent>
           </Card>
         </motion.div>
-      </Grid>
+      </div>
 
-      {/* Enhanced Recent Activity and Leave Requests */}
-      <Grid cols={2} gap="lg">
+      {/* Recent Attendance and Leave Requests */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Recent Attendance */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -506,7 +593,7 @@ const HRDashboard: React.FC = () => {
             </CardContent>
           </Card>
         </motion.div>
-      </Grid>
+      </div>
     </DashboardShell>
   );
 };

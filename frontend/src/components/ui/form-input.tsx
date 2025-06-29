@@ -36,7 +36,7 @@ const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
             {...props}
           />
           {rightIcon && (
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-auto">
               {rightIcon}
             </span>
           )}
