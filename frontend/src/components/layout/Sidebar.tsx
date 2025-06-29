@@ -4,7 +4,15 @@
  */
 
 import { AnimatePresence, motion } from "framer-motion";
-import { ChefHat, Crown, UserCheck, Users, X } from "lucide-react";
+import {
+  ChefHat,
+  ChevronDown,
+  ChevronRight,
+  Crown,
+  UserCheck,
+  Users,
+  X,
+} from "lucide-react";
 import React from "react";
 import { getNavigationByRole } from "../../config/navigation.tsx";
 import { useLayout } from "../../hooks/useLayout";
@@ -20,8 +28,23 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
   const { user } = useAuth();
   const { isMobile } = useLayout();
+  const [expandedSections, setExpandedSections] = React.useState<Set<number>>(
+    new Set([0])
+  ); // First section expanded by default
 
   const navigation = user ? getNavigationByRole(user.role) : [];
+
+  const toggleSection = (sectionIndex: number) => {
+    setExpandedSections((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(sectionIndex)) {
+        newSet.delete(sectionIndex);
+      } else {
+        newSet.add(sectionIndex);
+      }
+      return newSet;
+    });
+  };
 
   // Enhanced role-based styling with better light theme support
   const getRoleStyles = (role: string) => {
@@ -178,50 +201,52 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
             </motion.button>
           )}
         </div>
-      </motion.div>
-      {/* Enhanced user info with role-based styling */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          initial={{ opacity: 0, height: 0, scale: 0.95 }}
-          animate={{ opacity: 1, height: "auto", scale: 1 }}
-          exit={{ opacity: 0, height: 0, scale: 0.95 }}
-          transition={{ duration: 0.4 }}
-          className="mx-1 px-3 py-2 bg-white/90 dark:bg-card/90 backdrop-blur-xl rounded-lg border border-gray-200/50 dark:border-white/10 shadow-sm hover:shadow-md transition-all duration-300 relative overflow-hidden"
-        >
-          <div className="relative z-10">
-            {/* Single line: Status + Name + Role Icon */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <motion.div
-                  animate={{ scale: [1, 1.1, 1] }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                  className="w-1.5 h-1.5 bg-green-500 rounded-full"
-                />
-                <div>
-                  <p className="font-semibold text-gray-900 dark:text-foreground text-sm leading-tight">
-                    {user?.name || "User"}
-                  </p>
-                </div>
-              </div>
 
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                transition={{ duration: 0.2 }}
-                className="p-1 rounded-md bg-gray-50/80 dark:bg-white/10 border border-gray-200/40 dark:border-white/10"
-              >
-                {roleStyles.icon}
-              </motion.div>
+        {/* Enhanced user info with role-based styling */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            initial={{ opacity: 0, height: 0, scale: 0.95 }}
+            animate={{ opacity: 1, height: "auto", scale: 1 }}
+            exit={{ opacity: 0, height: 0, scale: 0.95 }}
+            transition={{ duration: 0.4 }}
+            className="mx-1 px-3 py-2 bg-white/90 dark:bg-card/90 backdrop-blur-xl rounded-lg border border-gray-200/50 dark:border-white/10 shadow-sm hover:shadow-md transition-all duration-300 relative overflow-hidden"
+          >
+            <div className="relative z-10">
+              {/* Single line: Status + Name + Role Icon */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <motion.div
+                    animate={{ scale: [1, 1.1, 1] }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
+                    className="w-1.5 h-1.5 bg-green-500 rounded-full"
+                  />
+                  <div>
+                    <p className="font-semibold text-gray-900 dark:text-foreground text-sm leading-tight">
+                      {user?.name || "User"}
+                    </p>
+                  </div>
+                </div>
+
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ duration: 0.2 }}
+                  className="p-1 rounded-md bg-gray-50/80 dark:bg-white/10 border border-gray-200/40 dark:border-white/10"
+                >
+                  {roleStyles.icon}
+                </motion.div>
+              </div>
             </div>
-          </div>
-        </motion.div>
-      </AnimatePresence>
+          </motion.div>
+        </AnimatePresence>
+      </motion.div>
+
       {/* Navigation */}
       <div className="flex-1 overflow-y-auto overflow-x-hidden relative z-10 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-neutral-600 hover:scrollbar-thumb-gray-400 dark:hover:scrollbar-thumb-neutral-500 scrollbar-track-transparent min-h-0">
-        <div className="p-4 space-y-6">
+        <div className="p-4 space-y-2">
           <AnimatePresence mode="wait">
             <motion.nav
               key="expanded"
@@ -229,54 +254,84 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
               initial="closed"
               animate="open"
               exit="closed"
-              className="space-y-6"
+              className="space-y-2"
             >
-              {navigation.map((section, sectionIndex) => (
-                <motion.div
-                  key={sectionIndex}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: sectionIndex * 0.1 }}
-                  className="space-y-3"
-                >
-                  {/* Enhanced category header with better visibility */}
-                  <motion.div
-                    className="flex items-center gap-3 px-4 py-3 rounded-xl bg-gray-50/80 dark:bg-card/40 border border-gray-200/60 dark:border-border/30"
-                    whileHover={{ scale: 1.02 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <div className="w-2 h-2 rounded-full bg-gray-400 dark:bg-gray-500" />
-                    <h3 className="text-sm font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300">
-                      {section.section}
-                    </h3>
-                    <div className="flex-1" />
-                    <div className="px-2 py-1 rounded-lg text-xs font-medium border bg-gray-100 text-gray-600 border-gray-200 dark:bg-gray-600/20 dark:text-gray-400 dark:border-gray-500/30">
-                      {section.links.length}
-                    </div>
-                  </motion.div>
+              {navigation.map((section, sectionIndex) => {
+                const isExpanded = expandedSections.has(sectionIndex);
 
-                  <ul className="space-y-2 ml-2">
-                    {section.links.map((link, linkIndex) => (
-                      <motion.li
-                        key={link.to}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{
-                          delay: sectionIndex * 0.1 + linkIndex * 0.05,
-                        }}
-                        className="rounded-xl overflow-hidden"
-                      >
-                        <NavigationItem
-                          {...link}
-                          variant="sidebar"
-                          onClick={onClose}
-                          className="transition-all duration-300 hover:bg-gray-100/80 dark:hover:bg-background/30 focus:bg-gray-200/80 dark:focus:bg-background/40 active:bg-gray-300/80 dark:active:bg-background/50 rounded-xl px-4 py-3 shadow-sm hover:shadow-md group border border-transparent hover:border-gray-200/60 dark:hover:border-border/30"
-                        />
-                      </motion.li>
-                    ))}
-                  </ul>
-                </motion.div>
-              ))}
+                return (
+                  <motion.div
+                    key={sectionIndex}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: sectionIndex * 0.1 }}
+                    className="space-y-1"
+                  >
+                    {/* Enhanced category header with dropdown functionality */}
+                    <motion.button
+                      onClick={() => toggleSection(sectionIndex)}
+                      className="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-gray-50/80 dark:bg-card/40 border border-gray-200/60 dark:border-border/30 hover:bg-gray-100/80 dark:hover:bg-card/60 transition-all duration-200 group"
+                      whileHover={{ scale: 1.01 }}
+                      whileTap={{ scale: 0.99 }}
+                    >
+                      <div className="w-2 h-2 rounded-full bg-gray-400 dark:bg-gray-500" />
+                      <h3 className="text-sm font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 flex-1 text-left">
+                        {section.section}
+                      </h3>
+                      <div className="flex items-center gap-2">
+                        <div className="px-2 py-1 rounded-lg text-xs font-medium border bg-gray-100 text-gray-600 border-gray-200 dark:bg-gray-600/20 dark:text-gray-400 dark:border-gray-500/30">
+                          {section.links.length}
+                        </div>
+                        <motion.div
+                          animate={{ rotate: isExpanded ? 90 : 0 }}
+                          transition={{ duration: 0.2 }}
+                          className="text-gray-500 dark:text-gray-400"
+                        >
+                          {isExpanded ? (
+                            <ChevronDown size={16} />
+                          ) : (
+                            <ChevronRight size={16} />
+                          )}
+                        </motion.div>
+                      </div>
+                    </motion.button>
+
+                    {/* Collapsible navigation items */}
+                    <AnimatePresence>
+                      {isExpanded && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.3, ease: "easeInOut" }}
+                          className="overflow-hidden"
+                        >
+                          <ul className="space-y-1 ml-2 pl-4 border-l border-gray-200/40 dark:border-gray-600/40">
+                            {section.links.map((link, linkIndex) => (
+                              <motion.li
+                                key={link.to}
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{
+                                  delay: linkIndex * 0.05,
+                                }}
+                                className="rounded-lg overflow-hidden"
+                              >
+                                <NavigationItem
+                                  {...link}
+                                  variant="sidebar"
+                                  onClick={onClose}
+                                  className="transition-all duration-300 hover:bg-gray-100/80 dark:hover:bg-background/30 focus:bg-gray-200/80 dark:focus:bg-background/40 active:bg-gray-300/80 dark:active:bg-background/50 rounded-lg px-3 py-2 shadow-sm hover:shadow-md group border border-transparent hover:border-gray-200/60 dark:hover:border-border/30"
+                                />
+                              </motion.li>
+                            ))}
+                          </ul>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </motion.div>
+                );
+              })}
             </motion.nav>
           </AnimatePresence>
         </div>
