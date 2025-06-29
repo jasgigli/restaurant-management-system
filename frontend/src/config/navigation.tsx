@@ -24,11 +24,9 @@ import {
   FileSpreadsheet,
   FileText,
   Gift,
-  Globe,
   Heart,
   Home,
   Info,
-  Layers,
   Menu,
   MessageSquare,
   Monitor,
@@ -41,7 +39,6 @@ import {
   Settings,
   Shield,
   ShoppingCart,
-  Smartphone,
   Star,
   Tag,
   Target,
@@ -76,7 +73,7 @@ export type NavigationConfig = NavigationSection[];
 
 // Admin Navigation - Comprehensive Restaurant Management
 export const adminNavigation: NavigationConfig = [
-  {
+  {     
     section: "Dashboard & Analytics",
     links: [
       {
@@ -222,35 +219,7 @@ export const adminNavigation: NavigationConfig = [
       },
     ],
   },
-  {
-    section: "Digital & Technology",
-    links: [
-      {
-        to: "/admin/pos",
-        label: "POS System",
-        icon: <Monitor size={20} />,
-        description: "Point of sale management",
-      },
-      {
-        to: "/admin/online-orders",
-        label: "Online Orders",
-        icon: <Globe size={20} />,
-        description: "Delivery & takeaway",
-      },
-      {
-        to: "/admin/mobile-app",
-        label: "Mobile App",
-        icon: <Smartphone size={20} />,
-        description: "App management",
-      },
-      {
-        to: "/admin/integrations",
-        label: "Third-party Integrations",
-        icon: <Layers size={20} />,
-        description: "External service connections",
-      },
-    ],
-  },
+
   {
     section: "Business Management",
     links: [

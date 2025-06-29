@@ -241,7 +241,7 @@ const StaffDashboard: React.FC = () => {
       notifications={<NotificationsBell />}
       quickLinks={<QuickLinks links={quickLinks} />}
       widgetsRow={
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-6 gap-x-6 mb-6">
           <AnnouncementCard {...announcement} />
           <MiniCalendar events={calendarEvents} />
           <ScheduleCard tasks={scheduleTasks} />
@@ -250,15 +250,15 @@ const StaffDashboard: React.FC = () => {
       }
     >
       {/* KPI Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-y-6 gap-x-6 mb-8">
         {kpiData.map((kpi, index) => (
           <KPICard key={index} {...kpi} />
         ))}
       </div>
       {/* Charts and Current Orders */}
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-6">
         {/* Daily Orders Chart */}
-        <div className="p-0">
+        <div className="p-4 sm:p-6 rounded-2xl shadow-lg bg-gradient-to-br from-card/80 to-card/60 border border-border/30">
           <div className="flex items-center justify-between mb-6">
             <div>
               <h3 className="text-lg font-semibold text-gray-900">
@@ -271,7 +271,7 @@ const StaffDashboard: React.FC = () => {
           <SalesChart data={dailyOrders} type="bar" />
         </div>
         {/* Current Orders */}
-        <div className="p-0">
+        <div className="p-4 sm:p-6 rounded-2xl shadow-lg bg-gradient-to-br from-card/80 to-card/60 border border-border/30">
           <div className="flex items-center justify-between mb-6">
             <div>
               <h3 className="text-lg font-semibold text-gray-900">
@@ -285,7 +285,7 @@ const StaffDashboard: React.FC = () => {
             {currentOrders.map((order, index) => (
               <div
                 key={index}
-                className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
               >
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
@@ -300,7 +300,7 @@ const StaffDashboard: React.FC = () => {
                     {order.items.join(", ")}
                   </p>
                 </div>
-                <div className="text-right">
+                <div className="text-right mt-2 sm:mt-0">
                   <p className="text-sm text-gray-500">{order.time}</p>
                   <Badge
                     variant={getOrderStatusColor(order.status)}
@@ -315,11 +315,13 @@ const StaffDashboard: React.FC = () => {
         </div>
       </div>
       {/* Tasks, Shift Swaps, and Notifications */}
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mt-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-6 mt-8">
         {/* Shift Swaps */}
-        <ShiftSwapCard swaps={shiftSwaps} />
+        <div className="min-w-0">
+          <ShiftSwapCard swaps={shiftSwaps} />
+        </div>
         {/* Notifications */}
-        <div className="p-6 bg-gradient-to-br from-card/80 to-card/60 rounded-2xl border border-border/30 shadow-md">
+        <div className="p-4 sm:p-6 bg-gradient-to-br from-card/80 to-card/60 rounded-2xl border border-border/30 shadow-md min-w-0">
           <div className="flex items-center justify-between mb-6">
             <div>
               <h3 className="text-lg font-semibold text-gray-900">

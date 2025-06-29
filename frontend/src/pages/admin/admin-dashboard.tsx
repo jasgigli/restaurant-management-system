@@ -243,7 +243,7 @@ const AdminDashboard: React.FC = () => {
       notifications={<NotificationsBell />}
       quickLinks={<QuickLinks links={quickLinks} />}
       widgetsRow={
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-6 gap-x-6 mb-6">
           <AnnouncementCard {...announcement} />
           <MiniCalendar events={calendarEvents} />
           <TopSellingItemsCard items={topSellingItems} />
@@ -252,7 +252,7 @@ const AdminDashboard: React.FC = () => {
       }
     >
       {/* KPI Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-y-6 gap-x-6 mb-8">
         {kpiData.map((kpi, index) => (
           <motion.div
             key={index}
@@ -266,14 +266,14 @@ const AdminDashboard: React.FC = () => {
       </div>
 
       {/* Enhanced Charts and Analytics */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-6">
         {/* Sales Chart */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.4 }}
         >
-          <Card className="bg-gradient-to-br from-card/80 to-card/60 backdrop-blur-sm border-border/50 shadow-xl hover:shadow-2xl transition-all duration-300">
+          <Card className="bg-gradient-to-br from-card/80 to-card/60 rounded-2xl backdrop-blur-sm border-border/50 shadow-xl hover:shadow-2xl transition-all duration-300">
             <CardHeader className="bg-gradient-to-r from-primary/5 to-accent/5 border-b border-border/30">
               <div className="flex items-center justify-between">
                 <div>
@@ -292,7 +292,7 @@ const AdminDashboard: React.FC = () => {
                 </Badge>
               </div>
             </CardHeader>
-            <CardContent className="p-6">
+            <CardContent className="p-4 sm:p-6">
               <SalesChart data={salesData} type="bar" />
             </CardContent>
           </Card>
@@ -309,14 +309,14 @@ const AdminDashboard: React.FC = () => {
       </div>
 
       {/* Enhanced Recent Orders and Alerts */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-6">
         {/* Recent Orders */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
         >
-          <Card className="bg-gradient-to-br from-card/80 to-card/60 backdrop-blur-sm border-border/50 shadow-xl hover:shadow-2xl transition-all duration-300">
+          <Card className="bg-gradient-to-br from-card/80 to-card/60 rounded-2xl backdrop-blur-sm border-border/50 shadow-xl hover:shadow-2xl transition-all duration-300">
             <CardHeader className="bg-gradient-to-r from-green-500/5 to-emerald-500/5 border-b border-border/30">
               <div className="flex items-center justify-between">
                 <div>
@@ -335,7 +335,7 @@ const AdminDashboard: React.FC = () => {
                 </Badge>
               </div>
             </CardHeader>
-            <CardContent className="p-6">
+            <CardContent className="p-4 sm:p-6">
               <Stack spacing="md">
                 {recentOrders.map((order, index) => (
                   <motion.div
@@ -343,7 +343,7 @@ const AdminDashboard: React.FC = () => {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.7 + index * 0.1 }}
-                    className="flex items-center justify-between p-4 bg-gradient-to-r from-muted/30 to-muted/20 rounded-xl hover:from-muted/40 hover:to-muted/30 transition-all duration-200 border border-border/30 hover:border-border/50 group"
+                    className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 bg-gradient-to-r from-muted/30 to-muted/20 rounded-xl hover:from-muted/40 hover:to-muted/30 transition-all duration-200 border border-border/30 hover:border-border/50 group"
                   >
                     <div className="flex-1">
                       <p className="font-semibold text-foreground group-hover:text-primary transition-colors duration-200">
@@ -353,7 +353,7 @@ const AdminDashboard: React.FC = () => {
                         {order.id} • ${order.amount} • {order.items} items
                       </p>
                     </div>
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 mt-2 sm:mt-0">
                       <div className="flex items-center gap-1">
                         {getStatusIcon(order.status)}
                         <Badge
@@ -380,7 +380,7 @@ const AdminDashboard: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7 }}
         >
-          <Card className="bg-gradient-to-br from-card/80 to-card/60 backdrop-blur-sm border-border/50 shadow-xl hover:shadow-2xl transition-all duration-300">
+          <Card className="bg-gradient-to-br from-card/80 to-card/60 rounded-2xl backdrop-blur-sm border-border/50 shadow-xl hover:shadow-2xl transition-all duration-300">
             <CardHeader className="bg-gradient-to-r from-red-500/5 to-orange-500/5 border-b border-border/30">
               <div className="flex items-center justify-between">
                 <div>
@@ -400,7 +400,7 @@ const AdminDashboard: React.FC = () => {
                 </Badge>
               </div>
             </CardHeader>
-            <CardContent className="p-6">
+            <CardContent className="p-4 sm:p-6">
               <Stack spacing="md">
                 {lowStockItems.map((item, index) => (
                   <motion.div
@@ -410,11 +410,11 @@ const AdminDashboard: React.FC = () => {
                     transition={{ delay: 0.8 + index * 0.1 }}
                     className="space-y-3 p-4 bg-gradient-to-r from-red-500/5 to-orange-500/5 rounded-xl border border-red-500/20 hover:border-red-500/30 transition-all duration-200"
                   >
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between">
                       <span className="text-sm font-semibold text-foreground">
                         {item.name}
                       </span>
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 mt-2 sm:mt-0">
                         <span
                           className={`text-xs px-2 py-1 rounded-full border ${getPriorityColor(
                             item.priority

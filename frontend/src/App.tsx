@@ -13,20 +13,41 @@ import { useAuth } from "./providers/AuthProvider";
 
 // Admin Pages
 import AdminAnalytics from "./pages/admin/AdminAnalytics";
+import AdminAPI from "./pages/admin/AdminAPI";
 import AdminAttendance from "./pages/admin/AdminAttendance";
 import AdminBackup from "./pages/admin/AdminBackup";
+import AdminCompetitors from "./pages/admin/AdminCompetitors";
+import AdminContact from "./pages/admin/AdminContact";
+import AdminCustomers from "./pages/admin/AdminCustomers";
 import AdminEmployees from "./pages/admin/AdminEmployees";
 import AdminExpenses from "./pages/admin/AdminExpenses";
+import AdminFeedback from "./pages/admin/AdminFeedback";
+import AdminHelp from "./pages/admin/AdminHelp";
+import AdminIntegrations from "./pages/admin/AdminIntegrations";
 import AdminInventory from "./pages/admin/AdminInventory";
 import AdminKitchen from "./pages/admin/AdminKitchen";
+import AdminLogs from "./pages/admin/AdminLogs";
+import AdminLoyalty from "./pages/admin/AdminLoyalty";
+import AdminMarketing from "./pages/admin/AdminMarketing";
 import AdminMenu from "./pages/admin/AdminMenu";
+import AdminMobileApp from "./pages/admin/AdminMobileApp";
+import AdminNotifications from "./pages/admin/AdminNotifications";
+import AdminOnlineOrders from "./pages/admin/AdminOnlineOrders";
 import AdminOrders from "./pages/admin/AdminOrders";
 import AdminPayroll from "./pages/admin/AdminPayroll";
+import AdminPerformance from "./pages/admin/AdminPerformance";
+import AdminPOS from "./pages/admin/AdminPOS";
+import AdminPricing from "./pages/admin/AdminPricing";
 import AdminPurchases from "./pages/admin/AdminPurchases";
+import AdminRecruitment from "./pages/admin/AdminRecruitment";
 import AdminReports from "./pages/admin/AdminReports";
+import AdminReservations from "./pages/admin/AdminReservations";
 import AdminSales from "./pages/admin/AdminSales";
 import AdminSecurity from "./pages/admin/AdminSecurity";
 import AdminSettings from "./pages/admin/AdminSettings";
+import AdminTables from "./pages/admin/AdminTables";
+import AdminTaxes from "./pages/admin/AdminTaxes";
+import AdminTraining from "./pages/admin/AdminTraining";
 
 // HR Pages
 import HRAdvances from "./pages/hr/HRAdvances";
@@ -83,19 +104,40 @@ function App() {
           <Route index element={<AdminDashboard />} />
           <Route path="analytics" element={<AdminAnalytics />} />
           <Route path="reports" element={<AdminReports />} />
+          <Route path="performance" element={<AdminPerformance />} />
           <Route path="sales" element={<AdminSales />} />
           <Route path="inventory" element={<AdminInventory />} />
           <Route path="purchases" element={<AdminPurchases />} />
           <Route path="expenses" element={<AdminExpenses />} />
+          <Route path="pricing" element={<AdminPricing />} />
+          <Route path="taxes" element={<AdminTaxes />} />
           <Route path="employees" element={<AdminEmployees />} />
           <Route path="attendance" element={<AdminAttendance />} />
           <Route path="payroll" element={<AdminPayroll />} />
+          <Route path="recruitment" element={<AdminRecruitment />} />
+          <Route path="training" element={<AdminTraining />} />
           <Route path="menu" element={<AdminMenu />} />
           <Route path="orders" element={<AdminOrders />} />
           <Route path="kitchen" element={<AdminKitchen />} />
+          <Route path="tables" element={<AdminTables />} />
+          <Route path="customers" element={<AdminCustomers />} />
+          <Route path="reservations" element={<AdminReservations />} />
+          <Route path="marketing" element={<AdminMarketing />} />
+          <Route path="loyalty" element={<AdminLoyalty />} />
+          <Route path="feedback" element={<AdminFeedback />} />
+          <Route path="competitors" element={<AdminCompetitors />} />
           <Route path="settings" element={<AdminSettings />} />
           <Route path="security" element={<AdminSecurity />} />
           <Route path="backup" element={<AdminBackup />} />
+          <Route path="logs" element={<AdminLogs />} />
+          <Route path="api" element={<AdminAPI />} />
+          <Route path="notifications" element={<AdminNotifications />} />
+          <Route path="help" element={<AdminHelp />} />
+          <Route path="contact" element={<AdminContact />} />
+          <Route path="pos" element={<AdminPOS />} />
+          <Route path="online-orders" element={<AdminOnlineOrders />} />
+          <Route path="mobile-app" element={<AdminMobileApp />} />
+          <Route path="integrations" element={<AdminIntegrations />} />
         </Route>
       </Route>
 

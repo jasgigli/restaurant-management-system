@@ -8,8 +8,6 @@ interface DashboardShellProps {
   subtitle?: string;
   actions?: React.ReactNode;
   className?: string;
-  avatar?: React.ReactNode;
-  notifications?: React.ReactNode;
   quickLinks?: React.ReactNode;
   widgetsRow?: React.ReactNode; // New: for a secondary row of widgets/cards
   backgroundPattern?: React.ReactNode; // Optional: for animated/patterned backgrounds
@@ -21,8 +19,6 @@ const DashboardShell: React.FC<DashboardShellProps> = ({
   subtitle,
   actions,
   className = "",
-  avatar,
-  notifications,
   quickLinks,
   widgetsRow,
   backgroundPattern,
@@ -42,12 +38,7 @@ const DashboardShell: React.FC<DashboardShellProps> = ({
       )}
 
       {/* Enhanced Page Header */}
-      {(title ||
-        subtitle ||
-        actions ||
-        avatar ||
-        notifications ||
-        quickLinks) && (
+      {(title || subtitle || actions || quickLinks) && (
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -87,16 +78,6 @@ const DashboardShell: React.FC<DashboardShellProps> = ({
                   <div className="mt-4 flex flex-wrap gap-2">{quickLinks}</div>
                 )}
               </div>
-
-              {/* Avatar & Notifications */}
-              {(avatar || notifications) && (
-                <div className="flex items-center gap-4">
-                  {notifications && (
-                    <div className="relative">{notifications}</div>
-                  )}
-                  {avatar && <div className="relative">{avatar}</div>}
-                </div>
-              )}
 
               {actions && (
                 <motion.div

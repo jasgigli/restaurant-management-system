@@ -327,7 +327,7 @@ const HRDashboard: React.FC = () => {
       notifications={<NotificationsBell />}
       quickLinks={<QuickLinks links={quickLinks} />}
       widgetsRow={
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-6 gap-x-6 mb-6">
           <AnnouncementCard {...announcement} />
           <MiniCalendar events={calendarEvents} />
           <BirthdaysCard people={birthdays} />
@@ -336,7 +336,7 @@ const HRDashboard: React.FC = () => {
       }
     >
       {/* KPI Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-y-6 gap-x-6 mb-8">
         {kpiData.map((kpi, index) => (
           <motion.div
             key={index}
@@ -350,14 +350,14 @@ const HRDashboard: React.FC = () => {
       </div>
 
       {/* Charts and Analytics */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-6">
         {/* Attendance Chart */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.4 }}
         >
-          <Card className="bg-gradient-to-br from-card/80 to-card/60 backdrop-blur-sm border-border/50 shadow-xl hover:shadow-2xl transition-all duration-300">
+          <Card className="bg-gradient-to-br from-card/80 to-card/60 rounded-2xl backdrop-blur-sm border-border/50 shadow-xl hover:shadow-2xl transition-all duration-300">
             <CardHeader className="bg-gradient-to-r from-blue-500/5 to-cyan-500/5 border-b border-border/30">
               <div className="flex items-center justify-between">
                 <div>
@@ -376,7 +376,7 @@ const HRDashboard: React.FC = () => {
                 </Badge>
               </div>
             </CardHeader>
-            <CardContent className="p-6">
+            <CardContent className="p-4 sm:p-6">
               <SalesChart data={attendanceData} type="bar" />
             </CardContent>
           </Card>
@@ -388,7 +388,7 @@ const HRDashboard: React.FC = () => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.5 }}
         >
-          <Card className="bg-gradient-to-br from-card/80 to-card/60 backdrop-blur-sm border-border/50 shadow-xl hover:shadow-2xl transition-all duration-300">
+          <Card className="bg-gradient-to-br from-card/80 to-card/60 rounded-2xl backdrop-blur-sm border-border/50 shadow-xl hover:shadow-2xl transition-all duration-300">
             <CardHeader className="bg-gradient-to-r from-green-500/5 to-emerald-500/5 border-b border-border/30">
               <div className="flex items-center justify-between">
                 <div>
@@ -407,7 +407,7 @@ const HRDashboard: React.FC = () => {
                 </Badge>
               </div>
             </CardHeader>
-            <CardContent className="p-6">
+            <CardContent className="p-4 sm:p-6">
               <Stack spacing="md">
                 {departmentStats.map((dept, index) => (
                   <motion.div
@@ -453,14 +453,14 @@ const HRDashboard: React.FC = () => {
       </div>
 
       {/* Recent Attendance and Leave Requests */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-6">
         {/* Recent Attendance */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
         >
-          <Card className="bg-gradient-to-br from-card/80 to-card/60 backdrop-blur-sm border-border/50 shadow-xl hover:shadow-2xl transition-all duration-300">
+          <Card className="bg-gradient-to-br from-card/80 to-card/60 rounded-2xl backdrop-blur-sm border-border/50 shadow-xl hover:shadow-2xl transition-all duration-300">
             <CardHeader className="bg-gradient-to-r from-purple-500/5 to-pink-500/5 border-b border-border/30">
               <div className="flex items-center justify-between">
                 <div>
@@ -479,7 +479,7 @@ const HRDashboard: React.FC = () => {
                 </Badge>
               </div>
             </CardHeader>
-            <CardContent className="p-6">
+            <CardContent className="p-4 sm:p-6">
               <Stack spacing="md">
                 {recentAttendance.map((entry, index) => (
                   <motion.div
@@ -487,7 +487,7 @@ const HRDashboard: React.FC = () => {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.7 + index * 0.1 }}
-                    className="flex items-center justify-between p-4 bg-gradient-to-r from-muted/30 to-muted/20 rounded-xl hover:from-muted/40 hover:to-muted/30 transition-all duration-200 border border-border/30 hover:border-border/50 group"
+                    className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 bg-gradient-to-r from-muted/30 to-muted/20 rounded-xl hover:from-muted/40 hover:to-muted/30 transition-all duration-200 border border-border/30 hover:border-border/50 group"
                   >
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 bg-gradient-to-r from-primary/20 to-accent/20 rounded-full flex items-center justify-center text-xs font-bold text-primary border border-primary/30">
@@ -502,7 +502,7 @@ const HRDashboard: React.FC = () => {
                         </p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 mt-2 sm:mt-0">
                       {getStatusIcon(entry.status)}
                       <Badge
                         variant={
@@ -530,7 +530,7 @@ const HRDashboard: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7 }}
         >
-          <Card className="bg-gradient-to-br from-card/80 to-card/60 backdrop-blur-sm border-border/50 shadow-xl hover:shadow-2xl transition-all duration-300">
+          <Card className="bg-gradient-to-br from-card/80 to-card/60 rounded-2xl backdrop-blur-sm border-border/50 shadow-xl hover:shadow-2xl transition-all duration-300">
             <CardHeader className="bg-gradient-to-r from-orange-500/5 to-red-500/5 border-b border-border/30">
               <div className="flex items-center justify-between">
                 <div>
@@ -551,7 +551,7 @@ const HRDashboard: React.FC = () => {
                 </Badge>
               </div>
             </CardHeader>
-            <CardContent className="p-6">
+            <CardContent className="p-4 sm:p-6">
               <Stack spacing="md">
                 {leaveRequests.map((request, index) => (
                   <motion.div
@@ -561,7 +561,7 @@ const HRDashboard: React.FC = () => {
                     transition={{ delay: 0.8 + index * 0.1 }}
                     className="p-4 bg-gradient-to-r from-orange-500/5 to-red-500/5 rounded-xl border border-orange-500/20 hover:border-orange-500/30 transition-all duration-200"
                   >
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between">
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 bg-gradient-to-r from-orange-500/20 to-red-500/20 rounded-full flex items-center justify-center text-xs font-bold text-orange-600 border border-orange-500/30">
                           {request.avatar}
@@ -575,7 +575,7 @@ const HRDashboard: React.FC = () => {
                           </p>
                         </div>
                       </div>
-                      <div className="text-right">
+                      <div className="text-right mt-2 sm:mt-0">
                         <Badge
                           variant={getLeaveStatusColor(request.status)}
                           className="text-xs"
