@@ -1,6 +1,14 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "../services/api";
 
+export interface StoreItem {
+  id: number;
+  name: string;
+  quantity: number;
+  costPrice: number;
+  min_quantity?: number;
+}
+
 export const useGetStoreItems = () => {
   return useQuery({
     queryKey: ["storeItems"],
