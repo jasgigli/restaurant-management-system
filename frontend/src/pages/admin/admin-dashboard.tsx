@@ -202,11 +202,22 @@ const AdminDashboard: React.FC = () => {
   return (
     <DashboardShell
       title="Admin Dashboard"
-      subtitle="Welcome back! Here's what's happening today."
+      description="Welcome to your restaurant management dashboard"
       actions={dashboardActions}
     >
-      {/* Enhanced KPI Cards */}
-      <Grid cols={4} gap="lg">
+      {/* Layout Test - Remove this after verification */}
+      <div className="mb-6 p-4 bg-blue-100 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+        <h3 className="text-sm font-semibold text-blue-800 dark:text-blue-200 mb-2">
+          Layout Test - 20% Sidebar / 80% Content
+        </h3>
+        <p className="text-xs text-blue-600 dark:text-blue-300">
+          This page should be taking 80% of the screen width. The sidebar should
+          be 20%.
+        </p>
+      </div>
+
+      {/* KPI Cards */}
+      <Grid cols={1} md={2} lg={4} className="mb-8">
         {kpiData.map((kpi, index) => (
           <motion.div
             key={index}

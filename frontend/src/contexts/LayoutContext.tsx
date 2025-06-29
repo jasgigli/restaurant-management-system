@@ -41,10 +41,8 @@ export const LayoutProvider: React.FC<{ children: React.ReactNode }> = ({
     if (mobile) {
       setSidebarOpen(false);
       setSidebarCollapsed(false);
-    } else if (tablet) {
-      setSidebarOpen(true);
-      setSidebarCollapsed(true);
     } else {
+      // On tablet and desktop, always keep sidebar open for consistent 20% width
       setSidebarOpen(true);
       setSidebarCollapsed(false);
     }
@@ -57,21 +55,31 @@ export const LayoutProvider: React.FC<{ children: React.ReactNode }> = ({
     return () => window.removeEventListener("resize", handleResize);
   }, [handleResize]);
 
-  // Only close sidebar on mobile when route changes, preserve desktop state
+  // Ensure sidebar stays open on desktop/tablet, only close on mobile route changes
   useEffect(() => {
-    if (isMobile && sidebarOpen) {
+    if (isMobile) {
+      // Only close sidebar on mobile when route changes
       setSidebarOpen(false);
+    } else {
+      // Always keep sidebar open on desktop/tablet for consistent 20% width
+      setSidebarOpen(true);
     }
-  }, [location.pathname, isMobile, sidebarOpen]);
+  }, [location.pathname, isMobile]);
 
   // Action handlers
   const toggleSidebar = useCallback(() => {
-    setSidebarOpen((prev) => !prev);
-  }, []);
+    if (isMobile) {
+      // Only allow toggling on mobile
+      setSidebarOpen((prev) => !prev);
+    }
+  }, [isMobile]);
 
   const closeSidebar = useCallback(() => {
-    setSidebarOpen(false);
-  }, []);
+    // Only allow closing on mobile
+    if (isMobile) {
+      setSidebarOpen(false);
+    }
+  }, [isMobile]);
 
   const openSidebar = useCallback(() => {
     setSidebarOpen(true);

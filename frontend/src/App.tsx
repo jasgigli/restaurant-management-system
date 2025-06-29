@@ -159,8 +159,10 @@ function App() {
         }
       />
 
-      {/* Catch all route */}
-      <Route path="*" element={<NotFound />} />
+      {/* Catch all route - wrapped with MainLayout for consistency */}
+      <Route path="*" element={<MainLayout />}>
+        <Route index element={<NotFound />} />
+      </Route>
     </Routes>
   );
 }
