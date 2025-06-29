@@ -10,12 +10,12 @@ import {
   Users,
 } from "lucide-react";
 import React from "react";
-import DashboardShell from "../../../components/dashboard/DashboardShell";
-import { KPICard } from "../../../components/dashboard/KPICard";
-import { SalesChart } from "../../../components/dashboard/SalesChart";
-import { Badge } from "../../../components/ui/Badge";
-import { Button } from "../../../components/ui/button";
-import { Card } from "../../../components/ui/card";
+import DashboardShell from "../../components/dashboard/DashboardShell";
+import { KPICard } from "../../components/dashboard/KPICard";
+import { SalesChart } from "../../components/dashboard/SalesChart";
+import { Badge } from "../../components/ui/Badge";
+import { Button } from "../../components/ui/button";
+import { Card } from "../../components/ui/card";
 
 const StaffDashboard: React.FC = () => {
   // Dummy data for staff dashboard

@@ -1,7 +1,41 @@
-const AdminSales = () => (
-  <div className="p-10 text-center">
-    <h1 className="text-3xl font-bold mb-4">Admin Sales Management</h1>
-    <p className="text-gray-600">Track and manage sales here.</p>
-  </div>
-);
+import { motion } from "framer-motion";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "../../components/ui/card";
+
+const AdminSales = () => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+      className="space-y-8"
+    >
+      <div>
+        <h1 className="text-3xl font-bold text-foreground tracking-tight">
+          Sales Management
+        </h1>
+        <p className="text-muted-foreground mt-2">
+          Track and manage sales performance and revenue
+        </p>
+      </div>
+
+      <Card className="bg-gradient-to-br from-card/60 via-card/40 to-card/60 backdrop-blur-xl border-border/40 shadow-lg">
+        <CardHeader>
+          <CardTitle className="text-foreground">Sales Dashboard</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-muted-foreground">
+            This page will contain comprehensive sales tracking and management
+            features.
+          </p>
+        </CardContent>
+      </Card>
+    </motion.div>
+  );
+};
+
 export default AdminSales;

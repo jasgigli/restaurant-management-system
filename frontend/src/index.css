@@ -119,6 +119,73 @@
   }
 }
 
+/* Custom scrollbar styles */
+.scrollbar-thin {
+  scrollbar-width: thin;
+}
+
+.scrollbar-track-transparent {
+  scrollbar-color: transparent transparent;
+}
+
+.scrollbar-thumb-neutral-300 {
+  scrollbar-color: rgb(203 213 225) transparent;
+}
+
+.scrollbar-thumb-neutral-600 {
+  scrollbar-color: rgb(71 85 105) transparent;
+}
+
+.scrollbar-thumb-neutral-200 {
+  scrollbar-color: rgb(226 232 240) transparent;
+}
+
+.scrollbar-thumb-neutral-700 {
+  scrollbar-color: rgb(51 65 85) transparent;
+}
+
+.scrollbar-thumb-transparent {
+  scrollbar-color: transparent transparent;
+}
+
+.scrollbar-w-2 {
+  scrollbar-width: 8px;
+}
+
+.scrollbar-h-2 {
+  scrollbar-width: 8px;
+}
+
+/* Webkit scrollbar styles */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 4px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgb(203 213 225);
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: rgb(148 163 184);
+}
+
+/* Dark mode scrollbar */
+.dark .scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgb(71 85 105);
+}
+
+.dark .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: rgb(100 116 139);
+}
+
 /* Custom animations for auth pages */
 @keyframes fade-in {
   from {
@@ -194,10 +261,13 @@
 @keyframes float {
   0%,
   100% {
-    transform: translateY(0px);
+    transform: translateY(0px) rotate(0deg);
   }
-  50% {
-    transform: translateY(-10px);
+  33% {
+    transform: translateY(-10px) rotate(120deg);
+  }
+  66% {
+    transform: translateY(5px) rotate(240deg);
   }
 }
 
@@ -250,7 +320,19 @@
 }
 
 .animate-float {
-  animation: float 3s ease-in-out infinite;
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float.delay-1000 {
+  animation-delay: 1s;
+}
+
+.animate-float.delay-2000 {
+  animation-delay: 2s;
+}
+
+.animate-float.delay-3000 {
+  animation-delay: 3s;
 }
 
 .animate-glow {

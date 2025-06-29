@@ -1,14 +1,14 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
 import MainLayout from "./layout/MainLayout";
+import AdminDashboard from "./pages/admin/admin-dashboard";
 import ForgotPassword from "./pages/auth/forgot-password/ForgotPassword";
 import Login from "./pages/auth/login/Login";
 import Register from "./pages/auth/register/Register";
 import ResetPassword from "./pages/auth/reset-password/ResetPassword";
-import AdminDashboard from "./pages/dashboard/admin-dashboard/admin-dashboard";
-import HRDashboard from "./pages/dashboard/hr-dashboard/hr-dashboard";
-import StaffDashboard from "./pages/dashboard/staff-dashboard/staff-dashboard";
+import HRDashboard from "./pages/hr/hr-dashboard";
 import NotFound from "./pages/notfound/NotFound";
+import StaffDashboard from "./pages/staff/staff-dashboard";
 import { useAuth } from "./providers/AuthProvider";
 
 // Admin Pages
@@ -79,62 +79,62 @@ function App() {
 
       {/* Admin routes with MainLayout */}
       <Route element={<ProtectedRoute roles={["admin"]} />}>
-        <Route element={<MainLayout />}>
-          <Route path="/admin-dashboard" element={<AdminDashboard />} />
-          <Route path="/admin/analytics" element={<AdminAnalytics />} />
-          <Route path="/admin/reports" element={<AdminReports />} />
-          <Route path="/admin/sales" element={<AdminSales />} />
-          <Route path="/admin/inventory" element={<AdminInventory />} />
-          <Route path="/admin/purchases" element={<AdminPurchases />} />
-          <Route path="/admin/expenses" element={<AdminExpenses />} />
-          <Route path="/admin/employees" element={<AdminEmployees />} />
-          <Route path="/admin/attendance" element={<AdminAttendance />} />
-          <Route path="/admin/payroll" element={<AdminPayroll />} />
-          <Route path="/admin/menu" element={<AdminMenu />} />
-          <Route path="/admin/orders" element={<AdminOrders />} />
-          <Route path="/admin/kitchen" element={<AdminKitchen />} />
-          <Route path="/admin/settings" element={<AdminSettings />} />
-          <Route path="/admin/security" element={<AdminSecurity />} />
-          <Route path="/admin/backup" element={<AdminBackup />} />
+        <Route path="/admin" element={<MainLayout />}>
+          <Route index element={<AdminDashboard />} />
+          <Route path="analytics" element={<AdminAnalytics />} />
+          <Route path="reports" element={<AdminReports />} />
+          <Route path="sales" element={<AdminSales />} />
+          <Route path="inventory" element={<AdminInventory />} />
+          <Route path="purchases" element={<AdminPurchases />} />
+          <Route path="expenses" element={<AdminExpenses />} />
+          <Route path="employees" element={<AdminEmployees />} />
+          <Route path="attendance" element={<AdminAttendance />} />
+          <Route path="payroll" element={<AdminPayroll />} />
+          <Route path="menu" element={<AdminMenu />} />
+          <Route path="orders" element={<AdminOrders />} />
+          <Route path="kitchen" element={<AdminKitchen />} />
+          <Route path="settings" element={<AdminSettings />} />
+          <Route path="security" element={<AdminSecurity />} />
+          <Route path="backup" element={<AdminBackup />} />
         </Route>
       </Route>
 
       {/* HR routes with MainLayout */}
       <Route element={<ProtectedRoute roles={["hr"]} />}>
-        <Route element={<MainLayout />}>
-          <Route path="/hr-dashboard" element={<HRDashboard />} />
-          <Route path="/hr/analytics" element={<HRAnalytics />} />
-          <Route path="/hr/employees" element={<HREmployees />} />
-          <Route path="/hr/recruitment" element={<HRRecruitment />} />
-          <Route path="/hr/performance" element={<HRPerformance />} />
-          <Route path="/hr/training" element={<HRTraining />} />
-          <Route path="/hr/attendance" element={<HRAttendance />} />
-          <Route path="/hr/schedules" element={<HRSchedules />} />
-          <Route path="/hr/overtime" element={<HROvertime />} />
-          <Route path="/hr/payroll" element={<HRPayroll />} />
-          <Route path="/hr/benefits" element={<HRBenefits />} />
-          <Route path="/hr/advances" element={<HRAdvances />} />
-          <Route path="/hr/compliance" element={<HRCompliance />} />
-          <Route path="/hr/documents" element={<HRDocuments />} />
+        <Route path="/hr" element={<MainLayout />}>
+          <Route index element={<HRDashboard />} />
+          <Route path="analytics" element={<HRAnalytics />} />
+          <Route path="employees" element={<HREmployees />} />
+          <Route path="recruitment" element={<HRRecruitment />} />
+          <Route path="performance" element={<HRPerformance />} />
+          <Route path="training" element={<HRTraining />} />
+          <Route path="attendance" element={<HRAttendance />} />
+          <Route path="schedules" element={<HRSchedules />} />
+          <Route path="overtime" element={<HROvertime />} />
+          <Route path="payroll" element={<HRPayroll />} />
+          <Route path="benefits" element={<HRBenefits />} />
+          <Route path="advances" element={<HRAdvances />} />
+          <Route path="compliance" element={<HRCompliance />} />
+          <Route path="documents" element={<HRDocuments />} />
         </Route>
       </Route>
 
       {/* Staff routes with MainLayout */}
       <Route element={<ProtectedRoute roles={["staff"]} />}>
-        <Route element={<MainLayout />}>
-          <Route path="/staff-dashboard" element={<StaffDashboard />} />
-          <Route path="/staff/profile" element={<StaffProfile />} />
-          <Route path="/staff/orders" element={<StaffOrders />} />
-          <Route path="/staff/tables" element={<StaffTables />} />
-          <Route path="/staff/service" element={<StaffService />} />
-          <Route path="/staff/kitchen" element={<StaffKitchen />} />
-          <Route path="/staff/preparation" element={<StaffPreparation />} />
-          <Route path="/staff/quality" element={<StaffQuality />} />
-          <Route path="/staff/inventory" element={<StaffInventory />} />
-          <Route path="/staff/requests" element={<StaffRequests />} />
-          <Route path="/staff/schedule" element={<StaffSchedule />} />
-          <Route path="/staff/attendance" element={<StaffAttendance />} />
-          <Route path="/staff/leave" element={<StaffLeave />} />
+        <Route path="/staff" element={<MainLayout />}>
+          <Route index element={<StaffDashboard />} />
+          <Route path="profile" element={<StaffProfile />} />
+          <Route path="orders" element={<StaffOrders />} />
+          <Route path="tables" element={<StaffTables />} />
+          <Route path="service" element={<StaffService />} />
+          <Route path="kitchen" element={<StaffKitchen />} />
+          <Route path="preparation" element={<StaffPreparation />} />
+          <Route path="quality" element={<StaffQuality />} />
+          <Route path="inventory" element={<StaffInventory />} />
+          <Route path="requests" element={<StaffRequests />} />
+          <Route path="schedule" element={<StaffSchedule />} />
+          <Route path="attendance" element={<StaffAttendance />} />
+          <Route path="leave" element={<StaffLeave />} />
         </Route>
       </Route>
 
@@ -148,8 +148,8 @@ function App() {
                 user.role === "admin"
                   ? "/admin"
                   : user.role === "hr"
-                  ? "/hr-dashboard"
-                  : "/staff-dashboard"
+                  ? "/hr"
+                  : "/staff"
               }
               replace
             />

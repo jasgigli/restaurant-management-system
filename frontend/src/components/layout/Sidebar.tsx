@@ -1,381 +1,30 @@
+/**
+ * Premium SaaS Sidebar Component
+ * World-class design with modern animations and enhanced UX
+ */
+
+import { AnimatePresence, motion } from "framer-motion";
 import {
-  AlertCircle,
-  Award,
-  BarChart3,
-  Building,
-  Calendar,
-  CheckCircle,
-  ChefHat,
-  ClipboardList,
-  Clock,
-  DollarSign,
-  Download,
-  FileText,
-  Gift,
-  Home,
+  Activity,
+  ChevronLeft,
+  Crown,
+  HelpCircle,
   LogOut,
-  Menu,
-  Package,
-  PieChart,
-  Receipt,
   Settings,
-  Shield,
-  ShoppingCart,
   Star,
-  Target,
   TrendingUp,
-  UserCheck,
-  Users,
-  Utensils,
   X,
 } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { getNavigationByRole } from "../../config/navigation.tsx";
+import { useLayout } from "../../hooks/useLayout";
+import { cn } from "../../lib/utils";
 import { useAuth } from "../../providers/AuthProvider";
-
-// Admin Navigation Links
-const adminNavLinks = [
-  {
-    section: "Dashboard",
-    links: [
-      {
-        to: "/admin-dashboard",
-        label: "Overview",
-        icon: <BarChart3 size={20} />,
-        description: "Main dashboard view",
-      },
-      {
-        to: "/admin/analytics",
-        label: "Analytics",
-        icon: <TrendingUp size={20} />,
-        description: "Business analytics",
-      },
-      {
-        to: "/admin/reports",
-        label: "Reports",
-        icon: <FileText size={20} />,
-        description: "Generate reports",
-      },
-    ],
-  },
-  {
-    section: "Financial Management",
-    links: [
-      {
-        to: "/admin/sales",
-        label: "Sales Management",
-        icon: <DollarSign size={20} />,
-        description: "Track sales and revenue",
-      },
-      {
-        to: "/admin/inventory",
-        label: "Inventory Control",
-        icon: <Package size={20} />,
-        description: "Manage stock levels",
-      },
-      {
-        to: "/admin/purchases",
-        label: "Purchases",
-        icon: <ShoppingCart size={20} />,
-        description: "Manage purchases",
-      },
-      {
-        to: "/admin/expenses",
-        label: "Expenses",
-        icon: <Receipt size={20} />,
-        description: "Track expenses",
-      },
-    ],
-  },
-  {
-    section: "Human Resources",
-    links: [
-      {
-        to: "/admin/employees",
-        label: "Employee Management",
-        icon: <Users size={20} />,
-        description: "Manage staff",
-      },
-      {
-        to: "/admin/attendance",
-        label: "Attendance",
-        icon: <Calendar size={20} />,
-        description: "Track attendance",
-      },
-      {
-        to: "/admin/payroll",
-        label: "Payroll",
-        icon: <DollarSign size={20} />,
-        description: "Manage payroll",
-      },
-    ],
-  },
-  {
-    section: "Restaurant Operations",
-    links: [
-      {
-        to: "/admin/menu",
-        label: "Menu Management",
-        icon: <Menu size={20} />,
-        description: "Manage menu items",
-      },
-      {
-        to: "/admin/orders",
-        label: "Order Management",
-        icon: <ClipboardList size={20} />,
-        description: "Track orders",
-      },
-      {
-        to: "/admin/kitchen",
-        label: "Kitchen Operations",
-        icon: <ChefHat size={20} />,
-        description: "Kitchen management",
-      },
-    ],
-  },
-  {
-    section: "System Management",
-    links: [
-      {
-        to: "/admin/settings",
-        label: "System Settings",
-        icon: <Settings size={20} />,
-        description: "Configure system",
-      },
-      {
-        to: "/admin/security",
-        label: "Security",
-        icon: <Shield size={20} />,
-        description: "Security settings",
-      },
-      {
-        to: "/admin/backup",
-        label: "Backup & Restore",
-        icon: <Download size={20} />,
-        description: "Data backup",
-      },
-    ],
-  },
-];
-
-// HR Navigation Links
-const hrNavLinks = [
-  {
-    section: "Dashboard",
-    links: [
-      {
-        to: "/hr-dashboard",
-        label: "HR Overview",
-        icon: <UserCheck size={20} />,
-        description: "HR dashboard",
-      },
-      {
-        to: "/hr/analytics",
-        label: "HR Analytics",
-        icon: <PieChart size={20} />,
-        description: "Employee analytics",
-      },
-    ],
-  },
-  {
-    section: "Employee Management",
-    links: [
-      {
-        to: "/hr/employees",
-        label: "All Employees",
-        icon: <Users size={20} />,
-        description: "View all employees",
-      },
-      {
-        to: "/hr/recruitment",
-        label: "Recruitment",
-        icon: <UserCheck size={20} />,
-        description: "Hire new staff",
-      },
-      {
-        to: "/hr/performance",
-        label: "Performance",
-        icon: <Target size={20} />,
-        description: "Performance reviews",
-      },
-      {
-        to: "/hr/training",
-        label: "Training",
-        icon: <Award size={20} />,
-        description: "Training programs",
-      },
-    ],
-  },
-  {
-    section: "Attendance & Time",
-    links: [
-      {
-        to: "/hr/attendance",
-        label: "Attendance",
-        icon: <Calendar size={20} />,
-        description: "Track attendance",
-      },
-      {
-        to: "/hr/schedules",
-        label: "Schedules",
-        icon: <Clock size={20} />,
-        description: "Manage schedules",
-      },
-      {
-        to: "/hr/overtime",
-        label: "Overtime",
-        icon: <Clock size={20} />,
-        description: "Overtime tracking",
-      },
-    ],
-  },
-  {
-    section: "Payroll & Benefits",
-    links: [
-      {
-        to: "/hr/payroll",
-        label: "Payroll",
-        icon: <DollarSign size={20} />,
-        description: "Process payroll",
-      },
-      {
-        to: "/hr/benefits",
-        label: "Benefits",
-        icon: <Gift size={20} />,
-        description: "Employee benefits",
-      },
-      {
-        to: "/hr/advances",
-        label: "Salary Advances",
-        icon: <DollarSign size={20} />,
-        description: "Manage advances",
-      },
-    ],
-  },
-  {
-    section: "Compliance",
-    links: [
-      {
-        to: "/hr/compliance",
-        label: "Compliance",
-        icon: <Shield size={20} />,
-        description: "Legal compliance",
-      },
-      {
-        to: "/hr/documents",
-        label: "Documents",
-        icon: <FileText size={20} />,
-        description: "HR documents",
-      },
-    ],
-  },
-];
-
-// Staff Navigation Links
-const staffNavLinks = [
-  {
-    section: "Dashboard",
-    links: [
-      {
-        to: "/staff-dashboard",
-        label: "My Dashboard",
-        icon: <Home size={20} />,
-        description: "Personal dashboard",
-      },
-      {
-        to: "/staff/profile",
-        label: "My Profile",
-        icon: <UserCheck size={20} />,
-        description: "Update profile",
-      },
-    ],
-  },
-  {
-    section: "Orders & Service",
-    links: [
-      {
-        to: "/staff/orders",
-        label: "Orders",
-        icon: <ClipboardList size={20} />,
-        description: "View orders",
-      },
-      {
-        to: "/staff/tables",
-        label: "Table Management",
-        icon: <Building size={20} />,
-        description: "Manage tables",
-      },
-      {
-        to: "/staff/service",
-        label: "Customer Service",
-        icon: <Star size={20} />,
-        description: "Customer interactions",
-      },
-    ],
-  },
-  {
-    section: "Kitchen Operations",
-    links: [
-      {
-        to: "/staff/kitchen",
-        label: "Kitchen Orders",
-        icon: <ChefHat size={20} />,
-        description: "Kitchen tasks",
-      },
-      {
-        to: "/staff/preparation",
-        label: "Food Preparation",
-        icon: <Utensils size={20} />,
-        description: "Prepare food",
-      },
-      {
-        to: "/staff/quality",
-        label: "Quality Control",
-        icon: <CheckCircle size={20} />,
-        description: "Quality checks",
-      },
-    ],
-  },
-  {
-    section: "Inventory & Stock",
-    links: [
-      {
-        to: "/staff/inventory",
-        label: "Check Inventory",
-        icon: <Package size={20} />,
-        description: "View stock levels",
-      },
-      {
-        to: "/staff/requests",
-        label: "Stock Requests",
-        icon: <AlertCircle size={20} />,
-        description: "Request supplies",
-      },
-    ],
-  },
-  {
-    section: "My Schedule",
-    links: [
-      {
-        to: "/staff/schedule",
-        label: "My Schedule",
-        icon: <Calendar size={20} />,
-        description: "View schedule",
-      },
-      {
-        to: "/staff/attendance",
-        label: "Clock In/Out",
-        icon: <Clock size={20} />,
-        description: "Time tracking",
-      },
-      {
-        to: "/staff/leave",
-        label: "Leave Requests",
-        icon: <Calendar size={20} />,
-        description: "Request time off",
-      },
-    ],
-  },
-];
+import { Badge } from "../ui/Badge";
+import { Button } from "../ui/button";
+import { Separator } from "../ui/separator";
+import { Brand } from "./Brand";
+import { CustomScrollbar } from "./CustomScrollbar";
+import { NavigationItem } from "./NavigationItem";
 
 interface SidebarProps {
   onClose?: () => void;
@@ -383,120 +32,381 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
   const { user, logout } = useAuth();
-  const location = useLocation();
+  const { sidebarCollapsed, toggleSidebarCollapsed, isMobile } = useLayout();
 
-  const getNavLinks = () => {
-    if (!user) return [];
+  const navigation = user ? getNavigationByRole(user.role) : [];
 
-    switch (user.role) {
-      case "admin":
-        return adminNavLinks;
-      case "hr":
-        return hrNavLinks;
-      case "staff":
-        return staffNavLinks;
-      default:
-        return [];
-    }
+  const sidebarVariants = {
+    open: {
+      width: sidebarCollapsed ? "4rem" : "20rem",
+      transition: { duration: 0.4, ease: "easeInOut" },
+    },
+    closed: {
+      width: "0rem",
+      transition: { duration: 0.4, ease: "easeInOut" },
+    },
   };
 
-  const navLinks = getNavLinks();
+  const contentVariants = {
+    open: {
+      opacity: 1,
+      x: 0,
+      transition: { duration: 0.4, delay: 0.1 },
+    },
+    closed: {
+      opacity: 0,
+      x: -20,
+      transition: { duration: 0.4 },
+    },
+  };
 
   return (
-    <aside className="h-full w-80 bg-gradient-to-b from-purple-900 via-purple-800 to-purple-900 text-white flex flex-col shadow-2xl">
-      {/* Header */}
-      <div className="p-6 border-b border-purple-700">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
-              <ChefHat className="w-6 h-6 text-purple-600" />
-            </div>
-            <div>
-              <h2 className="text-2xl font-bold text-white">RMS</h2>
-              <p className="text-xs text-purple-200">
-                Restaurant Management System
-              </p>
-            </div>
-          </div>
-          {/* Mobile close button */}
-          <button
-            onClick={onClose}
-            className="lg:hidden p-2 rounded-lg hover:bg-purple-700 transition-colors"
-          >
-            <X className="w-5 h-5" />
-          </button>
-        </div>
-        <div className="p-3 bg-purple-800 rounded-lg">
-          <p className="text-sm text-purple-200">Welcome back,</p>
-          <p className="font-semibold text-white">{user?.name || "User"}</p>
-          <p className="text-xs text-purple-300 capitalize">
-            {user?.role || "Unknown"} Role
-          </p>
-        </div>
+    <motion.aside
+      variants={sidebarVariants}
+      initial="open"
+      animate="open"
+      className={cn(
+        // Premium glassmorphism background with enhanced styling
+        "h-full relative z-50",
+        "bg-gradient-to-b from-card/95 via-card/90 to-card/95",
+        "backdrop-blur-2xl border-r border-border/40",
+        "shadow-2xl shadow-black/10 dark:shadow-black/30",
+        "rounded-r-3xl lg:rounded-none",
+        "overflow-hidden"
+      )}
+    >
+      {/* Enhanced animated background */}
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-gradient-to-b from-primary/10 via-primary/5 to-accent/10" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.1)_1px,transparent_0)] bg-[length:20px_20px] pointer-events-none" />
+        <motion.div
+          animate={{
+            backgroundPosition: ["0% 0%", "100% 100%"],
+          }}
+          transition={{
+            duration: 30,
+            repeat: Infinity,
+            repeatType: "reverse",
+          }}
+          className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent opacity-30"
+        />
       </div>
+
+      {/* Header */}
+      <motion.div
+        variants={contentVariants}
+        className="p-6 border-b border-border/40 relative z-10"
+      >
+        <div className="flex items-center justify-between mb-6">
+          <Brand
+            variant="sidebar"
+            showTagline={!sidebarCollapsed}
+            className={cn(
+              "transition-all duration-300",
+              sidebarCollapsed && "justify-center"
+            )}
+          />
+
+          {/* Mobile close button */}
+          {isMobile && (
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={onClose}
+              className="lg:hidden p-2 rounded-xl bg-background/20 hover:bg-background/40 border border-border/30 transition-all duration-200 shadow-sm hover:shadow-md"
+            >
+              <X className="w-5 h-5 text-foreground" />
+            </motion.button>
+          )}
+
+          {/* Desktop collapse button */}
+          {!isMobile && (
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={toggleSidebarCollapsed}
+              className="hidden lg:flex p-2 rounded-xl bg-background/10 hover:bg-background/30 border border-border/30 transition-all duration-200 shadow-sm hover:shadow-md"
+              title={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+            >
+              <ChevronLeft
+                className={cn(
+                  "w-4 h-4 transition-transform duration-300",
+                  sidebarCollapsed && "rotate-180"
+                )}
+              />
+            </motion.button>
+          )}
+        </div>
+
+        {/* Enhanced user info */}
+        <AnimatePresence mode="wait">
+          {!sidebarCollapsed && (
+            <motion.div
+              initial={{ opacity: 0, height: 0, scale: 0.95 }}
+              animate={{ opacity: 1, height: "auto", scale: 1 }}
+              exit={{ opacity: 0, height: 0, scale: 0.95 }}
+              transition={{ duration: 0.4 }}
+              className="p-4 bg-gradient-to-r from-background/40 to-background/20 rounded-2xl backdrop-blur-md border border-border/30 shadow-lg relative overflow-hidden group"
+            >
+              {/* Background glow effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-accent/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+              <div className="relative z-10">
+                <div className="flex items-center gap-2 mb-2">
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: "linear",
+                    }}
+                    className="w-2 h-2 bg-accent rounded-full"
+                  />
+                  <p className="text-xs text-muted-foreground font-medium">
+                    Welcome back,
+                  </p>
+                </div>
+                <p className="font-bold text-foreground truncate text-lg mb-2">
+                  {user?.name || "User"}
+                </p>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Badge variant="outline" className="text-xs">
+                      {user?.role || "Unknown"}
+                    </Badge>
+                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                  </div>
+                  <Crown className="w-4 h-4 text-yellow-500" />
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
 
       {/* Navigation */}
-      <nav className="flex-1 overflow-y-auto p-4 space-y-6">
-        {navLinks.map((section, sectionIndex) => (
-          <div key={sectionIndex} className="space-y-3">
-            <h3 className="text-xs font-semibold text-purple-300 uppercase tracking-wider px-3">
-              {section.section}
-            </h3>
-            <ul className="space-y-1">
-              {section.links.map((link) => (
-                <li key={link.to}>
-                  <Link
-                    to={link.to}
-                    onClick={onClose}
-                    className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-purple-700 hover:shadow-lg ${
-                      location.pathname === link.to
-                        ? "bg-purple-600 text-white shadow-lg border-l-4 border-yellow-400"
-                        : "text-purple-100 hover:text-white"
-                    }`}
-                  >
-                    <div
-                      className={`transition-transform duration-200 group-hover:scale-110 ${
-                        location.pathname === link.to
-                          ? "text-yellow-400"
-                          : "text-purple-300 group-hover:text-white"
-                      }`}
-                    >
-                      {link.icon}
-                    </div>
-                    <div className="flex-1">
-                      <p className="font-medium">{link.label}</p>
-                      <p className="text-xs text-purple-300 group-hover:text-purple-200">
-                        {link.description}
-                      </p>
-                    </div>
-                  </Link>
-                </li>
+      <CustomScrollbar
+        variant="thin"
+        className="flex-1 p-4 space-y-6 relative z-10"
+      >
+        <AnimatePresence mode="wait">
+          {!sidebarCollapsed ? (
+            <motion.nav
+              key="expanded"
+              variants={contentVariants}
+              initial="closed"
+              animate="open"
+              exit="closed"
+              className="space-y-6"
+            >
+              {navigation.map((section, sectionIndex) => (
+                <motion.div
+                  key={sectionIndex}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: sectionIndex * 0.1 }}
+                  className="space-y-3"
+                >
+                  <div className="flex items-center gap-2 px-3">
+                    <div className="w-1 h-1 bg-accent rounded-full" />
+                    <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+                      {section.section}
+                    </h3>
+                  </div>
+                  <ul className="space-y-2">
+                    {section.links.map((link, linkIndex) => (
+                      <motion.li
+                        key={link.to}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{
+                          delay: sectionIndex * 0.1 + linkIndex * 0.05,
+                        }}
+                        className="rounded-xl overflow-hidden"
+                      >
+                        <NavigationItem
+                          {...link}
+                          variant="sidebar"
+                          onClick={onClose}
+                          className="transition-all duration-300 hover:bg-background/30 focus:bg-background/40 active:bg-background/50 rounded-xl px-3 py-3 shadow-sm hover:shadow-md group"
+                        />
+                      </motion.li>
+                    ))}
+                  </ul>
+                </motion.div>
               ))}
-            </ul>
-          </div>
-        ))}
-      </nav>
+            </motion.nav>
+          ) : (
+            <motion.nav
+              key="collapsed"
+              variants={contentVariants}
+              initial="closed"
+              animate="open"
+              exit="closed"
+              className="space-y-3"
+            >
+              {navigation.map((section) =>
+                section.links.map((link) => (
+                  <motion.div
+                    key={link.to}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="flex justify-center"
+                  >
+                    <NavigationItem
+                      {...link}
+                      variant="sidebar"
+                      onClick={onClose}
+                      className="w-12 h-12 flex items-center justify-center p-0 rounded-xl hover:bg-background/30 focus:bg-background/40 active:bg-background/50 shadow-md hover:shadow-lg transition-all duration-300"
+                    />
+                  </motion.div>
+                ))
+              )}
+            </motion.nav>
+          )}
+        </AnimatePresence>
+      </CustomScrollbar>
 
-      {/* Footer */}
-      <div className="p-4 border-t border-purple-700">
-        <div className="flex items-center justify-between mb-3">
+      {/* Enhanced Footer */}
+      <motion.div
+        variants={contentVariants}
+        className="p-4 border-t border-border/40 relative z-10"
+      >
+        {/* Status indicators */}
+        <AnimatePresence mode="wait">
+          {!sidebarCollapsed && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.4 }}
+              className="mb-4 space-y-3"
+            >
+              {/* System status */}
+              <div className="grid grid-cols-2 gap-2">
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  className="text-center p-2 bg-background/20 rounded-lg border border-border/20 backdrop-blur-sm"
+                >
+                  <div className="text-xs font-bold text-green-500 flex items-center justify-center gap-1">
+                    <Activity className="w-3 h-3" />
+                    99.9%
+                  </div>
+                  <div className="text-xs text-muted-foreground">Uptime</div>
+                </motion.div>
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  className="text-center p-2 bg-background/20 rounded-lg border border-border/20 backdrop-blur-sm"
+                >
+                  <div className="text-xs font-bold text-blue-500 flex items-center justify-center gap-1">
+                    <TrendingUp className="w-3 h-3" />
+                    24/7
+                  </div>
+                  <div className="text-xs text-muted-foreground">Support</div>
+                </motion.div>
+              </div>
+
+              {/* Premium badge */}
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                className="flex items-center gap-2 p-2 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-lg border border-yellow-500/30 backdrop-blur-sm"
+              >
+                <Crown className="w-4 h-4 text-yellow-500" />
+                <div className="flex-1">
+                  <div className="text-xs font-bold text-yellow-600 dark:text-yellow-400">
+                    Premium Plan
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    All features unlocked
+                  </div>
+                </div>
+                <Star className="w-3 h-3 text-yellow-500" />
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Logout section */}
+        <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-            <span className="text-xs text-purple-200">Online</span>
+            <motion.div
+              animate={{ scale: [1, 1.2, 1] }}
+              transition={{ duration: 2, repeat: Infinity }}
+              className="w-2 h-2 bg-green-500 rounded-full shadow-lg"
+            />
+            <AnimatePresence mode="wait">
+              {!sidebarCollapsed && (
+                <motion.span
+                  initial={{ opacity: 0, width: 0 }}
+                  animate={{ opacity: 1, width: "auto" }}
+                  exit={{ opacity: 0, width: 0 }}
+                  className="text-xs text-muted-foreground overflow-hidden font-medium"
+                >
+                  Online
+                </motion.span>
+              )}
+            </AnimatePresence>
           </div>
-          <button
+
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={logout}
-            className="flex items-center gap-2 px-3 py-2 text-purple-200 hover:text-white hover:bg-purple-700 rounded-lg transition-colors"
+            className="flex items-center gap-2 p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-background/40 transition-all duration-200 group"
           >
-            <LogOut size={16} />
-            <span className="text-sm">Logout</span>
-          </button>
+            <LogOut
+              size={16}
+              className="group-hover:rotate-12 transition-transform duration-200"
+            />
+            <AnimatePresence mode="wait">
+              {!sidebarCollapsed && (
+                <motion.span
+                  initial={{ opacity: 0, width: 0 }}
+                  animate={{ opacity: 1, width: "auto" }}
+                  exit={{ opacity: 0, width: 0 }}
+                  className="text-sm overflow-hidden font-medium"
+                >
+                  Logout
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </motion.button>
         </div>
-        <div className="text-xs text-purple-300 text-center">
-          © 2024 RMS. All rights reserved.
-        </div>
-      </div>
-    </aside>
+
+        {/* Quick actions for expanded sidebar */}
+        <AnimatePresence mode="wait">
+          {!sidebarCollapsed && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3, delay: 0.1 }}
+              className="mt-3 space-y-2"
+            >
+              <Separator className="bg-border/30" />
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="flex-1 h-8 text-xs bg-background/20 hover:bg-background/40"
+                >
+                  <Settings className="w-3 h-3 mr-1" />
+                  Settings
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="flex-1 h-8 text-xs bg-background/20 hover:bg-background/40"
+                >
+                  <HelpCircle className="w-3 h-3 mr-1" />
+                  Help
+                </Button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+    </motion.aside>
   );
 };
 
