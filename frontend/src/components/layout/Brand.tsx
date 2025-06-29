@@ -30,14 +30,14 @@ export const Brand: React.FC<BrandProps> = ({
 
   const textClasses = cn(
     "font-bold tracking-tight",
-    variant === "sidebar" && ["text-2xl text-white"],
+    variant === "sidebar" && ["text-2xl text-gray-900 dark:text-white"],
     variant === "compact" && ["text-lg text-neutral-900 dark:text-white"],
     variant === "default" && ["text-xl text-neutral-900 dark:text-white"]
   );
 
   const taglineClasses = cn(
     "text-xs",
-    variant === "sidebar" && ["text-white/60"],
+    variant === "sidebar" && ["text-gray-500 dark:text-white/60"],
     variant !== "sidebar" && ["text-neutral-500 dark:text-neutral-400"]
   );
 
@@ -48,7 +48,7 @@ export const Brand: React.FC<BrandProps> = ({
           className={cn(
             "transition-colors duration-200",
             variant === "sidebar"
-              ? "w-6 h-6 text-white"
+              ? "w-6 h-6 text-primary-600 dark:text-white"
               : "w-5 h-5 text-primary-600 dark:text-primary-400"
           )}
         />

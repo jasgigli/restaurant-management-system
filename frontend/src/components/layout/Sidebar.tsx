@@ -52,62 +52,62 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
       case "admin":
         return {
           gradient:
-            "from-purple-500/10 via-blue-500/5 to-indigo-500/10 dark:from-purple-500/20 dark:via-blue-500/10 dark:to-indigo-500/20",
+            "from-purple-100 via-blue-50 to-indigo-100 dark:from-purple-500/20 dark:via-blue-500/10 dark:to-indigo-500/20",
           accent: "from-purple-500 to-blue-500",
           icon: (
-            <Crown className="w-4 h-4 text-purple-600 dark:text-purple-500" />
+            <Crown className="w-4 h-4 text-purple-700 dark:text-purple-500" />
           ),
           badge: "Admin",
           badgeColor:
-            "bg-purple-100 text-purple-700 border-purple-200 dark:bg-purple-500/20 dark:text-purple-400 dark:border-purple-500/30",
-          categoryColor: "text-purple-700 dark:text-purple-400",
-          categoryBg: "bg-purple-50 dark:bg-purple-500/10",
-          categoryBorder: "border-purple-200 dark:border-purple-500/20",
+            "bg-purple-200 text-purple-800 border-purple-300 dark:bg-purple-500/20 dark:text-purple-400 dark:border-purple-500/30",
+          categoryColor: "text-purple-800 dark:text-purple-400",
+          categoryBg: "bg-purple-100 dark:bg-purple-500/10",
+          categoryBorder: "border-purple-300 dark:border-purple-500/20",
         };
       case "hr":
         return {
           gradient:
-            "from-emerald-500/10 via-teal-500/5 to-cyan-500/10 dark:from-emerald-500/20 dark:via-teal-500/10 dark:to-cyan-500/20",
+            "from-emerald-100 via-teal-50 to-cyan-100 dark:from-emerald-500/20 dark:via-teal-500/10 dark:to-cyan-500/20",
           accent: "from-emerald-500 to-teal-500",
           icon: (
-            <Users className="w-4 h-4 text-emerald-600 dark:text-emerald-500" />
+            <Users className="w-4 h-4 text-emerald-700 dark:text-emerald-500" />
           ),
           badge: "HR",
           badgeColor:
-            "bg-emerald-100 text-emerald-700 border-emerald-200 dark:bg-emerald-500/20 dark:text-emerald-400 dark:border-emerald-500/30",
-          categoryColor: "text-emerald-700 dark:text-emerald-400",
-          categoryBg: "bg-emerald-50 dark:bg-emerald-500/10",
-          categoryBorder: "border-emerald-200 dark:border-emerald-500/20",
+            "bg-emerald-200 text-emerald-800 border-emerald-300 dark:bg-emerald-500/20 dark:text-emerald-400 dark:border-emerald-500/30",
+          categoryColor: "text-emerald-800 dark:text-emerald-400",
+          categoryBg: "bg-emerald-100 dark:bg-emerald-500/10",
+          categoryBorder: "border-emerald-300 dark:border-emerald-500/20",
         };
       case "staff":
         return {
           gradient:
-            "from-orange-500/10 via-amber-500/5 to-yellow-500/10 dark:from-orange-500/20 dark:via-amber-500/10 dark:to-yellow-500/20",
+            "from-orange-100 via-amber-50 to-yellow-100 dark:from-orange-500/20 dark:via-amber-500/10 dark:to-yellow-500/20",
           accent: "from-orange-500 to-amber-500",
           icon: (
-            <ChefHat className="w-4 h-4 text-orange-600 dark:text-orange-500" />
+            <ChefHat className="w-4 h-4 text-orange-700 dark:text-orange-500" />
           ),
           badge: "Staff",
           badgeColor:
-            "bg-orange-100 text-orange-700 border-orange-200 dark:bg-orange-500/20 dark:text-orange-400 dark:border-orange-500/30",
-          categoryColor: "text-orange-700 dark:text-orange-400",
-          categoryBg: "bg-orange-50 dark:bg-orange-500/10",
-          categoryBorder: "border-orange-200 dark:border-orange-500/20",
+            "bg-orange-200 text-orange-800 border-orange-300 dark:bg-orange-500/20 dark:text-orange-400 dark:border-orange-500/30",
+          categoryColor: "text-orange-800 dark:text-orange-400",
+          categoryBg: "bg-orange-100 dark:bg-orange-500/10",
+          categoryBorder: "border-orange-300 dark:border-orange-500/20",
         };
       default:
         return {
           gradient:
-            "from-gray-500/10 via-slate-500/5 to-zinc-500/10 dark:from-gray-500/20 dark:via-slate-500/10 dark:to-zinc-500/20",
+            "from-gray-100 via-slate-50 to-zinc-100 dark:from-gray-500/20 dark:via-slate-500/10 dark:to-zinc-500/20",
           accent: "from-gray-500 to-slate-500",
           icon: (
-            <UserCheck className="w-4 h-4 text-gray-600 dark:text-gray-500" />
+            <UserCheck className="w-4 h-4 text-gray-700 dark:text-gray-500" />
           ),
           badge: "User",
           badgeColor:
-            "bg-gray-100 text-gray-700 border-gray-200 dark:bg-gray-500/20 dark:text-gray-400 dark:border-gray-500/30",
-          categoryColor: "text-gray-700 dark:text-gray-400",
-          categoryBg: "bg-gray-50 dark:bg-gray-500/10",
-          categoryBorder: "border-gray-200 dark:border-gray-500/20",
+            "bg-gray-200 text-gray-800 border-gray-300 dark:bg-gray-500/20 dark:text-gray-400 dark:border-gray-500/30",
+          categoryColor: "text-gray-800 dark:text-gray-400",
+          categoryBg: "bg-gray-100 dark:bg-gray-500/10",
+          categoryBorder: "border-gray-300 dark:border-gray-500/20",
         };
     }
   };
@@ -144,11 +144,10 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
       initial="open"
       animate="open"
       className={cn(
-        // Enhanced glassmorphism background with better light theme support
         "h-full w-full relative z-50 flex flex-col",
-        "bg-white/95 dark:bg-card/95 backdrop-blur-2xl",
-        "border-r border-gray-200/60 dark:border-border/40",
-        "shadow-2xl shadow-gray-200/50 dark:shadow-black/30",
+        "bg-white/100 dark:bg-card/95 backdrop-blur-2xl",
+        "border-r border-gray-300 dark:border-border/40",
+        "shadow-2xl shadow-gray-300/60 dark:shadow-black/30",
         "rounded-r-3xl lg:rounded-none",
         "overflow-hidden"
       )}
@@ -270,7 +269,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
                     {/* Enhanced category header with dropdown functionality */}
                     <motion.button
                       onClick={() => toggleSection(sectionIndex)}
-                      className="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-gray-50/80 dark:bg-card/40 border border-gray-200/60 dark:border-border/30 hover:bg-gray-100/80 dark:hover:bg-card/60 transition-all duration-200 group"
+                      className="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-gray-100 dark:bg-card/40 border border-gray-300 dark:border-border/30 hover:bg-gray-200 dark:hover:bg-card/60 transition-all duration-200 group"
                       whileHover={{ scale: 1.01 }}
                       whileTap={{ scale: 0.99 }}
                     >
@@ -279,7 +278,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
                         {section.section}
                       </h3>
                       <div className="flex items-center gap-2">
-                        <div className="px-2 py-1 rounded-lg text-xs font-medium border bg-gray-100 text-gray-600 border-gray-200 dark:bg-gray-600/20 dark:text-gray-400 dark:border-gray-500/30">
+                        <div className="px-2 py-1 rounded-lg text-xs font-medium border bg-gray-200 text-gray-700 border-gray-300 dark:bg-gray-600/20 dark:text-gray-400 dark:border-gray-500/30">
                           {section.links.length}
                         </div>
                         <motion.div
@@ -306,7 +305,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
                           transition={{ duration: 0.3, ease: "easeInOut" }}
                           className="overflow-hidden"
                         >
-                          <ul className="space-y-1 ml-2 pl-4 border-l border-gray-200/40 dark:border-gray-600/40">
+                          <ul className="space-y-1 ml-2 pl-4 border-l border-gray-300 dark:border-gray-600/40">
                             {section.links.map((link, linkIndex) => (
                               <motion.li
                                 key={link.to}
@@ -321,7 +320,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
                                   {...link}
                                   variant="sidebar"
                                   onClick={onClose}
-                                  className="transition-all duration-300 hover:bg-gray-100/80 dark:hover:bg-background/30 focus:bg-gray-200/80 dark:focus:bg-background/40 active:bg-gray-300/80 dark:active:bg-background/50 rounded-lg px-3 py-2 shadow-sm hover:shadow-md group border border-transparent hover:border-gray-200/60 dark:hover:border-border/30"
+                                  className="transition-all duration-300 hover:bg-gray-200 dark:hover:bg-background/30 focus:bg-gray-300 dark:focus:bg-background/40 active:bg-gray-300/90 dark:active:bg-background/50 rounded-lg px-3 py-2 shadow-sm hover:shadow-md group border border-transparent hover:border-gray-300 dark:hover:border-border/30"
                                 />
                               </motion.li>
                             ))}
