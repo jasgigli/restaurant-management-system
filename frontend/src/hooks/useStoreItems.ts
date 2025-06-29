@@ -6,7 +6,6 @@ export interface StoreItem {
   name: string;
   quantity: number;
   costPrice: number;
-  min_quantity?: number;
 }
 
 export const useGetStoreItems = () => {

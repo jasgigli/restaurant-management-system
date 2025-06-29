@@ -75,9 +75,8 @@ export const Footer: React.FC<FooterProps> = ({ isOnline = true }) => {
           {
             icon: <AlertTriangle className="w-4 h-4" />,
             value:
-              storeItems?.filter(
-                (item: StoreItem) => item.quantity < (item.min_quantity || 10)
-              ).length || 0,
+              storeItems?.filter((item: StoreItem) => item.quantity < 5)
+                .length || 0,
             tooltip: "Low Stock Items",
           },
           {

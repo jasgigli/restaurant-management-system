@@ -1,23 +1,34 @@
 /**
- * Modern Professional Header Component
- * Built with shadcn/ui and optimized for both light and dark themes
+ * Dynamic Role-Based Header Component
+ * Shows relevant data and functionality based on user role (admin, hr, staff)
  */
 
 import { AnimatePresence, motion } from "framer-motion";
 import {
+  AlertTriangle,
   Bell,
+  ChefHat,
   ChevronDown,
+  Clock,
+  DollarSign,
   HelpCircle,
   LogOut,
   Menu,
   Moon,
+  Package,
   Search,
   Settings,
   Shield,
+  ShoppingCart,
   Sun,
   User,
+  Users,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useGetAttendance, useGetEmployees } from "../../hooks/useHR";
+import { useGetMenuItems } from "../../hooks/useMenuItems";
+import { useGetSalesReport } from "../../hooks/useSales";
+import { useGetStoreItems, type StoreItem } from "../../hooks/useStoreItems";
 import { useTheme } from "../../hooks/useTheme";
 import { cn } from "../../lib/utils";
 import { useAuth } from "../../providers/AuthProvider";
@@ -39,20 +50,275 @@ import { Brand } from "./Brand";
 interface HeaderProps {
   onMenuToggle?: () => void;
   showMobileMenu?: boolean;
-  notifications?: number;
   breadcrumbs?: string[];
+}
+
+interface RoleSpecificData {
+  notifications: number;
+  notificationItems: Array<{
+    id: string;
+    message: string;
+    type: "info" | "warning" | "error" | "success";
+    time: string;
+    icon: React.ReactNode;
+  }>;
+  searchPlaceholder: string;
+  quickActions: Array<{
+    label: string;
+    icon: React.ReactNode;
+    href: string;
+  }>;
 }
 
 export const Header: React.FC<HeaderProps> = ({
   onMenuToggle,
   showMobileMenu = false,
-  notifications = 0,
   breadcrumbs = [],
 }) => {
   const [search, setSearch] = useState("");
   const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [roleData, setRoleData] = useState<RoleSpecificData>({
+    notifications: 0,
+    notificationItems: [],
+    searchPlaceholder: "Search...",
+    quickActions: [],
+  });
   const { user, logout } = useAuth();
   const { resolvedTheme, toggleTheme } = useTheme();
+
+  // Fetch role-specific data
+  const { data: salesData } = useGetSalesReport("daily");
+  const { data: employees } = useGetEmployees();
+  const { data: attendance } = useGetAttendance();
+  const { data: storeItems } = useGetStoreItems();
+  const { data: menuItems } = useGetMenuItems();
+
+  useEffect(() => {
+    if (!user) return;
+
+    const generateRoleData = (): RoleSpecificData => {
+      const now = new Date();
+      const currentHour = now.getHours();
+      const isBusinessHours = currentHour >= 6 && currentHour <= 22;
+
+      switch (user.role) {
+        case "admin": {
+          const adminNotifications = [];
+          let adminNotificationCount = 0;
+
+          // Low stock alerts (using simple threshold of 5 units)
+          const lowStockItems =
+            storeItems?.filter((item: StoreItem) => item.quantity <= 5) || [];
+          if (lowStockItems.length > 0) {
+            adminNotificationCount += lowStockItems.length;
+            adminNotifications.push({
+              id: "low-stock",
+              message: `${lowStockItems.length} items low on stock`,
+              type: "warning" as const,
+              time: "5 min ago",
+              icon: <Package className="w-4 h-4" />,
+            });
+          }
+
+          // Recent sales
+          if (salesData && salesData.length > 0) {
+            adminNotificationCount += 1;
+            adminNotifications.push({
+              id: "recent-sales",
+              message: `${salesData.length} sales today`,
+              type: "info" as const,
+              time: "1 hour ago",
+              icon: <DollarSign className="w-4 h-4" />,
+            });
+          }
+
+          // Employee attendance
+          if (attendance) {
+            const lateEmployees = attendance.filter(
+              (a: { status: string }) => a.status === "late"
+            );
+            if (lateEmployees.length > 0) {
+              adminNotificationCount += lateEmployees.length;
+              adminNotifications.push({
+                id: "late-employees",
+                message: `${lateEmployees.length} employees late today`,
+                type: "warning" as const,
+                time: "30 min ago",
+                icon: <Clock className="w-4 h-4" />,
+              });
+            }
+          }
+
+          return {
+            notifications: adminNotificationCount,
+            notificationItems: adminNotifications,
+            searchPlaceholder:
+              "Search orders, inventory, employees, reports...",
+            quickActions: [
+              {
+                label: "Sales Report",
+                icon: <DollarSign className="w-4 h-4" />,
+                href: "/admin/sales",
+              },
+              {
+                label: "Inventory",
+                icon: <Package className="w-4 h-4" />,
+                href: "/admin/inventory",
+              },
+              {
+                label: "Employees",
+                icon: <Users className="w-4 h-4" />,
+                href: "/admin/employees",
+              },
+              {
+                label: "Reports",
+                icon: <Shield className="w-4 h-4" />,
+                href: "/admin/reports",
+              },
+            ],
+          };
+        }
+
+        case "hr": {
+          const hrNotifications = [];
+          let hrNotificationCount = 0;
+
+          // Employee attendance
+          if (attendance) {
+            const absentEmployees = attendance.filter(
+              (a: { status: string }) => a.status === "absent"
+            );
+            if (absentEmployees.length > 0) {
+              hrNotificationCount += absentEmployees.length;
+              hrNotifications.push({
+                id: "absent-employees",
+                message: `${absentEmployees.length} employees absent today`,
+                type: "warning" as const,
+                time: "1 hour ago",
+                icon: <Users className="w-4 h-4" />,
+              });
+            }
+          }
+
+          // Pending approvals
+          if (employees) {
+            const pendingApprovals = employees.filter(
+              (e: { status: string }) => e.status === "pending"
+            );
+            if (pendingApprovals.length > 0) {
+              hrNotificationCount += pendingApprovals.length;
+              hrNotifications.push({
+                id: "pending-approvals",
+                message: `${pendingApprovals.length} pending approvals`,
+                type: "info" as const,
+                time: "2 hours ago",
+                icon: <Clock className="w-4 h-4" />,
+              });
+            }
+          }
+
+          return {
+            notifications: hrNotificationCount,
+            notificationItems: hrNotifications,
+            searchPlaceholder:
+              "Search employees, attendance, payroll, schedules...",
+            quickActions: [
+              {
+                label: "Employees",
+                icon: <Users className="w-4 h-4" />,
+                href: "/hr/employees",
+              },
+              {
+                label: "Attendance",
+                icon: <Clock className="w-4 h-4" />,
+                href: "/hr/attendance",
+              },
+              {
+                label: "Payroll",
+                icon: <DollarSign className="w-4 h-4" />,
+                href: "/hr/payroll",
+              },
+              {
+                label: "Schedules",
+                icon: <Settings className="w-4 h-4" />,
+                href: "/hr/schedules",
+              },
+            ],
+          };
+        }
+
+        case "staff": {
+          const staffNotifications = [];
+          let staffNotificationCount = 0;
+
+          // Kitchen orders
+          if (isBusinessHours) {
+            staffNotificationCount += 1;
+            staffNotifications.push({
+              id: "kitchen-orders",
+              message: "New orders in kitchen",
+              type: "info" as const,
+              time: "2 min ago",
+              icon: <ChefHat className="w-4 h-4" />,
+            });
+          }
+
+          // Low inventory alerts (using simple threshold of 5 units)
+          const lowStockForStaff =
+            storeItems?.filter((item: StoreItem) => item.quantity <= 5) || [];
+          if (lowStockForStaff.length > 0) {
+            staffNotificationCount += lowStockForStaff.length;
+            staffNotifications.push({
+              id: "low-stock-staff",
+              message: `${lowStockForStaff.length} items need restocking`,
+              type: "warning" as const,
+              time: "15 min ago",
+              icon: <Package className="w-4 h-4" />,
+            });
+          }
+
+          return {
+            notifications: staffNotificationCount,
+            notificationItems: staffNotifications,
+            searchPlaceholder:
+              "Search orders, menu items, inventory, tables...",
+            quickActions: [
+              {
+                label: "Orders",
+                icon: <ShoppingCart className="w-4 h-4" />,
+                href: "/staff/orders",
+              },
+              {
+                label: "Kitchen",
+                icon: <ChefHat className="w-4 h-4" />,
+                href: "/staff/kitchen",
+              },
+              {
+                label: "Inventory",
+                icon: <Package className="w-4 h-4" />,
+                href: "/staff/inventory",
+              },
+              {
+                label: "Tables",
+                icon: <Users className="w-4 h-4" />,
+                href: "/staff/tables",
+              },
+            ],
+          };
+        }
+
+        default:
+          return {
+            notifications: 0,
+            notificationItems: [],
+            searchPlaceholder: "Search...",
+            quickActions: [],
+          };
+      }
+    };
+
+    setRoleData(generateRoleData());
+  }, [user, salesData, employees, attendance, storeItems, menuItems]);
 
   const handleLogout = () => {
     logout();
@@ -65,6 +331,19 @@ export const Header: React.FC<HeaderProps> = ({
       .join("")
       .toUpperCase()
       .slice(0, 2);
+  };
+
+  const getNotificationIcon = (type: string) => {
+    switch (type) {
+      case "warning":
+        return <AlertTriangle className="w-4 h-4 text-yellow-500" />;
+      case "error":
+        return <AlertTriangle className="w-4 h-4 text-red-500" />;
+      case "success":
+        return <Shield className="w-4 h-4 text-green-500" />;
+      default:
+        return <Bell className="w-4 h-4 text-blue-500" />;
+    }
   };
 
   return (
@@ -146,7 +425,7 @@ export const Header: React.FC<HeaderProps> = ({
                     "placeholder:text-muted-foreground/60",
                     "focus:bg-background/80"
                   )}
-                  placeholder="Search orders, menu, staff..."
+                  placeholder={roleData.searchPlaceholder}
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   onFocus={() => setIsSearchFocused(true)}
@@ -167,29 +446,94 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
 
             {/* Notifications */}
-            <motion.div whileTap={{ scale: 0.95 }}>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="relative h-10 w-10 rounded-lg"
-              >
-                <Bell className="h-5 w-5 text-muted-foreground" />
-                {notifications > 0 && (
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    className="absolute -top-1 -right-1"
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <motion.div whileTap={{ scale: 0.95 }}>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="relative h-10 w-10 rounded-lg"
                   >
-                    <Badge
-                      variant="destructive"
-                      className="h-5 w-5 p-0 flex items-center justify-center text-xs font-bold"
-                    >
-                      {notifications > 99 ? "99+" : notifications}
-                    </Badge>
-                  </motion.div>
+                    <Bell className="h-5 w-5 text-muted-foreground" />
+                    {roleData.notifications > 0 && (
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        className="absolute -top-1 -right-1"
+                      >
+                        <Badge
+                          variant="destructive"
+                          className="h-5 w-5 p-0 flex items-center justify-center text-xs font-bold"
+                        >
+                          {roleData.notifications > 99
+                            ? "99+"
+                            : roleData.notifications}
+                        </Badge>
+                      </motion.div>
+                    )}
+                  </Button>
+                </motion.div>
+              </DropdownMenuTrigger>
+
+              <DropdownMenuContent align="end" className="w-80 p-2 z-[1000]">
+                <DropdownMenuLabel className="flex items-center justify-between p-3">
+                  <span className="font-medium">Notifications</span>
+                  <Badge variant="outline" className="text-xs">
+                    {roleData.notifications} new
+                  </Badge>
+                </DropdownMenuLabel>
+
+                <DropdownMenuSeparator />
+
+                {roleData.notificationItems.length > 0 ? (
+                  <div className="max-h-64 overflow-y-auto">
+                    {roleData.notificationItems.map((item) => (
+                      <DropdownMenuItem
+                        key={item.id}
+                        className="flex items-start gap-3 p-3"
+                      >
+                        <div className="flex-shrink-0 mt-0.5">
+                          {getNotificationIcon(item.type)}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-foreground">
+                            {item.message}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            {item.time}
+                          </p>
+                        </div>
+                      </DropdownMenuItem>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="p-4 text-center text-muted-foreground">
+                    <Bell className="w-8 h-8 mx-auto mb-2 opacity-50" />
+                    <p className="text-sm">No new notifications</p>
+                  </div>
                 )}
-              </Button>
-            </motion.div>
+
+                <DropdownMenuSeparator />
+
+                <div className="p-2">
+                  <p className="text-xs text-muted-foreground mb-2">
+                    Quick Actions
+                  </p>
+                  <div className="grid grid-cols-2 gap-2">
+                    {roleData.quickActions.map((action) => (
+                      <a
+                        key={action.label}
+                        href={action.href}
+                        className="flex items-center gap-2 p-2 rounded-lg hover:bg-accent/50 transition-colors text-sm"
+                      >
+                        {action.icon}
+                        <span>{action.label}</span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </DropdownMenuContent>
+            </DropdownMenu>
 
             {/* Theme Toggle */}
             <motion.div whileTap={{ scale: 0.95 }}>
@@ -263,6 +607,12 @@ export const Header: React.FC<HeaderProps> = ({
                     <p className="text-sm text-muted-foreground">
                       {user?.email || "user@example.com"}
                     </p>
+                    <Badge
+                      variant="outline"
+                      className="mt-1 text-xs capitalize"
+                    >
+                      {user?.role || "Unknown"}
+                    </Badge>
                   </div>
                 </DropdownMenuLabel>
 

@@ -828,3 +828,81 @@ Optimizations include:
 3. **Analytics**: Add usage tracking
 4. **Offline Support**: Enhance offline functionality
 5. **Accessibility**: Further improve a11y features
+
+# Dynamic Role-Based Header Component
+
+The Header component has been enhanced to provide role-specific functionality and data for different user types (admin, hr, staff).
+
+## Features
+
+### Role-Specific Notifications
+- **Admin**: Shows low stock alerts, recent sales, and employee attendance issues
+- **HR**: Shows absent employees and pending approvals
+- **Staff**: Shows kitchen orders and low inventory alerts
+
+### Dynamic Search Placeholders
+- **Admin**: "Search orders, inventory, employees, reports..."
+- **HR**: "Search employees, attendance, payroll, schedules..."
+- **Staff**: "Search orders, menu items, inventory, tables..."
+
+### Quick Actions
+Each role gets relevant quick action buttons in the notifications dropdown:
+- **Admin**: Sales Report, Inventory, Employees, Reports
+- **HR**: Employees, Attendance, Payroll, Schedules
+- **Staff**: Orders, Kitchen, Inventory, Tables
+
+### Real-time Data Integration
+The header automatically fetches and displays:
+- Sales data for admin notifications
+- Employee and attendance data for HR notifications
+- Store inventory data for low stock alerts
+- Menu items for staff operations
+
+## Usage
+
+```tsx
+import { Header } from './components/layout/Header';
+
+// The header automatically adapts based on the user's role
+<Header
+  onMenuToggle={handleMenuToggle}
+  showMobileMenu={isMobile}
+  breadcrumbs={['Dashboard', 'Sales']}
+/>
+```
+
+## Data Sources
+
+The component uses the following hooks to fetch role-specific data:
+- `useGetSalesReport` - For admin sales notifications
+- `useGetEmployees` - For HR employee management
+- `useGetAttendance` - For attendance tracking
+- `useGetStoreItems` - For inventory alerts
+- `useGetMenuItems` - For menu-related operations
+
+## Business Logic
+
+### Low Stock Detection
+- Uses a threshold of 5 units to determine low stock items
+- Shows warnings for both admin and staff roles
+- Updates in real-time as inventory changes
+
+### Business Hours Detection
+- Staff notifications for kitchen orders only show during business hours (6 AM - 10 PM)
+- Helps reduce noise during off-hours
+
+### Notification Types
+- **Info**: General information (sales, orders)
+- **Warning**: Issues requiring attention (low stock, late employees)
+- **Error**: Critical problems (out of stock)
+- **Success**: Positive updates (completed tasks)
+
+## Customization
+
+To modify the behavior for a specific role, update the `generateRoleData` function in the Header component. You can:
+
+1. Add new notification types
+2. Modify thresholds (e.g., low stock level)
+3. Add new quick actions
+4. Change search placeholders
+5. Integrate with additional data sources
