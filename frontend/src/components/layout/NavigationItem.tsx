@@ -63,11 +63,11 @@ export const NavigationItem: React.FC<NavigationItemProps> = ({
 
     variant === "sidebar" && [
       "px-4 py-3 text-sm font-medium",
-      "hover:bg-white/10 hover:shadow-lg",
-      "focus:ring-white/20",
+      "hover:bg-gray-100/80 dark:hover:bg-white/10 hover:shadow-lg",
+      "focus:ring-gray-300 dark:focus:ring-white/20",
       active && [
-        "bg-white/20 text-white shadow-lg",
-        "border-l-4 border-accent-400",
+        "bg-gray-200/80 dark:bg-white/20 text-gray-900 dark:text-white shadow-lg",
+        "border-l-4 border-gray-400 dark:border-gray-300",
       ],
     ],
 
@@ -77,7 +77,9 @@ export const NavigationItem: React.FC<NavigationItemProps> = ({
   const iconClasses = cn(
     "transition-transform duration-200",
     variant === "sidebar" && [
-      active ? "text-accent-400" : "text-white/70 group-hover:text-white",
+      active
+        ? "text-gray-700 dark:text-gray-200"
+        : "text-gray-600 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-200",
     ],
     variant !== "sidebar" && [
       active
@@ -105,7 +107,7 @@ export const NavigationItem: React.FC<NavigationItemProps> = ({
             className={cn(
               "text-xs truncate",
               variant === "sidebar"
-                ? "text-white/60 group-hover:text-white/80"
+                ? "text-gray-500 dark:text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300"
                 : "text-neutral-500 group-hover:text-neutral-600"
             )}
           >

@@ -77,7 +77,7 @@ export type NavigationConfig = NavigationSection[];
 // Admin Navigation - Comprehensive Restaurant Management
 export const adminNavigation: NavigationConfig = [
   {
-    section: "📊 Dashboard & Analytics",
+    section: "Dashboard & Analytics",
     links: [
       {
         to: "/admin",
@@ -106,7 +106,7 @@ export const adminNavigation: NavigationConfig = [
     ],
   },
   {
-    section: "💰 Financial Management",
+    section: "Financial Management",
     links: [
       {
         to: "/admin/sales",
@@ -147,7 +147,7 @@ export const adminNavigation: NavigationConfig = [
     ],
   },
   {
-    section: "👥 Human Resources",
+    section: "Human Resources",
     links: [
       {
         to: "/admin/employees",
@@ -182,7 +182,7 @@ export const adminNavigation: NavigationConfig = [
     ],
   },
   {
-    section: "🍽️ Restaurant Operations",
+    section: "Restaurant Operations",
     links: [
       {
         to: "/admin/menu",
@@ -223,7 +223,7 @@ export const adminNavigation: NavigationConfig = [
     ],
   },
   {
-    section: "📱 Digital & Technology",
+    section: "Digital & Technology",
     links: [
       {
         to: "/admin/pos",
@@ -252,7 +252,7 @@ export const adminNavigation: NavigationConfig = [
     ],
   },
   {
-    section: "🏪 Business Management",
+    section: "Business Management",
     links: [
       {
         to: "/admin/marketing",
@@ -281,7 +281,7 @@ export const adminNavigation: NavigationConfig = [
     ],
   },
   {
-    section: "⚙️ System Administration",
+    section: "System Administration",
     links: [
       {
         to: "/admin/settings",
@@ -316,7 +316,7 @@ export const adminNavigation: NavigationConfig = [
     ],
   },
   {
-    section: "📞 Support & Communication",
+    section: "Support & Communication",
     links: [
       {
         to: "/admin/notifications",
@@ -344,7 +344,7 @@ export const adminNavigation: NavigationConfig = [
 // HR Navigation - Comprehensive HR Management
 export const hrNavigation: NavigationConfig = [
   {
-    section: "📊 HR Dashboard",
+    section: "HR Dashboard",
     links: [
       {
         to: "/hr",
@@ -367,7 +367,7 @@ export const hrNavigation: NavigationConfig = [
     ],
   },
   {
-    section: "👥 Employee Management",
+    section: "Employee Management",
     links: [
       {
         to: "/hr/employees",
@@ -402,7 +402,7 @@ export const hrNavigation: NavigationConfig = [
     ],
   },
   {
-    section: "⏰ Time & Attendance",
+    section: "Time & Attendance",
     links: [
       {
         to: "/hr/attendance",
@@ -437,7 +437,7 @@ export const hrNavigation: NavigationConfig = [
     ],
   },
   {
-    section: "💰 Payroll & Benefits",
+    section: "Payroll & Benefits",
     links: [
       {
         to: "/hr/payroll",
@@ -472,7 +472,7 @@ export const hrNavigation: NavigationConfig = [
     ],
   },
   {
-    section: "📋 Compliance & Legal",
+    section: "Compliance & Legal",
     links: [
       {
         to: "/hr/compliance",
@@ -501,7 +501,7 @@ export const hrNavigation: NavigationConfig = [
     ],
   },
   {
-    section: "🏥 Health & Safety",
+    section: "Health & Safety",
     links: [
       {
         to: "/hr/health",
@@ -524,7 +524,7 @@ export const hrNavigation: NavigationConfig = [
     ],
   },
   {
-    section: "📞 Communication",
+    section: "Communication",
     links: [
       {
         to: "/hr/notifications",
@@ -552,7 +552,7 @@ export const hrNavigation: NavigationConfig = [
 // Staff Navigation - Frontline Operations
 export const staffNavigation: NavigationConfig = [
   {
-    section: "🏠 My Dashboard",
+    section: "My Dashboard",
     links: [
       {
         to: "/staff",
@@ -575,7 +575,7 @@ export const staffNavigation: NavigationConfig = [
     ],
   },
   {
-    section: "🍽️ Orders & Service",
+    section: "Orders & Service",
     links: [
       {
         to: "/staff/orders",
@@ -610,7 +610,7 @@ export const staffNavigation: NavigationConfig = [
     ],
   },
   {
-    section: "👨‍🍳 Kitchen Operations",
+    section: "Kitchen Operations",
     links: [
       {
         to: "/staff/kitchen",
@@ -645,7 +645,7 @@ export const staffNavigation: NavigationConfig = [
     ],
   },
   {
-    section: "📦 Inventory & Stock",
+    section: "Inventory & Stock",
     links: [
       {
         to: "/staff/inventory",
@@ -674,7 +674,7 @@ export const staffNavigation: NavigationConfig = [
     ],
   },
   {
-    section: "⏰ My Schedule",
+    section: "My Schedule",
     links: [
       {
         to: "/staff/schedule",
@@ -703,7 +703,7 @@ export const staffNavigation: NavigationConfig = [
     ],
   },
   {
-    section: "📱 Digital Tools",
+    section: "Digital Tools",
     links: [
       {
         to: "/staff/pos",
@@ -726,7 +726,7 @@ export const staffNavigation: NavigationConfig = [
     ],
   },
   {
-    section: "📞 Communication",
+    section: "Communication",
     links: [
       {
         to: "/staff/notifications",
